@@ -158,10 +158,10 @@
 ### Этап I (без подстановок и пайплайнов)
 Не реализуем классы `WeaklyProcessedToken`  и `PreProcessor`, в классах `Parser` и `CommandBuilder` передаем и получаем на вход по одному объекту, а не списки. В случае, если на данном этапе подразумевается, что переменные среды не поддерживаются ни в каком виде (не только для подстановок), то так же не реализуем классы `EnvironmentCommand` и `Environment`.
 
-<img src="archCLI1.png"/>
+<img src="images/archCLI1.png"/>
 
 ### Этап II
 Реализуем недостающие классы, добавляем списки.
 
-<img src="archCLI2.png"/>
+<img src="images/archCLI2.png"/>
 
