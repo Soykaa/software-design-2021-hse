@@ -11,26 +11,40 @@ public class CLI {
         instance.start();
     }
 
+    private Executor createExecutor() {
+        Path path = new Path(System.getenv("PATH").split(":"));
+        return new Executor(path);
+    }
+
     public void start() {
         isRunning = true;
-        Path path = new Path(System.getenv("PATH").split(":"));
         Scanner userInput = new Scanner(System.in);
-        Executor executor = new Executor(path);
-        while (isRunning) {
-            System.out.println("$");
-            String command = userInput.nextLine();
-            if (!command.isEmpty()) {
-                try {
-                    executor.execute(command);
-                } catch (Exception e) {
-                    System.out.println("Command execution failed with exception " + e.getMessage());
+        userInput.useDelimiter(System.lineSeparator());
+        Executor executor = createExecutor();
+        Thread thread = new Thread(() -> {
+            while (isRunning) {
+                if (userInput.hasNextLine()) {
+                    String command = userInput.next();
+                    System.out.println(command);
+                    if (!command.isEmpty()) {
+                        try {
+                            executor.execute(command);
+                        } catch (Exception e) {
+                            System.out.println("FAILURE: Command execution failed with exception " + e.getMessage());
+                        }
+                    }
                 }
             }
-        }
+        });
+        thread.start();
     }
 
     public void exit() {
         isRunning = false;
-        System.out.println("Exiting CLI interpreter");
+        System.out.println("-----Exiting CLI interpreter-----");
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 }
