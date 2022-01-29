@@ -37,8 +37,18 @@ public class Environment {
             int currentIndex = 0;
             for (var entry : envVariables.entrySet()) {
                 envp[currentIndex] = entry.getKey() + "=" + entry.getValue();
+                currentIndex++;
             }
             return envp;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public static void clear() {
+        try {
+            lock.lock();
+            envVariables.clear();
         } finally {
             lock.unlock();
         }
