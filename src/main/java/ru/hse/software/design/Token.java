@@ -21,3 +21,4 @@ public class Token {
         this.type = type;
     }
 }
+
