@@ -5,7 +5,20 @@ import org.junit.jupiter.api.Test;
 
 public class CLITests {
     @Test
-    public void testCLI() {
-        Assertions.assertTrue(true);
+    public void testCLIStart() {
+        CLI cli = new CLI();
+        Assertions.assertFalse(cli.isRunning());
+        cli.start();
+        Assertions.assertTrue(cli.isRunning());
+        cli.exit();
+    }
+
+    @Test
+    public void testCLIExit() {
+        CLI cli = new CLI();
+        cli.start();
+        cli.exit();
+        Assertions.assertFalse(cli.isRunning());
     }
 }
+
