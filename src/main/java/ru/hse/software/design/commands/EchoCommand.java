@@ -15,18 +15,22 @@ public class EchoCommand extends Command {
         this.commandArgs.addAll(commandArgs);
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        this.command = "echo";
     }
 
     @Override
     public int execute() {
-        String result = String.join(" ", commandArgs);
-        result += '\n';
         try {
-            outputStream.writeAsString(result);
-        } catch (IOException e) {
-            errorMessage = e.getMessage();
-            return 1;
+            String result = String.join(" ", commandArgs);
+            try {
+                outputStream.writeAsString(result);
+            } catch (IOException e) {
+                appendErrorMessage(e.getMessage());
+                return 1;
+            }
+            return 0;
+        } finally {
+            closeInputAndOutputStreams();
         }
-        return 0;
     }
 }

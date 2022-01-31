@@ -4,7 +4,6 @@ import ru.hse.software.design.Environment;
 import ru.hse.software.design.InputStream;
 import ru.hse.software.design.OutputStream;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,15 +15,20 @@ public class EnvironmentCommand extends Command {
         this.commandArgs.addAll(commandArgs);
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        this.command = "environment";
     }
 
     @Override
     public int execute() {
-        if (commandArgs.size() != 2) {
-            errorMessage = "Command environment needs 2 arguments";
-            return 1;
+        try {
+            if (commandArgs.size() != 2) {
+                appendErrorMessage("Command environment needs 2 arguments");
+                return 1;
+            }
+            Environment.set(commandArgs.get(0), commandArgs.get(1));
+            return 0;
+        } finally {
+            closeInputAndOutputStreams();
         }
-        Environment.set(commandArgs.get(0), commandArgs.get(1));
-        return 0;
     }
 }

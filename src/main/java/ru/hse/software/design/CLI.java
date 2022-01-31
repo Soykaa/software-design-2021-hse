@@ -12,8 +12,7 @@ public class CLI {
     }
 
     private Executor createExecutor() {
-        Path path = new Path(System.getenv("PATH").split(":"));
-        return new Executor(path);
+        return new Executor(this);
     }
 
     public void start() {
@@ -21,22 +20,18 @@ public class CLI {
         Scanner userInput = new Scanner(System.in);
         userInput.useDelimiter(System.lineSeparator());
         Executor executor = createExecutor();
-        Thread thread = new Thread(() -> {
-            while (isRunning) {
-                if (userInput.hasNextLine()) {
-                    String command = userInput.next();
-                    System.out.println(command);
-                    if (!command.isEmpty()) {
-                        try {
-                            executor.execute(command);
-                        } catch (Exception e) {
-                            System.out.println("FAILURE: Command execution failed with exception " + e.getMessage());
-                        }
+        while (isRunning) {
+            if (userInput.hasNextLine()) {
+                String command = userInput.next();
+                if (!command.isEmpty()) {
+                    try {
+                        executor.execute(command);
+                    } catch (Exception e) {
+                        System.out.println("FAILURE: Command execution failed with exception " + e);
                     }
                 }
             }
-        });
-        thread.start();
+        }
     }
 
     public void exit() {

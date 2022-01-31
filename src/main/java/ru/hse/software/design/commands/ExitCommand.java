@@ -12,11 +12,19 @@ public class ExitCommand extends Command {
         this.classToExit = classToExit;
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        this.command = "exit";
     }
 
     @Override
     public int execute() {
-        classToExit.exit();
-        return 0;
+        try {
+            if (errorMessage.isPresent()) {
+                return 1;
+            }
+            classToExit.exit();
+            return 0;
+        } finally {
+            closeInputAndOutputStreams();
+        }
     }
 }

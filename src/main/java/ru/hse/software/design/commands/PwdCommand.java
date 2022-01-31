@@ -15,21 +15,26 @@ public class PwdCommand extends Command {
         this.commandArgs.addAll(commandArgs);
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        this.command = "pwd";
     }
 
     @Override
     public int execute() {
-        if (!commandArgs.isEmpty()) {
-            errorMessage = "Command Pwd works without arguments";
-            return 1;
-        }
-        String dir = System.getProperty("user.dir");
         try {
-            outputStream.writeAsString(dir);
-        } catch (IOException e) {
-            errorMessage = e.getMessage();
-            return 1;
+            if (!commandArgs.isEmpty()) {
+                appendErrorMessage("Command Pwd works without arguments");
+                return 1;
+            }
+            String dir = System.getProperty("user.dir");
+            try {
+                outputStream.writeAsString(dir);
+            } catch (IOException e) {
+                appendErrorMessage(e.getMessage());
+                return 1;
+            }
+            return 0;
+        } finally {
+            closeInputAndOutputStreams();
         }
-        return 0;
     }
 }

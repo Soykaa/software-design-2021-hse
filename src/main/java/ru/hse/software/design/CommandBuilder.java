@@ -14,9 +14,9 @@ import java.io.PipedOutputStream;
 
 
 public class CommandBuilder {
-    public static Command build(CommandTokens commandToken, Path path, CLI cli) {
-        InputStream inputStream = new InputStream(new PipedInputStream());
-        OutputStream outputStream = new OutputStream(new PipedOutputStream());
+    public static Command build(CommandTokens commandToken, Path path, CLI cli, PipedInputStream commandOutput) {
+        InputStream inputStream = new InputStream(new PipedOutputStream());
+        OutputStream outputStream = new OutputStream(commandOutput);
         if (commandToken.getCommand().equals("cat")) {
             return new CatCommand(commandToken.getCommandArgs(), inputStream, outputStream);
         }
