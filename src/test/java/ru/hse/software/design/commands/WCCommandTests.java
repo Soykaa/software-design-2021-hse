@@ -87,27 +87,51 @@ public class WCCommandTests {
 
     @Test
     public void testFromInputStream() {
-        // тест падает: Pipe not connected
+        PipedInputStream commandOutput = new PipedInputStream();
+        PipedOutputStream commandInput = new PipedOutputStream();
+        OutputStream outputStream = new OutputStream(commandOutput);
+        Command command = new WCCommand(Collections.emptyList(),
+            new InputStream(commandInput), outputStream);
 
-//        PipedInputStream commandOutput = new PipedInputStream();
-//        PipedOutputStream commandInput = new PipedOutputStream();
-//        try {
-//            commandInput.write("aaa".getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return;
-//        }
-//        OutputStream outputStream = new OutputStream(commandOutput);
-//        Command command = new WCCommand(Collections.emptyList(),
-//            new InputStream(new PipedOutputStream()), outputStream);
-//        Assertions.assertEquals(0, command.execute());
-//        Assertions.assertTrue(command.getErrorMessage().isEmpty());
-//        try {
-//            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
-//            String expectedOutput = "1  1 4";
-//            Assertions.assertEquals(expectedOutput, actualOutput);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            byte[] input = "This is test string input".getBytes();
+            commandInput.write(input);
+            commandInput.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(0, command.execute());
+        Assertions.assertTrue(command.getErrorMessage().isEmpty());
+        try {
+            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
+            String expectedOutput = "1  5 25";
+            Assertions.assertEquals(expectedOutput, actualOutput);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testFromEmptyInputStream() {
+        PipedInputStream commandOutput = new PipedInputStream();
+        PipedOutputStream commandInput = new PipedOutputStream();
+        OutputStream outputStream = new OutputStream(commandOutput);
+        Command command = new WCCommand(Collections.emptyList(),
+            new InputStream(commandInput), outputStream);
+
+        try {
+            commandInput.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(0, command.execute());
+        Assertions.assertTrue(command.getErrorMessage().isEmpty());
+        try {
+            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
+            String expectedOutput = "1  0 0";
+            Assertions.assertEquals(expectedOutput, actualOutput);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

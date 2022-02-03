@@ -35,6 +35,11 @@ public class WCCommand extends Command {
             if (commandArgs.isEmpty()) {
                 try {
                     String proceedingString = inputStream.readAsString();
+                    System.out.println(proceedingString);
+                    if (proceedingString.equals("")) {
+                        outputStream.writeAsString("1  0 0");
+                        return 0;
+                    }
                     String[] lines = proceedingString.split(System.lineSeparator());
                     long numLines = lines.length;
                     String linesToSpaces = proceedingString.replace(System.lineSeparator(),

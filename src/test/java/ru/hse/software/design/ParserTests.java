@@ -93,3 +93,12 @@ public class ParserTests {
         Assertions.assertEquals("\"a=2\"", commandTokens.getCommandArgs().get(1));
     }
 }
+
+
+/*
+ОСТАЛОСЬ:
+1) разобраться с cat и wc с потоками
+2) разобраться с exit
+3) тесты для парсера
+4) outer
+ */

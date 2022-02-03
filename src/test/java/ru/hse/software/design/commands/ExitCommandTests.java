@@ -2,6 +2,7 @@ package ru.hse.software.design.commands;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import ru.hse.software.design.CLI;
 import ru.hse.software.design.InputStream;
 import ru.hse.software.design.OutputStream;
@@ -11,17 +12,13 @@ import java.io.PipedOutputStream;
 
 
 public class ExitCommandTests {
+
     @Test
-    public void testOneWord() {
-        // тест зависает я не поняла почему((
-
-
-//        CLI cli = new CLI();
-//        cli.start();
-//        Assertions.assertTrue(cli.isRunning());
-//        Command command = new ExitCommand(cli, new InputStream(new PipedOutputStream()),
-//                                                new OutputStream(new PipedInputStream()));
-//        Assertions.assertEquals(0, command.execute());
-//        Assertions.assertFalse(cli.isRunning());
+    public void whenNotUseMockAnnotation_thenCorrect() {
+        CLI mockCLI = Mockito.mock(CLI.class);
+        Command command = new ExitCommand(mockCLI, new InputStream(new PipedOutputStream()),
+                                                new OutputStream(new PipedInputStream()));
+        command.execute();
+        Mockito.verify(mockCLI).exit();
     }
 }

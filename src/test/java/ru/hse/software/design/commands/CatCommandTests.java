@@ -11,6 +11,7 @@ import java.io.PipedOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 
 public class CatCommandTests {
@@ -77,6 +78,57 @@ public class CatCommandTests {
         String expectedError = "Command cat works with one file or with standard input";
         Assertions.assertTrue(command.getErrorMessage().isPresent());
         Assertions.assertEquals(expectedError, command.getErrorMessage().get());
+        try {
+            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
+            String expectedOutput = "";
+            Assertions.assertEquals(expectedOutput, actualOutput);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testFromInputStream() {
+        PipedInputStream commandOutput = new PipedInputStream();
+        PipedOutputStream commandInput = new PipedOutputStream();
+        OutputStream outputStream = new OutputStream(commandOutput);
+        Command command = new CatCommand(Collections.emptyList(),
+            new InputStream(commandInput), outputStream);
+
+        try {
+            byte[] input = "This is test string input.\nI love testing.\nI love java".getBytes();
+            commandInput.write(input);
+            commandInput.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        Assertions.assertEquals(0, command.execute());
+        Assertions.assertTrue(command.getErrorMessage().isEmpty());
+        try {
+            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
+            String expectedOutput = "This is test string input.\nI love testing.\nI love java";
+            Assertions.assertEquals(expectedOutput, actualOutput);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testFromEmptyInputStream() {
+        PipedInputStream commandOutput = new PipedInputStream();
+        PipedOutputStream commandInput = new PipedOutputStream();
+        OutputStream outputStream = new OutputStream(commandOutput);
+        Command command = new CatCommand(Collections.emptyList(),
+            new InputStream(commandInput), outputStream);
+
+        try {
+            commandInput.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(0, command.execute());
+        Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {
             String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
             String expectedOutput = "";
