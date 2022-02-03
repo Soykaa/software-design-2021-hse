@@ -26,6 +26,7 @@ public class EchoCommand extends Command {
                 outputStream.writeAsString(result);
             } catch (IOException e) {
                 appendErrorMessage(e.getMessage());
+                errorStream.println(e.getMessage());
                 return 1;
             }
             return 0;

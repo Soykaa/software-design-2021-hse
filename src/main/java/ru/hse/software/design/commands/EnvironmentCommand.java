@@ -23,6 +23,7 @@ public class EnvironmentCommand extends Command {
         try {
             if (commandArgs.size() != 2) {
                 appendErrorMessage("Command environment needs 2 arguments");
+                errorStream.println("Command environment needs 2 arguments");
                 return 1;
             }
             Environment.set(commandArgs.get(0), commandArgs.get(1));

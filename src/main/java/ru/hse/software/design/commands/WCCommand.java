@@ -30,12 +30,13 @@ public class WCCommand extends Command {
             if (commandArgs.size() > 1) {
                 appendErrorMessage("Command wc works with one file " +
                     "or with standard input");
+                errorStream.println("Command wc works with one file " +
+                    "or with standard input");
                 return 1;
             }
             if (commandArgs.isEmpty()) {
                 try {
                     String proceedingString = inputStream.readAsString();
-                    System.out.println(proceedingString);
                     if (proceedingString.equals("")) {
                         outputStream.writeAsString("1  0 0");
                         return 0;
@@ -52,6 +53,7 @@ public class WCCommand extends Command {
                     outputStream.writeAsString(result);
                 } catch (IOException e) {
                     appendErrorMessage(e.getMessage());
+                    errorStream.println(e.getMessage());
                     return 1;
                 }
                 return 0;
@@ -59,6 +61,7 @@ public class WCCommand extends Command {
             Path path = Paths.get(commandArgs.get(0));
             if (!Files.exists(path)) {
                 appendErrorMessage("file " + commandArgs.get(0) + " does not exist");
+                errorStream.println("file " + commandArgs.get(0) + " does not exist");
                 return 1;
             }
 
@@ -75,6 +78,7 @@ public class WCCommand extends Command {
                 outputStream.writeAsString(result);
             } catch (IOException e) {
                 appendErrorMessage("problem with writing from file to output stream" + e.getMessage());
+                errorStream.println("problem with writing from file to output stream" + e.getMessage());
                 return 1;
             }
 
@@ -82,10 +86,5 @@ public class WCCommand extends Command {
         } finally {
             closeInputAndOutputStreams();
         }
-    }
-
-    public static void main(String[] args) {
-        Path p = Paths.get("tmp.txt");
-        System.out.println(Files.exists(p));
     }
 }

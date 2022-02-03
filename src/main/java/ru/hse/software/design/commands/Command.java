@@ -5,6 +5,8 @@ import ru.hse.software.design.InputStream;
 import ru.hse.software.design.OutputStream;
 
 import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PrintStream;
 import java.util.Optional;
 
 public abstract class Command {
@@ -12,6 +14,7 @@ public abstract class Command {
     protected Optional<String> errorMessage = Optional.empty();
     protected InputStream inputStream;
     protected OutputStream outputStream;
+    protected PrintStream errorStream = System.err;
     public abstract int execute();
 
     public String getCommand() {
