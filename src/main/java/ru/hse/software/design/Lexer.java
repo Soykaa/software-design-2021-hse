@@ -52,7 +52,7 @@ public class Lexer {
                     break;
                 default:
                     if (Character.isWhitespace(command.charAt(i))) {
-                        if (!(openedDoubleQuotes && openedSingleQuotes)) {
+                        if (!openedDoubleQuotes && !openedSingleQuotes) {
                             if (currentToken.length() != 0) {
                                 result.add(new Token(currentToken.toString(), currentTokenType));
                                 currentToken.setLength(0);
