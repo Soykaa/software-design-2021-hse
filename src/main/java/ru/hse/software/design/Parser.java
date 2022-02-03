@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Parser {
 
-    public static int getEqualityIndex(String str) {
+    private static int getEqualityIndex(String str) {
         boolean insideSingleQuotes = false;
         boolean insideDoubleQuotes = false;
         for (int i = 0; i < str.length(); i++) {

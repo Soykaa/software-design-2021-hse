@@ -5,6 +5,7 @@ import ru.hse.software.design.OutputStream;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +40,20 @@ public class CatCommand extends Command {
                 }
                 return 0;
             }
-            try (Stream<String> stream = Files.lines(Paths.get(commandArgs.get(0)))) {
-                List<String> lines = stream.collect(Collectors.toList());
+            Path path = Paths.get(commandArgs.get(0));
+            if (!Files.exists(path)) {
+                appendErrorMessage("file " + commandArgs.get(0) + " does not exist");
+                return 1;
+            }
+            List<String> lines;
+            try (Stream<String> stream = Files.lines(path)) {
+                lines = stream.collect(Collectors.toList());
                 for (String line : lines) {
                     line += '\n';
                     outputStream.writeAsString(line);
                 }
             } catch (IOException e) {
-                appendErrorMessage(e.getMessage());
+                appendErrorMessage("problem with writing from file to output stream" + e.getMessage());
                 return 1;
             }
             return 0;

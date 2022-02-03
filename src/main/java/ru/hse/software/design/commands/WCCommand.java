@@ -52,6 +52,11 @@ public class WCCommand extends Command {
                 return 0;
             }
             Path path = Paths.get(commandArgs.get(0));
+            if (!Files.exists(path)) {
+                appendErrorMessage("file " + commandArgs.get(0) + " does not exist");
+                return 1;
+            }
+
             try (Stream<String> stream = Files.lines(path)) {
                 List<String> lines = stream.collect(Collectors.toList());
                 long numBytes = Files.size(path);
@@ -64,12 +69,18 @@ public class WCCommand extends Command {
                 String result = numLines + " " + " " + numWords + " " + numBytes;
                 outputStream.writeAsString(result);
             } catch (IOException e) {
-                appendErrorMessage(e.getMessage());
+                appendErrorMessage("problem with writing from file to output stream" + e.getMessage());
                 return 1;
             }
+
             return 0;
         } finally {
             closeInputAndOutputStreams();
         }
+    }
+
+    public static void main(String[] args) {
+        Path p = Paths.get("tmp.txt");
+        System.out.println(Files.exists(p));
     }
 }
