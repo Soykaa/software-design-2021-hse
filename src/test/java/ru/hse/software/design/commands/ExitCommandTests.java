@@ -17,7 +17,7 @@ public class ExitCommandTests {
     public void whenNotUseMockAnnotation_thenCorrect() {
         CLI mockCLI = Mockito.mock(CLI.class);
         Command command = new ExitCommand(mockCLI, new InputStream(new PipedOutputStream()),
-                                                new OutputStream(new PipedInputStream()));
+                                                new OutputStream(new PipedInputStream()), new OutputStream(new PipedInputStream()));
         command.execute();
         Mockito.verify(mockCLI).exit();
     }

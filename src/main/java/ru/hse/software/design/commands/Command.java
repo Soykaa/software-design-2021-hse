@@ -14,7 +14,7 @@ public abstract class Command {
     protected Optional<String> errorMessage = Optional.empty();
     protected InputStream inputStream;
     protected OutputStream outputStream;
-    protected PrintStream errorStream = System.err;
+    protected OutputStream errorStream;
     public abstract int execute();
 
     public String getCommand() {

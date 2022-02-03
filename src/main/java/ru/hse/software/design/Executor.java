@@ -20,7 +20,8 @@ public class Executor {
         List<Token> tokens = Lexer.getTokens(commandString);
         CommandTokens commandTokens = Parser.preProcess(tokens);
         PipedInputStream commandOutput = new PipedInputStream();
-        Command command = CommandBuilder.build(commandTokens, path, cli, commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
+        Command command = CommandBuilder.build(commandTokens, path, cli, commandOutput, errorOutput);
         int returnCode = command.execute();
         if (returnCode != 0) {
             String errorMessage = "Failure while executing command " + command.getCommand();

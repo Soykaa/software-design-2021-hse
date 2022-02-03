@@ -16,9 +16,9 @@ public class PwdCommandTests {
     @Test
     public void testWithoutArguments() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new PwdCommand(Collections.emptyList(),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(0, command.execute());
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {
@@ -33,9 +33,9 @@ public class PwdCommandTests {
     @Test
     public void testWithArguments() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new PwdCommand(Arrays.asList("one", "two", "three"),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(1, command.execute());
         String expectedError = "Command Pwd works without arguments";
         Assertions.assertTrue(command.getErrorMessage().isPresent());
