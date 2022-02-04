@@ -12,7 +12,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public class CLI {
-    private final AtomicBoolean isRunning = new AtomicBoolean(false);
     /**
      * Marks if the application is running or not.
      **/
@@ -44,11 +43,11 @@ public class CLI {
      * In case of an error displays the appropriate message.
      **/
     public void start() {
-        isRunning.set(true);
+        isRunning = true;
         Scanner userInput = new Scanner(System.in);
         userInput.useDelimiter(System.lineSeparator());
         Executor executor = createExecutor();
-        while (isRunning.get()) {
+        while (isRunning) {
             System.out.print("$ ");
             if (userInput.hasNextLine()) {
                 String command = userInput.next();
@@ -67,7 +66,7 @@ public class CLI {
      * Terminates the application.
      **/
     public void exit() {
-        isRunning.set(false);
+        isRunning = false;
         System.out.println("-----Exiting CLI interpreter-----");
     }
 
@@ -77,6 +76,6 @@ public class CLI {
      * @return true if the application is running, false if is not
      **/
     public boolean isRunning() {
-        return isRunning.get();
+        return isRunning;
     }
 }

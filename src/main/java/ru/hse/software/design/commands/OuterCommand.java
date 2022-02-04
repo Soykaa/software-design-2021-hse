@@ -14,12 +14,13 @@ public class OuterCommand extends Command {
     private final List<String> commandWithArguments = new ArrayList<>();
     private final Path path;
 
-    public OuterCommand(String commandName, List<String> commandArgs,
-                        InputStream inputStream, OutputStream outputStream, Path path) {
+    public OuterCommand(String commandName, List<String> commandArgs, Path path,
+                        InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
         this.commandWithArguments.add(commandName);
         this.commandWithArguments.addAll(commandArgs);
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        this.errorStream = errorStream;
         this.path = path;
         this.command = commandName;
     }
@@ -37,6 +38,7 @@ public class OuterCommand extends Command {
             }
             if (commandDirectory == null) {
                 appendErrorMessage("Command " + command + " not found");
+                errorStream.writeAsString("Command " + command + " not found");
                 return 1;
             }
             try {
@@ -46,8 +48,12 @@ public class OuterCommand extends Command {
                 return process.waitFor();
             } catch (IOException | InterruptedException e) {
                 appendErrorMessage(e.getMessage());
+                errorStream.writeAsString(e.getMessage());
             }
             return 0;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 1;
         } finally {
             closeInputAndOutputStreams();
         }

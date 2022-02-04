@@ -50,7 +50,7 @@ public class CommandBuilder {
         if (commandToken.getCommand().equals("environment")) {
             return new EnvironmentCommand(commandToken.getCommandArgs(), inputStream, outputStream, errorStream);
         }
-        return new OuterCommand(commandToken.getCommand(), commandToken.getCommandArgs(), inputStream,
-            outputStream, path);
+        return new OuterCommand(commandToken.getCommand(), commandToken.getCommandArgs(), path,
+            inputStream, outputStream, errorStream);
     }
 }
