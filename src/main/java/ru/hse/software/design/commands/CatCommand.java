@@ -12,9 +12,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Class which represents 'cat' command, extends Command.
+ * Contains list of command arguments as a private field.
+ * Also overrides 'execute' method.
+ **/
 public class CatCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
+    /**
+     * Constructor.
+     * Makes commandArgs, inputStream, outputStream and errorStream same as given values.
+     * Also initialize command with "cat".
+     *
+     * @param commandArgs  command arguments
+     * @param inputStream  input stream
+     * @param outputStream output stream
+     * @param errorStream  error stream
+     **/
     public CatCommand(List<String> commandArgs,
                       InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
         this.commandArgs.addAll(commandArgs);
@@ -24,6 +39,12 @@ public class CatCommand extends Command {
         this.command = "cat";
     }
 
+    /**
+     * Executes 'cat' command with the given arguments.
+     * In case of error writes an appropriate message to the error stream.
+     *
+     * @return 1 in case of successful outcome of the command, 0 otherwise
+     **/
     @Override
     public int execute() {
         try {
