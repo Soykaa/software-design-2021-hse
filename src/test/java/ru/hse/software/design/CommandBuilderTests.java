@@ -31,13 +31,13 @@ public class CommandBuilderTests {
     public void testInnerCommands() {
         List<String> arguments = Arrays.asList("arg1", "arg2");
         List<CommandTokens> commandTokens = Arrays.asList(new CommandTokens("echo", arguments),
-                                                            new CommandTokens("cat", arguments),
-                                                            new CommandTokens("wc", arguments),
-                                                            new CommandTokens("exit", arguments),
-                                                            new CommandTokens("pwd", arguments),
-                                                            new CommandTokens("environment", arguments));
+            new CommandTokens("cat", arguments),
+            new CommandTokens("wc", arguments),
+            new CommandTokens("exit", arguments),
+            new CommandTokens("pwd", arguments),
+            new CommandTokens("environment", arguments));
 
-        for (CommandTokens token: commandTokens) {
+        for (CommandTokens token : commandTokens) {
             PipedInputStream commandOutput = new PipedInputStream();
             PipedOutputStream commandInput = new PipedOutputStream();
             Command command = CommandBuilder.build(token, path, cli, commandInput, commandOutput, new PipedInputStream());

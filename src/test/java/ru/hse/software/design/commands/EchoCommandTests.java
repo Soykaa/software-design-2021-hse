@@ -39,7 +39,7 @@ public class EchoCommandTests {
         PipedInputStream errorOutput = new PipedInputStream();
 
         Command command = new EchoCommand(Arrays.asList("I", "love", "java"),
-                                        new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(0, command.execute());
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {
