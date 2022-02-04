@@ -5,11 +5,11 @@ package ru.hse.software.design;
  **/
 public enum Type {
     /**
-     * Means that there is no need for substitutions in token
+     * Means that there is no need for substitutions in token.
      **/
     FULLY_PROCESSED,
     /**
-     * Means that there is a need for substitutions in token
+     * Means that there is a need for substitutions in token.
      **/
     WEAKLY_PROCESSED
 }
