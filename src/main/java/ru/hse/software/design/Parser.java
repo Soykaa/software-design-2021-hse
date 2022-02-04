@@ -3,18 +3,22 @@ package ru.hse.software.design;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for separating a list of tokens into commands and arguments.
+ * Contains main static method 'preProcess'
+ * as well as a helper private method 'getEqualityIndex'
+ **/
 public class Parser {
-
     private static int getEqualityIndex(String str) {
         boolean insideSingleQuotes = false;
         boolean insideDoubleQuotes = false;
         for (int i = 0; i < str.length(); i++) {
             char curChar = str.charAt(i);
-            if (curChar == '\''){
+            if (curChar == '\'') {
                 insideSingleQuotes = !insideSingleQuotes;
                 continue;
             }
-            if (curChar == '\"'){
+            if (curChar == '\"') {
                 insideDoubleQuotes = !insideDoubleQuotes;
                 continue;
             }
@@ -28,6 +32,15 @@ public class Parser {
         return -1;
     }
 
+    /**
+     * Receives a list of tokens as input, finds commands among them,
+     * and, depending on this, divides into CommandTokens.
+     * If the command name contains the '=' sign, then the name of the command
+     * is 'environment', and the arguments are obtained from the token with the '=' sign.
+     *
+     * @param tokens list of tokens
+     * @return command tokens
+     **/
     public static CommandTokens preProcess(List<Token> tokens) {
         String command = tokens.get(0).getToken();
         List<String> commandArgs = new ArrayList<>();
@@ -43,15 +56,5 @@ public class Parser {
             commandArgs.add(tokens.get(i).getToken());
         }
         return new CommandTokens(command, commandArgs);
-    }
-
-    public static void main(String[] args) {
-        String s = "012345678";
-//        System.out.println(s.substring(3));
-//        System.out.println(s.length());
-
-        String a = "=123";
-        System.out.println(getEqualityIndex(a));
-
     }
 }

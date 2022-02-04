@@ -3,6 +3,11 @@ package ru.hse.software.design;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for splitting the input string into tokens.
+ * Contains private enum 'QuotesStatus', which reflects the presence of quotes in a string.
+ * Also contains 'getTokens' static method as the main.
+ **/
 public class Lexer {
     private enum QuotesStatus {
         DEFAULT,
@@ -10,6 +15,13 @@ public class Lexer {
         DOUBLE_FIRST
     }
 
+    /**
+     * Takes the entire string entered by the user as input,
+     * and then divides it into tokens depending on the location of spaces, quotes and '$'
+     *
+     * @param command input string
+     * @return list of Token objects
+     **/
     public static List<Token> getTokens(String command) {
         List<Token> result = new ArrayList<>();
         boolean openedSingleQuotes = false;

@@ -10,16 +10,12 @@ import java.util.List;
 
 /**
  * Class for calling the main components of the application.
+ * Contains paths to directories containing external programs and
+ * CLI object as a private fields.
+ * Also contains main method 'execute', which throws IOException.
  **/
 public class Executor {
-    /**
-     * Paths to directories containing external programs.
-     **/
     private final Path path;
-
-    /**
-     * CLI object.
-     **/
     private final CLI cli;
 
     /**

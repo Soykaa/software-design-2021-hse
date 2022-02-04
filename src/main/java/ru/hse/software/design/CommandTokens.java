@@ -4,16 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that stores the command name and its arguments list.
+ * Class that stores the command name and its arguments list
+ * as a private fields.
  **/
 public class CommandTokens {
-    /**
-     * Command name.
-     **/
     private final String command;
-    /**
-     * Command arguments names.
-     **/
     private final List<String> commandArgs = new ArrayList<>();
 
     /**

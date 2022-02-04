@@ -1,20 +1,16 @@
 package ru.hse.software.design;
 
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Class that the user is interacting with.
- * Internally, it stores the 'isRunning' flag, which is set to true
- * when the application is running and false when it terminates.
+ * Internally, it stores the 'isRunning' flag as a private field,
+ * which is set to true when the application is running and false when it terminates.
  * It has two main public methods 'start' and 'exit'
  * and private method 'createExecutor' responsible for creating an object of the Executor class.
  */
 
 public class CLI {
-    /**
-     * Marks if the application is running or not.
-     **/
     private boolean isRunning = false;
 
     /**
@@ -28,11 +24,6 @@ public class CLI {
         instance.start();
     }
 
-    /**
-     * Creates an object of the Executor class.
-     *
-     * @return an Executor object
-     **/
     private Executor createExecutor() {
         return new Executor(this);
     }
