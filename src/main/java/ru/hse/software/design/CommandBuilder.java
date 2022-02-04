@@ -27,7 +27,8 @@ public class CommandBuilder {
      * @param commandOutput stream for command output
      * @param errorOutput   stream for errors
      * @return Command object
-     **/public static Command build(CommandTokens commandToken, Path path, CLI cli,
+     **/
+    public static Command build(CommandTokens commandToken, Path path, CLI cli,
                                 PipedOutputStream commandInput, PipedInputStream commandOutput, PipedInputStream errorOutput) {
         InputStream inputStream = new InputStream(commandInput);
         OutputStream outputStream = new OutputStream(commandOutput);
