@@ -9,6 +9,7 @@ import ru.hse.software.design.commands.OuterCommand;
 import ru.hse.software.design.commands.PwdCommand;
 import ru.hse.software.design.commands.WCCommand;
 
+import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
@@ -28,8 +29,8 @@ public class CommandBuilder {
      * @return Command object
      **/
     public static Command build(CommandTokens commandToken, Path path, CLI cli,
-                                PipedInputStream commandOutput, PipedInputStream errorOutput) {
-        InputStream inputStream = new InputStream(new PipedOutputStream());
+                                PipedOutputStream commandInput, PipedInputStream commandOutput, PipedInputStream errorOutput) {
+        InputStream inputStream = new InputStream(commandInput);
         OutputStream outputStream = new OutputStream(commandOutput);
         OutputStream errorStream = new OutputStream(errorOutput);
         if (commandToken.getCommand().equals("cat")) {
@@ -50,7 +51,7 @@ public class CommandBuilder {
         if (commandToken.getCommand().equals("environment")) {
             return new EnvironmentCommand(commandToken.getCommandArgs(), inputStream, outputStream, errorStream);
         }
-        return new OuterCommand(commandToken.getCommand(), commandToken.getCommandArgs(), inputStream,
-            outputStream, path);
+        return new OuterCommand(commandToken.getCommand(), commandToken.getCommandArgs(), path,
+            inputStream, outputStream, errorStream);
     }
 }

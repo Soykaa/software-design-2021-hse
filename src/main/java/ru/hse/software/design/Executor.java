@@ -4,6 +4,7 @@ import ru.hse.software.design.commands.Command;
 
 import java.io.IOException;
 import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -45,7 +46,9 @@ public class Executor {
         CommandTokens commandTokens = Parser.preProcess(tokens);
         PipedInputStream commandOutput = new PipedInputStream();
         PipedInputStream errorOutput = new PipedInputStream();
-        Command command = CommandBuilder.build(commandTokens, path, cli, commandOutput, errorOutput);
+        PipedOutputStream commandInput = new PipedOutputStream();
+        Command command = CommandBuilder.build(commandTokens, path, cli, commandInput, commandOutput, errorOutput);
+        commandInput.close();
         int returnCode = command.execute();
         if (returnCode != 0) {
             String errorMessage = "Failure while executing command " + command.getCommand();
@@ -54,7 +57,7 @@ public class Executor {
             }
             System.out.println(errorMessage);
         }
-        System.out.println(new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8));
+        System.out.print(new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8));
         return 0;
     }
 }

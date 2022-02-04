@@ -1,6 +1,5 @@
 package ru.hse.software.design.commands;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.hse.software.design.CLI;
@@ -12,9 +11,8 @@ import java.io.PipedOutputStream;
 
 
 public class ExitCommandTests {
-
     @Test
-    public void whenNotUseMockAnnotation_thenCorrect() {
+    public void testExit() {
         CLI mockCLI = Mockito.mock(CLI.class);
         Command command = new ExitCommand(mockCLI, new InputStream(new PipedOutputStream()),
                                                 new OutputStream(new PipedInputStream()), new OutputStream(new PipedInputStream()));

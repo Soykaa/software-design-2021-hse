@@ -5,22 +5,15 @@ import org.junit.jupiter.api.Test;
 
 public class CLITests {
     @Test
-    public void testCLIStart() {
-//        CLI cli = new CLI();
-//        Assertions.assertFalse(cli.isRunning());
-//        Thread thread = new Thread(cli::start);
-//        thread.start();
-//        cli.start();
-//        Assertions.assertTrue(cli.isRunning());
-//        cli.exit();
-    }
-
-    @Test
-    public void testCLIExit() {
-//        CLI cli = new CLI();
-//        cli.start();
-//        cli.exit();
-//        Assertions.assertFalse(cli.isRunning());
+    public void testCLIRunning() throws InterruptedException {
+        CLI cli = new CLI();
+        Assertions.assertFalse(cli.isRunning());
+        Thread thread = new Thread(cli::start);
+        thread.start();
+        Thread.sleep(100);
+        Assertions.assertTrue(cli.isRunning());
+        cli.exit();
+        Assertions.assertFalse(cli.isRunning());
     }
 }
 

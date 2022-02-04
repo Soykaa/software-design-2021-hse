@@ -1,6 +1,7 @@
 package ru.hse.software.design;
 
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Class that the user is interacting with.
@@ -47,6 +48,7 @@ public class CLI {
         userInput.useDelimiter(System.lineSeparator());
         Executor executor = createExecutor();
         while (isRunning) {
+            System.out.print("$ ");
             if (userInput.hasNextLine()) {
                 String command = userInput.next();
                 if (!command.isEmpty()) {
