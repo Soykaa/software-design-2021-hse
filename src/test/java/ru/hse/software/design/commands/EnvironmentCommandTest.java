@@ -23,9 +23,9 @@ public class EnvironmentCommandTest {
     @Test
     public void testNormal() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new EnvironmentCommand(Arrays.asList("x", "123"),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(0, command.execute());
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         Assertions.assertTrue(Environment.get("x").isPresent());
@@ -42,9 +42,9 @@ public class EnvironmentCommandTest {
     @Test
     public void testFewerArguments() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new EnvironmentCommand(List.of("x"),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(1, command.execute());
         Assertions.assertTrue(Environment.get("x").isEmpty());
         String expectedError = "Command environment needs 2 arguments";
@@ -63,9 +63,9 @@ public class EnvironmentCommandTest {
     @Test
     public void testMoreArguments() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new EnvironmentCommand(List.of("x", "y", "123"),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(1, command.execute());
         Assertions.assertTrue(Environment.get("x").isEmpty());
         Assertions.assertTrue(Environment.get("y").isEmpty());

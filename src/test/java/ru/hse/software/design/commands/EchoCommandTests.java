@@ -19,9 +19,9 @@ public class EchoCommandTests {
     @Test
     public void testOneWord() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new EchoCommand(List.of("cli"),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(0, command.execute());
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {
@@ -36,9 +36,10 @@ public class EchoCommandTests {
     @Test
     public void testSeveralWords() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
+
         Command command = new EchoCommand(Arrays.asList("I", "love", "java"),
-                                        new InputStream(new PipedOutputStream()), outputStream);
+                                        new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(0, command.execute());
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {
@@ -53,9 +54,9 @@ public class EchoCommandTests {
     @Test
     public void testEmptyInput() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new EchoCommand(Collections.emptyList(),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(0, command.execute());
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {

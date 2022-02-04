@@ -18,9 +18,9 @@ public class CatCommandTests {
     @Test
     public void testNotEmptyFile() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new CatCommand(List.of("src/resources/not_empty_file.txt"),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(0, command.execute());
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {
@@ -35,9 +35,9 @@ public class CatCommandTests {
     @Test
     public void testEmptyFile() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new CatCommand(List.of("src/resources/empty_file.txt"),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(0, command.execute());
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {
@@ -52,9 +52,9 @@ public class CatCommandTests {
     @Test
     public void testNotExistingFile() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new CatCommand(List.of("src/resources/not_existing_file.txt"),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(1, command.execute());
         String expectedError = "file src/resources/not_existing_file.txt does not exist";
         Assertions.assertTrue(command.getErrorMessage().isPresent());
@@ -71,9 +71,9 @@ public class CatCommandTests {
     @Test
     public void testMoreArguments() {
         PipedInputStream commandOutput = new PipedInputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new CatCommand(List.of("src/resources/not_empty_file.txt", "123"),
-            new InputStream(new PipedOutputStream()), outputStream);
+            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
         Assertions.assertEquals(1, command.execute());
         String expectedError = "Command cat works with one file or with standard input";
         Assertions.assertTrue(command.getErrorMessage().isPresent());
@@ -91,9 +91,9 @@ public class CatCommandTests {
     public void testFromInputStream() {
         PipedInputStream commandOutput = new PipedInputStream();
         PipedOutputStream commandInput = new PipedOutputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new CatCommand(Collections.emptyList(),
-            new InputStream(commandInput), outputStream);
+            new InputStream(commandInput), new OutputStream(commandOutput), new OutputStream(errorOutput));
 
         try {
             byte[] input = "This is test string input.\nI love testing.\nI love java".getBytes();
@@ -118,9 +118,9 @@ public class CatCommandTests {
     public void testFromEmptyInputStream() {
         PipedInputStream commandOutput = new PipedInputStream();
         PipedOutputStream commandInput = new PipedOutputStream();
-        OutputStream outputStream = new OutputStream(commandOutput);
+        PipedInputStream errorOutput = new PipedInputStream();
         Command command = new CatCommand(Collections.emptyList(),
-            new InputStream(commandInput), outputStream);
+            new InputStream(commandInput), new OutputStream(commandOutput), new OutputStream(errorOutput));
 
         try {
             commandInput.close();

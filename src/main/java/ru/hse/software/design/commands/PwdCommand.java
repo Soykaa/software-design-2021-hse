@@ -11,10 +11,11 @@ public class PwdCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
     public PwdCommand(List<String> commandArgs,
-                      InputStream inputStream, OutputStream outputStream) {
+                      InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
         this.commandArgs.addAll(commandArgs);
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        this.errorStream = errorStream;
         this.command = "pwd";
     }
 
@@ -23,7 +24,7 @@ public class PwdCommand extends Command {
         try {
             if (!commandArgs.isEmpty()) {
                 appendErrorMessage("Command Pwd works without arguments");
-                errorStream.println("Command Pwd works without arguments");
+                errorStream.writeAsString("Command Pwd works without arguments");
                 return 1;
             }
             String dir = System.getProperty("user.dir");
@@ -31,10 +32,13 @@ public class PwdCommand extends Command {
                 outputStream.writeAsString(dir);
             } catch (IOException e) {
                 appendErrorMessage(e.getMessage());
-                errorStream.println(e.getMessage());
+                errorStream.writeAsString(e.getMessage());
                 return 1;
             }
             return 0;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 1;
         } finally {
             closeInputAndOutputStreams();
         }

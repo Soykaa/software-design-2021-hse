@@ -37,7 +37,6 @@ public class OuterCommand extends Command {
             }
             if (commandDirectory == null) {
                 appendErrorMessage("Command " + command + " not found");
-                errorStream.println("CommandX " + command + " not found");
                 return 1;
             }
             try {

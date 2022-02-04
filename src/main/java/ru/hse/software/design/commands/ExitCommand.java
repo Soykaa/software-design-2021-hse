@@ -8,10 +8,11 @@ public class ExitCommand extends Command {
     private final CLI classToExit;
 
     public ExitCommand(CLI classToExit, InputStream inputStream,
-                       OutputStream outputStream) {
+                       OutputStream outputStream, OutputStream errorStream) {
         this.classToExit = classToExit;
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        this.errorStream = errorStream;
         this.command = "exit";
     }
 

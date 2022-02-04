@@ -16,10 +16,11 @@ public class CatCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
     public CatCommand(List<String> commandArgs,
-                      InputStream inputStream, OutputStream outputStream) {
+                      InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
         this.commandArgs.addAll(commandArgs);
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        this.errorStream = errorStream;
         this.command = "cat";
     }
 
@@ -29,7 +30,7 @@ public class CatCommand extends Command {
             if (commandArgs.size() > 1) {
                 appendErrorMessage("Command cat works with one file " +
                     "or with standard input");
-                errorStream.println("Command cat works with one file " +
+                errorStream.writeAsString("Command cat works with one file " +
                     "or with standard input");
                 return 1;
             }
@@ -38,7 +39,7 @@ public class CatCommand extends Command {
                     outputStream.writeAsString(inputStream.readAsString());
                 } catch (IOException e) {
                     appendErrorMessage(e.getMessage());
-                    errorStream.println(e.getMessage());
+                    errorStream.writeAsString(e.getMessage());
                     return 1;
                 }
                 return 0;
@@ -46,7 +47,7 @@ public class CatCommand extends Command {
             Path path = Paths.get(commandArgs.get(0));
             if (!Files.exists(path)) {
                 appendErrorMessage("file " + commandArgs.get(0) + " does not exist");
-                errorStream.println("file " + commandArgs.get(0) + " does not exist");
+                errorStream.writeAsString("file " + commandArgs.get(0) + " does not exist");
                 return 1;
             }
             List<String> lines;
@@ -58,10 +59,13 @@ public class CatCommand extends Command {
                 }
             } catch (IOException e) {
                 appendErrorMessage("problem with writing from file to output stream" + e.getMessage());
-                errorStream.println("problem with writing from file to output stream" + e.getMessage());
+                errorStream.writeAsString("problem with writing from file to output stream" + e.getMessage());
                 return 1;
             }
             return 0;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 1;
         } finally {
             closeInputAndOutputStreams();
         }

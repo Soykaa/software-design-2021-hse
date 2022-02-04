@@ -40,7 +40,7 @@ public class CommandBuilderTests {
         for (CommandTokens token: commandTokens) {
             PipedInputStream commandOutput = new PipedInputStream();
             PipedOutputStream commandInput = new PipedOutputStream();
-            Command command = CommandBuilder.build(token, path, cli, commandInput, commandOutput);
+            Command command = CommandBuilder.build(token, path, cli, commandInput, commandOutput, new PipedInputStream());
             Assertions.assertEquals(commandsClasses.get(token.getCommand()), command.getClass());
         }
     }
@@ -51,7 +51,7 @@ public class CommandBuilderTests {
         CommandTokens commandTokens = new CommandTokens("new_command", arguments);
         PipedInputStream commandOutput = new PipedInputStream();
         PipedOutputStream commandInput = new PipedOutputStream();
-        Command command = CommandBuilder.build(commandTokens, path, cli, commandInput, commandOutput);
+        Command command = CommandBuilder.build(commandTokens, path, cli, commandInput, commandOutput, new PipedInputStream());
         Assertions.assertEquals(OuterCommand.class, command.getClass());
     }
 }
