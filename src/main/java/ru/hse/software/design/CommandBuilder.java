@@ -9,13 +9,15 @@ import ru.hse.software.design.commands.OuterCommand;
 import ru.hse.software.design.commands.PwdCommand;
 import ru.hse.software.design.commands.WCCommand;
 
+import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
 
 public class CommandBuilder {
-    public static Command build(CommandTokens commandToken, Path path, CLI cli, PipedInputStream commandOutput) {
-        InputStream inputStream = new InputStream(new PipedOutputStream());
+    public static Command build(CommandTokens commandToken, Path path, CLI cli,
+                                PipedOutputStream commandInput, PipedInputStream commandOutput) {
+        InputStream inputStream = new InputStream(commandInput);
         OutputStream outputStream = new OutputStream(commandOutput);
         if (commandToken.getCommand().equals("cat")) {
             return new CatCommand(commandToken.getCommandArgs(), inputStream, outputStream);

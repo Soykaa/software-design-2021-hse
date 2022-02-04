@@ -1,9 +1,10 @@
 package ru.hse.software.design;
 
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CLI {
-    private boolean isRunning = false;
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
 
     public static void main(String[] args) {
         System.out.println("-----CLI interpreter-----");
@@ -16,11 +17,12 @@ public class CLI {
     }
 
     public void start() {
-        isRunning = true;
+        isRunning.set(true);
         Scanner userInput = new Scanner(System.in);
         userInput.useDelimiter(System.lineSeparator());
         Executor executor = createExecutor();
-        while (isRunning) {
+        while (isRunning.get()) {
+            System.out.print("$ ");
             if (userInput.hasNextLine()) {
                 String command = userInput.next();
                 if (!command.isEmpty()) {
@@ -35,11 +37,11 @@ public class CLI {
     }
 
     public void exit() {
-        isRunning = false;
+        isRunning.set(false);
         System.out.println("-----Exiting CLI interpreter-----");
     }
 
     public boolean isRunning() {
-        return isRunning;
+        return isRunning.get();
     }
 }

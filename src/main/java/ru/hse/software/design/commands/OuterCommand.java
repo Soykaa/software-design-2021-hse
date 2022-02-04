@@ -37,11 +37,11 @@ public class OuterCommand extends Command {
             }
             if (commandDirectory == null) {
                 appendErrorMessage("Command " + command + " not found");
-                errorStream.println("Command " + command + " not found");
+                errorStream.println("CommandX " + command + " not found");
                 return 1;
             }
             try {
-                Process process = Runtime.getRuntime().exec(cmdarray, envp, new File(commandDirectory, command));
+                Process process = Runtime.getRuntime().exec(cmdarray, envp, new File(commandDirectory));
                 process.getOutputStream().write(inputStream.readAsBytesArray());
                 outputStream.writeAsBytesArray(process.getInputStream().readAllBytes());
                 return process.waitFor();
