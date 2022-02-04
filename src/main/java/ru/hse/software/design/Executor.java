@@ -58,6 +58,6 @@ public class Executor {
             System.out.println(errorMessage);
         }
         System.out.print(new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8));
-        return 0;
+        return returnCode;
     }
 }
