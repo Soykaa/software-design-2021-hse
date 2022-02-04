@@ -37,7 +37,7 @@ public class Executor {
      * @return return code
      * @throws IOException thrown if had problems with reading bytes from PipedInputStream
      **/
-    public int execute(String commandString) throws IOException {
+    public int execute(String commandString) throws IOException, InterruptedException {
         List<Token> tokens = Lexer.getTokens(commandString);
         CommandTokens commandTokens = Parser.preProcess(tokens);
         PipedInputStream commandOutput = new PipedInputStream();
@@ -45,7 +45,16 @@ public class Executor {
         PipedOutputStream commandInput = new PipedOutputStream();
         Command command = CommandBuilder.build(commandTokens, path, cli, commandInput, commandOutput, errorOutput);
         commandInput.close();
+        Thread thread = new Thread(() -> {
+            try {
+                System.out.println(new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
         int returnCode = command.execute();
+        thread.join();
         if (returnCode != 0) {
             String errorMessage = "Failure while executing command " + command.getCommand();
             if (command.getErrorMessage().isPresent()) {
@@ -53,7 +62,6 @@ public class Executor {
             }
             System.out.println(errorMessage);
         }
-        System.out.print(new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8));
         return returnCode;
     }
 }
