@@ -35,7 +35,8 @@ public class Executor {
      *
      * @param commandString user-supplied string
      * @return return code
-     * @throws IOException thrown if had problems with reading bytes from PipedInputStream
+     * @throws IOException          thrown in case of problems with reading bytes from PipedInputStream
+     * @throws InterruptedException thrown in case of thread.join()
      **/
     public int execute(String commandString) throws IOException, InterruptedException {
         List<Token> tokens = Lexer.getTokens(commandString);
