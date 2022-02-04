@@ -32,15 +32,15 @@ public class ExecutorTests {
     }
 
     @Test
-    public void testCommandExecutedOk() throws IOException {
+    public void testCommandExecutedOk() throws IOException, InterruptedException {
         assertEquals(0, executor.execute("echo 42"));
-        assertEquals("42", outContent.toString());
+        assertEquals("42\n", outContent.toString());
     }
 
     @Test
-    public void testCommandFailed() throws IOException {
+    public void testCommandFailed() throws IOException, InterruptedException {
         assertEquals(1, executor.execute("non-existent-command"));
-        assertEquals("Failure while executing command non-existent-command : Command non-existent-command not found\n",
+        assertEquals("\nFailure while executing command non-existent-command : Command non-existent-command not found\n",
             outContent.toString());
     }
 }
