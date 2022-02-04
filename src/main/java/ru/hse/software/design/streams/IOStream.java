@@ -1,4 +1,4 @@
-package ru.hse.software.design;
+package ru.hse.software.design.streams;
 
 import java.io.IOException;
 

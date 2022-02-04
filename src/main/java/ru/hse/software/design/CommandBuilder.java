@@ -8,6 +8,8 @@ import ru.hse.software.design.commands.ExitCommand;
 import ru.hse.software.design.commands.OuterCommand;
 import ru.hse.software.design.commands.PwdCommand;
 import ru.hse.software.design.commands.WCCommand;
+import ru.hse.software.design.streams.InputStream;
+import ru.hse.software.design.streams.OutputStream;
 
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;

@@ -1,8 +1,8 @@
 package ru.hse.software.design.commands;
 
-import ru.hse.software.design.IOStream;
-import ru.hse.software.design.InputStream;
-import ru.hse.software.design.OutputStream;
+import ru.hse.software.design.streams.IOStream;
+import ru.hse.software.design.streams.InputStream;
+import ru.hse.software.design.streams.OutputStream;
 
 import java.io.IOException;
 import java.util.Optional;

@@ -1,4 +1,6 @@
-package ru.hse.software.design;
+package ru.hse.software.design.streams;
+
+import ru.hse.software.design.streams.IOStream;
 
 import java.io.IOException;
 import java.io.PipedInputStream;
