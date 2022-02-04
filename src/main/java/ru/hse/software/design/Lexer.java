@@ -17,10 +17,10 @@ public class Lexer {
 
     /**
      * Takes the entire string entered by the user as input,
-     * and then divides it into tokens depending on the location of spaces, quotes and '$'
+     * and then divides it into tokens depending on the location of spaces, quotes and '$'.
      *
      * @param command input string
-     * @return list of Token objects
+     * @return List of Token objects
      **/
     public static List<Token> getTokens(String command) {
         List<Token> result = new ArrayList<>();

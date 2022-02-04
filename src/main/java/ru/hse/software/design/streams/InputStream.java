@@ -14,7 +14,6 @@ public class InputStream implements IOStream {
     private final PipedInputStream inputStream;
 
     /**
-     * Constructor.
      * Creates inputStream from the given outputStream and closes that outputStream.
      * Also catches exceptions and throws RuntimeException in case of creation error.
      *
@@ -37,7 +36,7 @@ public class InputStream implements IOStream {
      * Reads bytes from the input stream as string.
      *
      * @return read bytes as string
-     * @throws IOException in case of reading error
+     * @throws IOException thrown in case of reading error
      **/
     public String readAsString() throws IOException {
         return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
@@ -47,7 +46,7 @@ public class InputStream implements IOStream {
      * Reads bytes from the input stream.
      *
      * @return read bytes
-     * @throws IOException in case of reading error
+     * @throws IOException thrown in case of reading error
      **/
     public byte[] readAsBytesArray() throws IOException {
         return inputStream.readAllBytes();
@@ -56,7 +55,7 @@ public class InputStream implements IOStream {
     /**
      * Closes the input stream.
      *
-     * @throws IOException in case of closing error
+     * @throws IOException thrown in case of closing error
      **/
     public void close() throws IOException {
         inputStream.close();

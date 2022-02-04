@@ -19,7 +19,6 @@ public class Executor {
     private final CLI cli;
 
     /**
-     * Constructor.
      * Makes cli same as given value, initializes path
      * with the directories listed in the PATH environment variable.
      *
@@ -34,7 +33,7 @@ public class Executor {
      * Takes a user-supplied string as input and calls the required components in the correct order.
      *
      * @param commandString user-supplied string
-     * @return return code
+     * @return Return code
      * @throws IOException          thrown in case of problems with reading bytes from PipedInputStream
      * @throws InterruptedException thrown in case of thread.join()
      **/

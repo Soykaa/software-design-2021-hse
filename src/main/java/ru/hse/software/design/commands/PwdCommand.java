@@ -16,7 +16,6 @@ public class PwdCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
     /**
-     * Constructor.
      * Makes commandArgs, inputStream, outputStream and errorStream same as given values.
      * Also initialize command with "pwd".
      *

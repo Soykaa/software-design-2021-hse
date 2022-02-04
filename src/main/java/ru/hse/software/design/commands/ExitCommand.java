@@ -13,7 +13,6 @@ public class ExitCommand extends Command {
     private final CLI classToExit;
 
     /**
-     * Constructor.
      * Makes classToExit, inputStream, outputStream and errorStream same as given values.
      * Also initialize command with "exit".
      *

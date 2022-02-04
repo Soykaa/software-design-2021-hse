@@ -9,7 +9,6 @@ public class Token {
     private Type type;
 
     /**
-     * Constructor.
      * Makes token and type same as given values.
      *
      * @param token lexer token
@@ -32,7 +31,7 @@ public class Token {
     /**
      * Returns lexer token type.
      *
-     * @return token type
+     * @return Token type
      **/
     public Type getType() {
         return type;

@@ -35,7 +35,7 @@ public class Environment {
      * Returns the variable value.
      *
      * @param variable variable name
-     * @return variable value as Optional
+     * @return Variable value as Optional
      **/
     public static Optional<String> get(String variable) {
         try {
@@ -52,7 +52,7 @@ public class Environment {
     /**
      * Returns all environment variables with its values.
      *
-     * @return environment variables and its values as string array
+     * @return Environment variables and its values as string array
      **/
     public static String[] getAll() {
         try {

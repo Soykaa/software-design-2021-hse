@@ -12,7 +12,6 @@ public class CommandTokens {
     private final List<String> commandArgs = new ArrayList<>();
 
     /**
-     * Constructor.
      * Makes command and commandArgs same as given values.
      *
      * @param command     command name
@@ -26,7 +25,7 @@ public class CommandTokens {
     /**
      * Returns command name.
      *
-     * @return command name as string
+     * @return Command name as string
      **/
     public String getCommand() {
         return command;
@@ -35,7 +34,7 @@ public class CommandTokens {
     /**
      * Returns command arguments names.
      *
-     * @return command arguments names as list
+     * @return Command arguments names as list
      **/
     public List<String> getCommandArgs() {
         return commandArgs;

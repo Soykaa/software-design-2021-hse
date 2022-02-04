@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Class for separating a list of tokens into commands and arguments.
  * Contains main static method 'preProcess'
- * as well as a helper private method 'getEqualityIndex'
+ * as well as a helper private method 'getEqualityIndex'.
  **/
 public class Parser {
     private static int getEqualityIndex(String str) {
@@ -39,7 +39,7 @@ public class Parser {
      * is 'environment', and the arguments are obtained from the token with the '=' sign.
      *
      * @param tokens list of tokens
-     * @return command tokens
+     * @return Command tokens
      **/
     public static CommandTokens preProcess(List<Token> tokens) {
         String command = tokens.get(0).getToken();

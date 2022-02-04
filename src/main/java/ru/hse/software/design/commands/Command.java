@@ -24,14 +24,14 @@ public abstract class Command {
     /**
      * Executes command.
      *
-     * @return an int, which represents the command outcome
+     * @return An int, which represents the command outcome
      **/
     public abstract int execute();
 
     /**
      * Returns command name.
      *
-     * @return command name as string
+     * @return Command name as string
      **/
     public String getCommand() {
         return command;
@@ -40,7 +40,7 @@ public abstract class Command {
     /**
      * Returns an error message.
      *
-     * @return error message as Optional
+     * @return Error message as Optional
      **/
     public Optional<String> getErrorMessage() {
         return errorMessage;

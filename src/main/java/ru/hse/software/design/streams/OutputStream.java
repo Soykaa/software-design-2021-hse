@@ -1,7 +1,5 @@
 package ru.hse.software.design.streams;
 
-import ru.hse.software.design.streams.IOStream;
-
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -17,7 +15,6 @@ public class OutputStream implements IOStream {
     private final PipedInputStream inputStream;
 
     /**
-     * Constructor.
      * Creates outputStream from the given inputStream and closes that inputStream.
      * Also catches exceptions and throws RuntimeException in case of creation error.
      *
@@ -41,7 +38,7 @@ public class OutputStream implements IOStream {
      * Writes string as bytes into the output stream.
      *
      * @param output string to output
-     * @throws IOException in case of writing error
+     * @throws IOException thrown in case of writing error
      **/
     public void writeAsString(String output) throws IOException {
         outputStream.write(output.getBytes(StandardCharsets.UTF_8));
@@ -51,7 +48,7 @@ public class OutputStream implements IOStream {
      * Writes bytes into the output stream.
      *
      * @param bytes bytes to output
-     * @throws IOException in case of writing error
+     * @throws IOException thrown in case of writing error
      **/
     public void writeAsBytesArray(byte[] bytes) throws IOException {
         outputStream.write(bytes);
@@ -60,7 +57,7 @@ public class OutputStream implements IOStream {
     /**
      * Closes the output stream
      *
-     * @throws IOException in case of closing error
+     * @throws IOException thrown in case of closing error
      **/
     public void close() throws IOException {
         outputStream.close();

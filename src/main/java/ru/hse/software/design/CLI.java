@@ -62,9 +62,9 @@ public class CLI {
     }
 
     /**
-     * Returns the status of the application (is running or not).
+     * Tells the information about the status of the application (is running or not).
      *
-     * @return true if the application is running, false if is not
+     * @return True if the application is running, false if it is not
      **/
     public boolean isRunning() {
         return isRunning;

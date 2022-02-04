@@ -12,7 +12,6 @@ public class Path {
     private final List<String> paths = new ArrayList<>();
 
     /**
-     * Constructor.
      * Makes paths same as given absolute paths to directories.
      *
      * @param absoluteDirectoryPaths absolute paths to directories
@@ -33,7 +32,7 @@ public class Path {
     /**
      * Returns paths to directories.
      *
-     * @return paths as list
+     * @return Paths as list
      **/
     public List<String> getPaths() {
         return new ArrayList<>(paths);
