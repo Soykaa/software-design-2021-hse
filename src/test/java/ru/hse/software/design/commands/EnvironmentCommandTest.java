@@ -81,6 +81,4 @@ public class EnvironmentCommandTest {
             e.printStackTrace();
         }
     }
-
-
 }

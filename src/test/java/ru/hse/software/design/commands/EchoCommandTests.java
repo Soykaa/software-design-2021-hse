@@ -67,6 +67,4 @@ public class EchoCommandTests {
             e.printStackTrace();
         }
     }
-
-
 }
