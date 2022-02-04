@@ -1,5 +1,6 @@
 package ru.hse.software.design;
 
+
 public class Token {
     private final String token;
     private Type type;

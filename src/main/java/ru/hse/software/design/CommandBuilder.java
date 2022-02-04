@@ -12,8 +12,21 @@ import ru.hse.software.design.commands.WCCommand;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
-
+/**
+ * Class for converting a passed CommandToken to object of type Command.
+ * Contains a static method that converts command names to their corresponding class objects.
+ **/
 public class CommandBuilder {
+    /**
+     * Creates a Command object corresponding to the passed commandToken.
+     *
+     * @param commandToken  command token
+     * @param path          paths to directories containing external programs
+     * @param cli           CLI object
+     * @param commandOutput stream for command output
+     * @param errorOutput   stream for errors
+     * @return Command object
+     **/
     public static Command build(CommandTokens commandToken, Path path, CLI cli,
                                 PipedInputStream commandOutput, PipedInputStream errorOutput) {
         InputStream inputStream = new InputStream(new PipedOutputStream());
