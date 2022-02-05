@@ -17,7 +17,7 @@ public class Lexer {
 
     /**
      * Takes the entire string entered by the user as input,
-     * and then divides it into tokens depending on the location of spaces, quotes and '$'.
+     * and then divides it into tokens depending on the location of spaces, quotes, '$' and '|'.
      *
      * @param command input string
      * @return List of Token objects
@@ -43,8 +43,9 @@ public class Lexer {
                     if (!openedSingleQuotes && !openedDoubleQuotes) {
                         currentQuotesStatus = QuotesStatus.DEFAULT;
                     }
+                    currentToken.append('\'');
                     break;
-                case '\"':
+                case '"':
                     openedDoubleQuotes = !openedDoubleQuotes;
                     if (openedSingleQuotes && !openedDoubleQuotes) {
                         currentQuotesStatus = QuotesStatus.SINGLE_FIRST;
@@ -55,12 +56,25 @@ public class Lexer {
                     if (!openedSingleQuotes && !openedDoubleQuotes) {
                         currentQuotesStatus = QuotesStatus.DEFAULT;
                     }
+                    currentToken.append('"');
                     break;
                 case '$':
                     if (currentQuotesStatus == QuotesStatus.DOUBLE_FIRST || !openedSingleQuotes) {
                         currentTokenType = Type.WEAKLY_PROCESSED;
                     }
                     currentToken.append('$');
+                    break;
+                case '|':
+                    if (!openedDoubleQuotes && !openedSingleQuotes) {
+                        if (currentToken.length() != 0) {
+                            result.add(new Token(currentToken.toString(), currentTokenType));
+                        }
+                        result.add(new Token("|", Type.FULLY_PROCESSED));
+                        currentToken.setLength(0);
+                        currentTokenType = Type.FULLY_PROCESSED;
+                    } else {
+                        currentToken.append(command.charAt(i));
+                    }
                     break;
                 default:
                     if (Character.isWhitespace(command.charAt(i))) {
