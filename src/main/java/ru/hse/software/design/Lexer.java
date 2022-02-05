@@ -43,8 +43,9 @@ public class Lexer {
                     if (!openedSingleQuotes && !openedDoubleQuotes) {
                         currentQuotesStatus = QuotesStatus.DEFAULT;
                     }
+                    currentToken.append('\'');
                     break;
-                case '\"':
+                case '"':
                     openedDoubleQuotes = !openedDoubleQuotes;
                     if (openedSingleQuotes && !openedDoubleQuotes) {
                         currentQuotesStatus = QuotesStatus.SINGLE_FIRST;
@@ -55,6 +56,7 @@ public class Lexer {
                     if (!openedSingleQuotes && !openedDoubleQuotes) {
                         currentQuotesStatus = QuotesStatus.DEFAULT;
                     }
+                    currentToken.append('"');
                     break;
                 case '$':
                     if (currentQuotesStatus == QuotesStatus.DOUBLE_FIRST || !openedSingleQuotes) {

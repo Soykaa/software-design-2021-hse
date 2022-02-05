@@ -5,7 +5,7 @@ package ru.hse.software.design;
  * Contains token and its type as private fields.
  **/
 public class Token {
-    private final String token;
+    private String token;
     private Type type;
 
     /**
@@ -44,6 +44,15 @@ public class Token {
      **/
     public void setType(Type type) {
         this.type = type;
+    }
+
+    /**
+     * Set token same as the given value.
+     *
+     * @param token token itself
+     **/
+    public void setToken(String token) {
+        this.token = token;
     }
 }
 
