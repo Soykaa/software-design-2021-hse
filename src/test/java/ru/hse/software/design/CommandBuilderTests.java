@@ -4,9 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.hse.software.design.commands.*;
-
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -38,9 +35,7 @@ public class CommandBuilderTests {
             new CommandTokens("environment", arguments));
 
         for (CommandTokens token : commandTokens) {
-            PipedInputStream commandOutput = new PipedInputStream();
-            PipedOutputStream commandInput = new PipedOutputStream();
-            Command command = CommandBuilder.build(token, path, cli, commandInput, commandOutput, new PipedInputStream());
+            Command command = CommandBuilder.build(token, path, cli);
             Assertions.assertEquals(commandsClasses.get(token.getCommand()), command.getClass());
         }
     }
@@ -49,9 +44,7 @@ public class CommandBuilderTests {
     public void testOuterCommand() {
         List<String> arguments = Arrays.asList("arg1", "arg2");
         CommandTokens commandTokens = new CommandTokens("new_command", arguments);
-        PipedInputStream commandOutput = new PipedInputStream();
-        PipedOutputStream commandInput = new PipedOutputStream();
-        Command command = CommandBuilder.build(commandTokens, path, cli, commandInput, commandOutput, new PipedInputStream());
+        Command command = CommandBuilder.build(commandTokens, path, cli);
         Assertions.assertEquals(OuterCommand.class, command.getClass());
     }
 }

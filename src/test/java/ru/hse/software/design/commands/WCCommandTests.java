@@ -1,137 +1,89 @@
 package ru.hse.software.design.commands;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
+import ru.hse.software.design.Environment;
 
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.nio.charset.StandardCharsets;
+import java.io.*;
 import java.util.Collections;
 import java.util.List;
 
 public class WCCommandTests {
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final PrintStream originalErr = System.err;
+
+    @BeforeEach
+    public void setUp() {
+        System.setErr(new PrintStream(errContent));
+        Environment.clear();
+    }
+
+    @AfterEach
+    public void restoreStreams() {
+        System.setErr(originalErr);
+    }
+
     @Test
     public void testNotEmptyFile() {
-        PipedInputStream commandOutput = new PipedInputStream();
-        PipedInputStream errorOutput = new PipedInputStream();
-        Command command = new WCCommand(List.of("src/resources/not_empty_file.txt"),
-            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
-        Assertions.assertEquals(0, command.execute());
-        Assertions.assertTrue(command.getErrorMessage().isEmpty());
-        try {
-            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
-            String expectedOutput = "7  40 217";
-            Assertions.assertEquals(expectedOutput, actualOutput);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Command command = new WCCommand(List.of("src/resources/not_empty_file.txt"));
+        Assertions.assertEquals(0, command.execute(""));
+        Assertions.assertTrue(errContent.toString().isEmpty());
+        String actualOutput = command.output;
+        String expectedOutput = "7  40 217";
+        Assertions.assertEquals(expectedOutput, actualOutput);
     }
 
     @Test
     public void testEmptyFile() {
-        PipedInputStream commandOutput = new PipedInputStream();
-        PipedInputStream errorOutput = new PipedInputStream();
-        Command command = new WCCommand(List.of("src/resources/empty_file.txt"),
-            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
-        Assertions.assertEquals(0, command.execute());
-        Assertions.assertTrue(command.getErrorMessage().isEmpty());
-        try {
-            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
-            String expectedOutput = "0  0 0";
-            Assertions.assertEquals(expectedOutput, actualOutput);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Command command = new WCCommand(List.of("src/resources/empty_file.txt"));
+        Assertions.assertEquals(0, command.execute(""));
+        Assertions.assertTrue(errContent.toString().isEmpty());
+        String actualOutput = command.output;
+        String expectedOutput = "0  0 0";
+        Assertions.assertEquals(expectedOutput, actualOutput);
     }
 
     @Test
     public void testMoreArguments() {
-        PipedInputStream commandOutput = new PipedInputStream();
-        PipedInputStream errorOutput = new PipedInputStream();
-        Command command = new WCCommand(List.of("src/resources/not_empty_file.txt", "123"),
-            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
-        Assertions.assertEquals(1, command.execute());
-        String expectedError = "Command wc works with one file or with standard input";
-        Assertions.assertTrue(command.getErrorMessage().isPresent());
-        Assertions.assertEquals(expectedError, command.getErrorMessage().get());
-        try {
-            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
-            String expectedOutput = "";
-            Assertions.assertEquals(expectedOutput, actualOutput);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Command command = new WCCommand(List.of("src/resources/not_empty_file.txt", "123"));
+        Assertions.assertEquals(1, command.execute(""));
+        String expectedError = "Command wc works with one file or with standard input\n";
+        Assertions.assertEquals(expectedError, errContent.toString());
+        String actualOutput = command.output;
+        String expectedOutput = "";
+        Assertions.assertEquals(expectedOutput, actualOutput);
     }
 
     @Test
     public void testNotExistingFile() {
-        PipedInputStream commandOutput = new PipedInputStream();
-        PipedInputStream errorOutput = new PipedInputStream();
-        Command command = new WCCommand(List.of("src/resources/not_existing_file.txt"),
-            new InputStream(new PipedOutputStream()), new OutputStream(commandOutput), new OutputStream(errorOutput));
-        Assertions.assertEquals(1, command.execute());
-        String expectedError = "file src/resources/not_existing_file.txt does not exist";
-        Assertions.assertTrue(command.getErrorMessage().isPresent());
-        Assertions.assertEquals(expectedError, command.getErrorMessage().get());
-        try {
-            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
-            String expectedOutput = "";
-            Assertions.assertEquals(expectedOutput, actualOutput);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Command command = new WCCommand(List.of("src/resources/not_existing_file.txt"));
+        Assertions.assertEquals(1, command.execute(""));
+        String expectedError = "file src/resources/not_existing_file.txt does not exist\n";
+        Assertions.assertEquals(expectedError, errContent.toString());
+        String actualOutput = command.output;
+        String expectedOutput = "";
+        Assertions.assertEquals(expectedOutput, actualOutput);
     }
 
     @Test
     public void testFromInputStream() {
-        PipedInputStream commandOutput = new PipedInputStream();
-        PipedOutputStream commandInput = new PipedOutputStream();
-        PipedInputStream errorOutput = new PipedInputStream();
-        Command command = new WCCommand(Collections.emptyList(),
-            new InputStream(commandInput), new OutputStream(commandOutput), new OutputStream(errorOutput));
-
-        try {
-            byte[] input = "This is test string input".getBytes();
-            commandInput.write(input);
-            commandInput.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Assertions.assertEquals(0, command.execute());
-        Assertions.assertTrue(command.getErrorMessage().isEmpty());
-        try {
-            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
-            String expectedOutput = "1  5 25";
-            Assertions.assertEquals(expectedOutput, actualOutput);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Command command = new WCCommand(Collections.emptyList());
+        Assertions.assertEquals(0, command.execute("This is test string input"));
+        Assertions.assertTrue(errContent.toString().isEmpty());
+        String actualOutput = command.output;
+        String expectedOutput = "1  5 25";
+        Assertions.assertEquals(expectedOutput, actualOutput);
     }
 
     @Test
     public void testFromEmptyInputStream() {
-        PipedInputStream commandOutput = new PipedInputStream();
-        PipedOutputStream commandInput = new PipedOutputStream();
-        PipedInputStream errorOutput = new PipedInputStream();
-        Command command = new WCCommand(Collections.emptyList(),
-            new InputStream(commandInput), new OutputStream(commandOutput), new OutputStream(errorOutput));
-
-        try {
-            commandInput.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Assertions.assertEquals(0, command.execute());
-        Assertions.assertTrue(command.getErrorMessage().isEmpty());
-        try {
-            String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
-            String expectedOutput = "1  0 0";
-            Assertions.assertEquals(expectedOutput, actualOutput);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Command command = new WCCommand(Collections.emptyList());
+        Assertions.assertEquals(0, command.execute(""));
+        Assertions.assertTrue(errContent.toString().isEmpty());
+        String actualOutput = command.output;
+        String expectedOutput = "1  0 0";
+        Assertions.assertEquals(expectedOutput, actualOutput);
     }
 }
