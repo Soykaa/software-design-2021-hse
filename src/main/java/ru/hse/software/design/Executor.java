@@ -39,10 +39,22 @@ public class Executor {
      **/
     public int execute(String commandString) throws IOException, InterruptedException {
         List<Token> tokens = Lexer.getTokens(commandString);
-        CommandTokens commandTokens = Parser.preProcess(tokens);
-        Command command = CommandBuilder.build(commandTokens, path, cli);
-        int returnCode = command.execute("");
-        System.out.println(command.getOutput());
+        List<CommandTokens> commandTokens = Parser.preProcess(tokens);
+        List<Command> commands = CommandBuilder.build(commandTokens, path, cli);
+
+        String prevCommandOutput = "";
+        int returnCode = 0;
+        for (Command command: commands) {
+            returnCode = command.execute(prevCommandOutput);
+            if (command.getCommand().equals("exit")) {
+                return returnCode;
+            }
+            if (returnCode != 0) {
+                return returnCode;
+            }
+            prevCommandOutput = command.getOutput();
+        }
+        System.out.println(prevCommandOutput);
         return returnCode;
     }
 }
