@@ -64,11 +64,16 @@ public class Lexer {
                     break;
                 case '|':
                     if (!openedDoubleQuotes && !openedSingleQuotes) {
-                        result.add(new Token(currentToken.toString(), currentTokenType));
+                        if (currentToken.length() != 0) {
+                            result.add(new Token(currentToken.toString(), currentTokenType));
+                        }
                         result.add(new Token("|", Type.FULLY_PROCESSED));
                         currentToken.setLength(0);
                         currentTokenType = Type.FULLY_PROCESSED;
+                    } else {
+                        currentToken.append(command.charAt(i));
                     }
+                    break;
                 default:
                     if (Character.isWhitespace(command.charAt(i))) {
                         if (!openedDoubleQuotes && !openedSingleQuotes) {
