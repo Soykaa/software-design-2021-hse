@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+/**
+ * Class for handling the necessary substitutions in tokens.
+ * Contains main static method 'preProcess'
+ * and a couple of helper private methods.
+ **/
 public class PreProcessor {
     private static String getFromEnvironment(String variableName) {
         Optional<String> value = Environment.get(variableName);
@@ -57,6 +62,15 @@ public class PreProcessor {
         return token;
     }
 
+    /**
+     * Processes the input sequence of tokens for substitutions.
+     * If the token is FullyProcessed, then nothing happens to it.
+     * If the token is WeaklyProcessed, then this method finds variables,
+     * where the substitution is required and then does it.
+     *
+     * @param tokens input tokens
+     * @return Processed tokens
+     **/
     public static List<Token> preProcess(List<Token> tokens) {
         List<Token> result = new ArrayList<>();
         for (Token token : tokens) {
