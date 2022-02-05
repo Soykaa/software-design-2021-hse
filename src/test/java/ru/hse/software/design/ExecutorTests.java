@@ -39,7 +39,7 @@ public class ExecutorTests {
     @Test
     public void testCommandFailed() throws IOException, InterruptedException {
         assertEquals(1, executor.execute("non-existent-command"));
-        assertEquals("\nFailure while executing command non-existent-command : Command non-existent-command not found\n",
-            outContent.toString());
+        assertEquals("Command non-existent-command not found\n",
+            errContent.toString());
     }
 }
