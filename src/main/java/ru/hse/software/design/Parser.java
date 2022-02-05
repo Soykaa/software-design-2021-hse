@@ -39,7 +39,7 @@ public class Parser {
      * is 'environment', and the arguments are obtained from the token with the '=' sign.
      *
      * @param tokens list of tokens
-     * @return Command tokens
+     * @return command tokens
      **/
     public static CommandTokens preProcess(List<Token> tokens) {
         String command = tokens.get(0).getToken();
