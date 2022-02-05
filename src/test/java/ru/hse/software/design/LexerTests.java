@@ -176,4 +176,34 @@ public class LexerTests {
         Assertions.assertEquals("not| he", tokens.get(0).getToken());
         Assertions.assertEquals("$he", tokens.get(1).getToken());
     }
+
+    @Test
+    public void testTokensWithTwoPipesInARow() {
+        String command = "he || he";
+        List<Token> tokens = Lexer.getTokens(command);
+        Assertions.assertEquals(4, tokens.size());
+        Assertions.assertEquals("FULLY_PROCESSED", tokens.get(0).getType().name());
+        Assertions.assertEquals("FULLY_PROCESSED", tokens.get(1).getType().name());
+        Assertions.assertEquals("FULLY_PROCESSED", tokens.get(2).getType().name());
+        Assertions.assertEquals("FULLY_PROCESSED", tokens.get(3).getType().name());
+        Assertions.assertEquals("he", tokens.get(0).getToken());
+        Assertions.assertEquals("|", tokens.get(1).getToken());
+        Assertions.assertEquals("|", tokens.get(2).getToken());
+        Assertions.assertEquals("he", tokens.get(3).getToken());
+    }
+
+    @Test
+    public void testTokensWithTwoPipesThroughASpaces() {
+        String command = "he |   |   he";
+        List<Token> tokens = Lexer.getTokens(command);
+        Assertions.assertEquals(4, tokens.size());
+        Assertions.assertEquals("FULLY_PROCESSED", tokens.get(0).getType().name());
+        Assertions.assertEquals("FULLY_PROCESSED", tokens.get(1).getType().name());
+        Assertions.assertEquals("FULLY_PROCESSED", tokens.get(2).getType().name());
+        Assertions.assertEquals("FULLY_PROCESSED", tokens.get(3).getType().name());
+        Assertions.assertEquals("he", tokens.get(0).getToken());
+        Assertions.assertEquals("|", tokens.get(1).getToken());
+        Assertions.assertEquals("|", tokens.get(2).getToken());
+        Assertions.assertEquals("he", tokens.get(3).getToken());
+    }
 }
