@@ -72,7 +72,7 @@ public class CatCommand extends Command {
             try (Stream<String> stream = Files.lines(path)) {
                 lines = stream.collect(Collectors.toList());
                 for (String line : lines) {
-                    line += '\n';
+                    line += System.lineSeparator();
                     outputStream.writeAsString(line);
                 }
             } catch (IOException e) {

@@ -6,6 +6,7 @@ import ru.hse.software.design.streams.InputStream;
 import ru.hse.software.design.streams.OutputStream;
 import ru.hse.software.design.Path;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -20,11 +21,11 @@ public class OuterCommandTests {
         PipedInputStream errorOutput = new PipedInputStream();
         PipedOutputStream commandInput = new PipedOutputStream();
         Command command = new OuterCommand("echo", Arrays.asList("hello", "world"),
-            new Path(System.getenv("PATH").split(":")), new InputStream(commandInput),
+            new Path(System.getenv("PATH").split(System.getProperty("path.separator"))), new InputStream(commandInput),
             new OutputStream(commandOutput), new OutputStream(errorOutput));
         commandInput.close();
         command.execute();
-        Assertions.assertEquals("hello world\n", new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8));
+        Assertions.assertEquals("hello world" + System.lineSeparator(), new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8));
     }
 
     @Test

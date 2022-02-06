@@ -25,7 +25,7 @@ public class CatCommandTests {
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {
             String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
-            String expectedOutput = Files.readString(Path.of("src/resources/not_empty_file.txt"), StandardCharsets.UTF_8) + "\n";
+            String expectedOutput = Files.readString(Path.of("src/resources/not_empty_file.txt"), StandardCharsets.UTF_8) + System.lineSeparator();
             Assertions.assertEquals(expectedOutput, actualOutput);
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,7 +96,8 @@ public class CatCommandTests {
             new InputStream(commandInput), new OutputStream(commandOutput), new OutputStream(errorOutput));
 
         try {
-            byte[] input = "This is test string input.\nI love testing.\nI love java".getBytes();
+            byte[] input = ("This is test string input" + System.lineSeparator() + "I love testing." +
+                System.lineSeparator() + "I love java").getBytes();
             commandInput.write(input);
             commandInput.close();
         } catch (IOException e) {
@@ -107,7 +108,8 @@ public class CatCommandTests {
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {
             String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
-            String expectedOutput = "This is test string input.\nI love testing.\nI love java";
+            String expectedOutput =  ("This is test string input" + System.lineSeparator() + "I love testing." +
+                System.lineSeparator() + "I love java");
             Assertions.assertEquals(expectedOutput, actualOutput);
         } catch (IOException e) {
             e.printStackTrace();

@@ -21,7 +21,7 @@ public abstract class Command {
     /**
      * Executes command.
      *
-     * @return 1 in case of successful outcome of the command, 0 otherwise
+     * @return 0 in case of successful outcome of the command, 1 otherwise
      **/
     public abstract int execute();
 
