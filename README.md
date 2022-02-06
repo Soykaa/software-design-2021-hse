@@ -5,7 +5,7 @@
 ### Документация
 
 Документация
-находится [по ссылке](https://github.com/Soykaa/software-design-2022-hse/blob/HW01/hw01/documentationCLI.md).
+находится [по ссылке](https://github.com/Soykaa/software-design-2022-hse/blob/main/hw01/documentationCLI.md).
 
 ### Тестирование и запуск
 
