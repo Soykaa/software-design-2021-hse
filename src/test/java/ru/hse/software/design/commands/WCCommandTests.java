@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class WCCommandTests {
         Assertions.assertTrue(command.getErrorMessage().isEmpty());
         try {
             String actualOutput = new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8);
-            String expectedOutput = "7  40 217";
+            String expectedOutput = "7  40 " + Files.size(Paths.get("src/resources/not_empty_file.txt"));
             Assertions.assertEquals(expectedOutput, actualOutput);
         } catch (IOException e) {
             e.printStackTrace();
