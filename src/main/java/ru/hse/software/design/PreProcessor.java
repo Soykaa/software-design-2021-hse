@@ -19,45 +19,43 @@ public class PreProcessor {
         return value.get();
     }
 
-    private static Token processToken(Token token) {
-        StringBuilder processedToken = new StringBuilder();
+    private static Token preProcessToken(Token token) {
+        StringBuilder preProcessedToken = new StringBuilder();
         StringBuilder variableName = new StringBuilder();
-        boolean nameStarted = false;
+        boolean variableNameStarted = false;
         for (int i = 0; i < token.getToken().length(); i++) {
-            switch (token.getToken().charAt(i)) {
-                case '$':
-                    if (nameStarted) {
-                        String value = getFromEnvironment(variableName.toString());
-                        processedToken.append(value);
-                        variableName.setLength(0);
-                    }
-                    nameStarted = true;
-                    break;
-                case '|':
-                case '"':
-                case ' ':
-                case '\'':
-                    if (nameStarted) {
-                        String value = getFromEnvironment(variableName.toString());
-                        processedToken.append(value);
-                        nameStarted = false;
-                        variableName.setLength(0);
-                    }
-                    processedToken.append(token.getToken().charAt(i));
-                    break;
-                default:
-                    if (nameStarted) {
-                        variableName.append(token.getToken().charAt(i));
-                    } else {
-                        processedToken.append(token.getToken().charAt(i));
-                    }
-                    break;
+            char currentSymbol = token.getToken().charAt(i);
+            if (currentSymbol == '$') {
+                if (variableNameStarted) {
+                    String value = getFromEnvironment(variableName.toString());
+                    preProcessedToken.append(value);
+                    variableName.setLength(0);
+                }
+                variableNameStarted = true;
+                continue;
+            }
+            if (currentSymbol == '|' || currentSymbol == '"' || currentSymbol == ' ' || currentSymbol == '\'') {
+                if (variableNameStarted) {
+                    String value = getFromEnvironment(variableName.toString());
+                    preProcessedToken.append(value);
+                    variableNameStarted = false;
+                    variableName.setLength(0);
+                }
+                if (currentSymbol != '"' && currentSymbol != '\'') {
+                    preProcessedToken.append(currentSymbol);
+                }
+                continue;
+            }
+            if (variableNameStarted) {
+                variableName.append(currentSymbol);
+            } else {
+                preProcessedToken.append(currentSymbol);
             }
         }
-        if (nameStarted) {
-            processedToken.append(getFromEnvironment(variableName.toString()));
+        if (variableNameStarted) {
+            preProcessedToken.append(getFromEnvironment(variableName.toString()));
         }
-        token.setToken(processedToken.toString());
+        token.setToken(preProcessedToken.toString());
         token.setType(Type.FULLY_PROCESSED);
         return token;
     }
@@ -77,7 +75,7 @@ public class PreProcessor {
             if (token.getType() == Type.FULLY_PROCESSED) {
                 result.add(token);
             } else {
-                result.add(processToken(token));
+                result.add(preProcessToken(token));
             }
         }
         return result;
