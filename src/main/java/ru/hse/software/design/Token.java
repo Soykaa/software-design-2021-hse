@@ -22,7 +22,7 @@ public class Token {
     /**
      * Returns lexer token itself.
      *
-     * @return token as string
+     * @return Token as string
      **/
     public String getToken() {
         return token;

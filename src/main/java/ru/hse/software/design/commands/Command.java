@@ -1,12 +1,7 @@
 package ru.hse.software.design.commands;
 
-import ru.hse.software.design.streams.IOStream;
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
-
-import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Optional;
+
 
 /**
  * Abstract class for executing commands.
@@ -22,6 +17,7 @@ public abstract class Command {
 
     /**
      * Executes command.
+     *
      * @param input input stream
      * @return An int, which represents the command outcome
      **/

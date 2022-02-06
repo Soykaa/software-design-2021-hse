@@ -1,8 +1,5 @@
 package ru.hse.software.design.commands;
 
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,7 +21,7 @@ public class CatCommand extends Command {
      * Makes commandArgs, inputStream, outputStream and errorStream same as given values.
      * Also initialize command with "cat".
      *
-     * @param commandArgs  command arguments
+     * @param commandArgs command arguments
      **/
     public CatCommand(List<String> commandArgs) {
         this.commandArgs.addAll(commandArgs);

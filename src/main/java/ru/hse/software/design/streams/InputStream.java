@@ -35,7 +35,7 @@ public class InputStream implements IOStream {
     /**
      * Reads bytes from the input stream as string.
      *
-     * @return read bytes as string
+     * @return Read bytes as string
      * @throws IOException thrown in case of reading error
      **/
     public String readAsString() throws IOException {
@@ -45,7 +45,7 @@ public class InputStream implements IOStream {
     /**
      * Reads bytes from the input stream.
      *
-     * @return read bytes
+     * @return Read bytes
      * @throws IOException thrown in case of reading error
      **/
     public byte[] readAsBytesArray() throws IOException {

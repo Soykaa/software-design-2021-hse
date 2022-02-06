@@ -1,10 +1,7 @@
 package ru.hse.software.design.commands;
 
 import ru.hse.software.design.Environment;
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +17,7 @@ public class EnvironmentCommand extends Command {
      * Makes commandArgs, inputStream, outputStream and errorStream same as given values.
      * Also initialize command with "environment".
      *
-     * @param commandArgs  command arguments
+     * @param commandArgs command arguments
      **/
     public EnvironmentCommand(List<String> commandArgs) {
         this.commandArgs.addAll(commandArgs);
@@ -35,7 +32,7 @@ public class EnvironmentCommand extends Command {
      **/
     @Override
     public int execute(String input) {
-        if (commandArgs.size() != 2){
+        if (commandArgs.size() != 2) {
             errorStream.println("Command environment needs 2 arguments");
             return 1;
         }

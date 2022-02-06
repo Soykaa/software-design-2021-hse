@@ -1,8 +1,5 @@
 package ru.hse.software.design.commands;
 
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -25,7 +22,7 @@ public class WCCommand extends Command {
      * Makes commandArgs, inputStream, outputStream and errorStream same as given values.
      * Also initialize command with "wc".
      *
-     * @param commandArgs  command arguments
+     * @param commandArgs command arguments
      **/
     public WCCommand(List<String> commandArgs) {
         this.commandArgs.addAll(commandArgs);

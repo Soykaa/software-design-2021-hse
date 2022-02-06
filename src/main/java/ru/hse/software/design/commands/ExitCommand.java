@@ -16,7 +16,7 @@ public class ExitCommand extends Command {
      * Makes classToExit, inputStream, outputStream and errorStream same as given values.
      * Also initialize command with "exit".
      *
-     * @param classToExit  class where to call 'exit' method
+     * @param classToExit class where to call 'exit' method
      **/
     public ExitCommand(CLI classToExit) {
         this.classToExit = classToExit;

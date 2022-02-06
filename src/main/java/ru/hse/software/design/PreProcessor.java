@@ -69,7 +69,7 @@ public class PreProcessor {
      * where the substitution is required and then does it.
      *
      * @param tokens input tokens
-     * @return Processed tokens
+     * @return Preprocessed tokens
      **/
     public static List<Token> preProcess(List<Token> tokens) {
         List<Token> result = new ArrayList<>();

@@ -1,8 +1,6 @@
 package ru.hse.software.design.commands;
 
 import ru.hse.software.design.Environment;
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
 import ru.hse.software.design.Path;
 
 import java.io.File;
@@ -10,7 +8,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Class which represents outer command, extends Command.
@@ -25,9 +22,9 @@ public class OuterCommand extends Command {
      * Makes commandWithArguments, path, inputStream, outputStream and errorStream same as given values.
      * Also initialize command with the given command name.
      *
-     * @param commandName  command name
-     * @param commandArgs  command arguments
-     * @param path         path to command
+     * @param commandName command name
+     * @param commandArgs command arguments
+     * @param path        path to command
      **/
     public OuterCommand(String commandName, List<String> commandArgs, Path path) {
         this.commandWithArguments.add(commandName);
