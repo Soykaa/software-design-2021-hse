@@ -5,14 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class, which stores paths to directories containing external programs.
- * Contains list of paths as private field.
+ * Class which manages paths to directories containing external programs.
  **/
 public class Path {
     private final List<String> paths = new ArrayList<>();
 
     /**
-     * Makes paths same as given absolute paths to directories.
+     * Create Path object with given paths to directories.
      *
      * @param absoluteDirectoryPaths absolute paths to directories
      **/

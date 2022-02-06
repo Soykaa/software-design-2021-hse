@@ -9,18 +9,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
- * Class for calling the main components of the application.
- * Contains paths to directories containing external programs and
- * CLI object as a private fields.
- * Also contains main method 'execute', which throws IOException.
+ * Class for executing user commands.
  **/
 public class Executor {
     private final Path path;
     private final CLI cli;
 
     /**
-     * Makes cli same as given value, initializes path
-     * with the directories listed in the PATH environment variable.
+     * Creates new Executor instance with given CLI object.
      *
      * @param cli CLI object
      **/
@@ -33,7 +29,7 @@ public class Executor {
      * Takes a user-supplied string as input and calls the required components in the correct order.
      *
      * @param commandString user-supplied string
-     * @return Return code
+     * @return 0 if execution was successful or error code otherwise
      * @throws IOException          thrown in case of problems with reading bytes from PipedInputStream
      * @throws InterruptedException thrown in case of thread.join()
      **/

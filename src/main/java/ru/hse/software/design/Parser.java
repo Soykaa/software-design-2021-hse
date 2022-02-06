@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class for separating a list of tokens into commands and arguments.
- * Contains main static method 'preProcess'
- * as well as a helper private method 'getEqualityIndex'.
+ * Parses a list of tokens into a command and its arguments.
  **/
 public class Parser {
     private static int getEqualityIndex(String str) {
@@ -33,13 +31,12 @@ public class Parser {
     }
 
     /**
-     * Receives a list of tokens as input, finds commands among them,
-     * and, depending on this, divides into CommandTokens.
-     * If the command name contains the '=' sign, then the name of the command
-     * is 'environment', and the arguments are obtained from the token with the '=' sign.
+     * Accepts a list of tokens as input. First token is treated as a command name with the rest being its arguments.
+     * If first token contains the '=' sign, then a reserved key-word 'environment' is used as a command name with
+     * arguments being words before and after '=' as well as other tokens.
      *
      * @param tokens list of tokens
-     * @return command tokens
+     * @return parsed CommandTokens
      **/
     public static CommandTokens preProcess(List<Token> tokens) {
         String command = tokens.get(0).getToken();

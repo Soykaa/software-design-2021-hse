@@ -3,18 +3,15 @@ package ru.hse.software.design;
 import java.util.Scanner;
 
 /**
- * Class that the user is interacting with.
- * Internally, it stores the 'isRunning' flag as a private field,
- * which is set to true when the application is running and false when it terminates.
- * It has two main public methods 'start' and 'exit'
- * and private method 'createExecutor' responsible for creating an object of the Executor class.
+ * Contains custom realization of command-line interpreter for bash commands.
+ * Details about accepted commands are described in README.md.
  */
 
 public class CLI {
     private boolean isRunning = false;
 
     /**
-     * Creates CLI instance and calls its method 'start'.
+     * Starts CLI interpreter. Input arguments can be passed, but they are not required and won't be used.
      *
      * @param args input args
      **/
@@ -29,9 +26,8 @@ public class CLI {
     }
 
     /**
-     * Launches the application.
-     * Accepts user commands and executes them.
-     * In case of an error displays the appropriate message.
+     * Launches the application and waits for user input in a blocking mode.
+     * Each command is accepted as a single line.
      **/
     public void start() {
         isRunning = true;

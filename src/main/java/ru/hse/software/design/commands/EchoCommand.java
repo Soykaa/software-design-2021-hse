@@ -8,16 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class which represents 'echo' command, extends Command.
- * Contains list of command arguments as a private field.
- * Also overrides 'execute' method.
+ * Writes provided arguments separated by single blank (' ') characters and followed by a newline (`\n') character
+ * to the standard output.
  **/
 public class EchoCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
     /**
-     * Makes commandArgs, inputStream, outputStream and errorStream same as given values.
-     * Also initialize command with "echo".
+     * Created echo command with given arguments.
      *
      * @param commandArgs  command arguments
      * @param inputStream  input stream
@@ -35,7 +33,6 @@ public class EchoCommand extends Command {
 
     /**
      * Executes 'echo' command with the given arguments.
-     * In case of error writes an appropriate message to the error stream.
      *
      * @return 1 in case of successful outcome of the command, 0 otherwise
      **/
