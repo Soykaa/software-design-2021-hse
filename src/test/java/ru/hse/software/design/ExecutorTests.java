@@ -31,39 +31,46 @@ public class ExecutorTests {
     }
 
     @Test
-    public void testCommandExecutedOk() throws IOException, InterruptedException {
+    public void testCommandExecutedOk() {
         assertEquals(0, executor.execute("echo 42"));
         assertEquals("42\n", outContent.toString());
     }
 
     @Test
-    public void testCommandFailed() throws IOException, InterruptedException {
+    public void testCommandFailed() {
         assertEquals(1, executor.execute("non-existent-command"));
         assertEquals("Command non-existent-command not found\n",
             errContent.toString());
     }
 
     @Test
-    public void testEchoCatExecutedOk() throws IOException, InterruptedException {
+    public void testEchoCatExecutedOk() {
         assertEquals(0, executor.execute("echo 42 | cat"));
         assertEquals("42\n", outContent.toString());
     }
 
     @Test
-    public void testEchoWcExecutedOk() throws IOException, InterruptedException {
+    public void testEchoWcExecutedOk() {
         assertEquals(0, executor.execute("echo 42 | wc"));
         assertEquals("1  1 2\n", outContent.toString());
     }
 
     @Test
-    public void testWcFileEchoOk() throws IOException, InterruptedException {
+    public void testWcFileEchoOk() {
         assertEquals(0, executor.execute("cat src/resources/not_empty_file.txt | echo 42"));
         assertEquals("42\n", outContent.toString());
     }
 
     @Test
-    public void testSeveralPipesOK() throws IOException, InterruptedException {
+    public void testSeveralPipesOK() {
         assertEquals(0, executor.execute("pwd | echo 123 | wc"));
         assertEquals("1  1 3\n", outContent.toString());
+    }
+
+    @Test
+    public void testWrongPipesFailed() {
+        assertEquals(1, executor.execute("echo 123 | | wc"));
+        assertEquals("'|' must be between commands\n",
+            errContent.toString());
     }
 }

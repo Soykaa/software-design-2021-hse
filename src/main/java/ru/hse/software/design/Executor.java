@@ -32,24 +32,28 @@ public class Executor {
      * @return Return code
      **/
     public int execute(String commandString) {
-        List<Token> tokens = Lexer.getTokens(commandString);
-        List<Token> preProcessedTokens = PreProcessor.preProcess(tokens);
-        List<CommandTokens> commandTokens = Parser.preProcess(preProcessedTokens);
-        List<Command> commands = CommandBuilder.build(commandTokens, path, cli);
-
-        String prevCommandOutput = "";
-        int returnCode = 0;
-        for (Command command : commands) {
-            returnCode = command.execute(prevCommandOutput);
-            if (command.getCommand().equals("exit")) {
-                return returnCode;
+        try {
+            List<Token> tokens = Lexer.getTokens(commandString);
+            List<Token> preProcessedTokens = PreProcessor.preProcess(tokens);
+            List<CommandTokens> commandTokens = Parser.preProcess(preProcessedTokens);
+            List<Command> commands = CommandBuilder.build(commandTokens, path, cli);
+            String prevCommandOutput = "";
+            int returnCode = 0;
+            for (Command command : commands) {
+                returnCode = command.execute(prevCommandOutput);
+                if (command.getCommand().equals("exit")) {
+                    return returnCode;
+                }
+                if (returnCode != 0) {
+                    return returnCode;
+                }
+                prevCommandOutput = command.getOutput();
             }
-            if (returnCode != 0) {
-                return returnCode;
-            }
-            prevCommandOutput = command.getOutput();
+            System.out.println(prevCommandOutput);
+            return returnCode;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return 1;
         }
-        System.out.println(prevCommandOutput);
-        return returnCode;
     }
 }

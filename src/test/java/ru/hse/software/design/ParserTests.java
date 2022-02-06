@@ -85,10 +85,7 @@ public class ParserTests {
         Token command1 = new Token("command1", Type.FULLY_PROCESSED);
         Token pipe = new Token("|", Type.FULLY_PROCESSED);
         Token command2 = new Token("command2", Type.FULLY_PROCESSED);
-        List<CommandTokens> commandTokens = Parser.preProcess(Arrays.asList(command1, pipe, pipe, command2));
-        Assertions.assertEquals(0, commandTokens.size());
-        String expectedError = "'|' must be between commands\n";
-        Assertions.assertEquals(expectedError, errContent.toString());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Parser.preProcess(Arrays.asList(command1, pipe, pipe, command2)));
     }
 
     @Test
@@ -96,20 +93,14 @@ public class ParserTests {
         Token command1 = new Token("command1", Type.FULLY_PROCESSED);
         Token pipe = new Token("|", Type.FULLY_PROCESSED);
         Token command2 = new Token("command2", Type.FULLY_PROCESSED);
-        List<CommandTokens> commandTokens = Parser.preProcess(Arrays.asList(pipe, command1, pipe, command2));
-        Assertions.assertEquals(0, commandTokens.size());
-        String expectedError = "'|' must be between commands\n";
-        Assertions.assertEquals(expectedError, errContent.toString());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Parser.preProcess(Arrays.asList(pipe, command1, pipe, command2)));
     }
 
     @Test
     public void testPipeInTheEnd() {
         Token command1 = new Token("command1", Type.FULLY_PROCESSED);
         Token pipe = new Token("|", Type.FULLY_PROCESSED);
-        List<CommandTokens> commandTokens = Parser.preProcess(Arrays.asList(command1, pipe));
-        Assertions.assertEquals(0, commandTokens.size());
-        String expectedError = "'|' must be between commands\n";
-        Assertions.assertEquals(expectedError, errContent.toString());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Parser.preProcess(Arrays.asList(command1, pipe)));
     }
 
     @Test

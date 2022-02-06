@@ -1,5 +1,6 @@
 package ru.hse.software.design;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,32 +11,9 @@ import java.util.List;
  * as well as a couple of helper private methods.
  **/
 public class Parser {
-    private static int getEqualityIndex(String str) {
-        boolean insideSingleQuotes = false;
-        boolean insideDoubleQuotes = false;
-        for (int i = 0; i < str.length(); i++) {
-            char curChar = str.charAt(i);
-            if (curChar == '\'') {
-                insideSingleQuotes = !insideSingleQuotes;
-                continue;
-            }
-            if (curChar == '\"') {
-                insideDoubleQuotes = !insideDoubleQuotes;
-                continue;
-            }
-            if (insideDoubleQuotes | insideSingleQuotes) {
-                continue;
-            }
-            if (curChar == '=') {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     private static String checkEquality(String command, List<String> commandArguments) {
         if (command.contains("=")) {
-            int eqIndex = getEqualityIndex(command);
+            int eqIndex = command.indexOf('=');
             if (eqIndex > 0) {
                 commandArguments.add(command.substring(0, eqIndex));
                 commandArguments.add(command.substring(eqIndex + 1));
@@ -51,8 +29,7 @@ public class Parser {
         String command = tokens.get(0).getToken();
         String lastToken = tokens.get(tokens.size() - 1).getToken();
         if (command.equals("|") | lastToken.equals("|")) {
-            System.err.println("'|' must be between commands");
-            return Collections.emptyList();
+            throw new IllegalArgumentException("'|' must be between commands");
         }
         command = checkEquality(command, currentCommandArguments);
 
@@ -61,8 +38,7 @@ public class Parser {
             Token token = tokens.get(i);
             if (!hasCurrentCommand) {
                 if (token.getToken().equals("|")) {
-                    System.err.println("'|' must be between commands");
-                    return Collections.emptyList();
+                    throw new IllegalArgumentException("'|' must be between commands");
                 }
                 command = checkEquality(token.getToken(), currentCommandArguments);
                 hasCurrentCommand = true;
