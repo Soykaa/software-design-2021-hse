@@ -8,16 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class which represents 'pwd' command, extends Command.
- * Contains list of command arguments as a private field.
- * Also overrides 'execute' method.
+ * Writes the absolute pathname of the current working directory to the standard output.
  **/
 public class PwdCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
     /**
-     * Makes commandArgs, inputStream, outputStream and errorStream same as given values.
-     * Also initialize command with "pwd".
+     * Creates pwd command with given arguments.
      *
      * @param commandArgs  command arguments
      * @param inputStream  input stream
@@ -35,7 +32,6 @@ public class PwdCommand extends Command {
 
     /**
      * Executes 'pwd' command with the given arguments.
-     * In case of error writes an appropriate message to the error stream.
      *
      * @return 1 in case of successful outcome of the command, 0 otherwise
      **/

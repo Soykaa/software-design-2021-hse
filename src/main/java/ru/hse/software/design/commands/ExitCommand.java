@@ -5,16 +5,13 @@ import ru.hse.software.design.streams.InputStream;
 import ru.hse.software.design.streams.OutputStream;
 
 /**
- * Class which represents 'exit' command, extends Command.
- * Contains CLI class object as the object in which the exit method is called.
- * Also overrides 'execute' method.
+ * Exits command-line interpreter.
  **/
 public class ExitCommand extends Command {
     private final CLI classToExit;
 
     /**
-     * Makes classToExit, inputStream, outputStream and errorStream same as given values.
-     * Also initialize command with "exit".
+     * Created exit command with given arguments.
      *
      * @param classToExit  class where to call 'exit' method
      * @param inputStream  input stream

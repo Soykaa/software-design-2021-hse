@@ -10,9 +10,6 @@ import java.util.Optional;
 /**
  * Abstract class for executing commands.
  * The class of each command will be inherited from it.
- * Contains command name, error message and input, output and error streams as a protected fields.
- * Also contains main abstract method 'execute' and several public, protected and private methods
- * as the helping ones.
  **/
 public abstract class Command {
     protected String command;
@@ -24,7 +21,7 @@ public abstract class Command {
     /**
      * Executes command.
      *
-     * @return An int, which represents the command outcome
+     * @return 1 in case of successful outcome of the command, 0 otherwise
      **/
     public abstract int execute();
 

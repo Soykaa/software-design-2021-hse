@@ -13,18 +13,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Class which represents 'cat' command, extends Command.
- * Contains list of command arguments as a private field.
- * Also overrides 'execute' method.
+ * Reads files providing as arguments sequentially, writing them to the standard
+ * output. The file operands are processed in command-line order. If arguments are absent,
+ * cat reads from the standard input.
  **/
 public class CatCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
     /**
-     * Makes commandArgs, inputStream, outputStream and errorStream same as given values.
-     * Also initialize command with "cat".
+     * Creates cat command with given arguments.
      *
-     * @param commandArgs  command arguments
+     * @param commandArgs  files relative paths
      * @param inputStream  input stream
      * @param outputStream output stream
      * @param errorStream  error stream
@@ -40,7 +39,6 @@ public class CatCommand extends Command {
 
     /**
      * Executes 'cat' command with the given arguments.
-     * In case of error writes an appropriate message to the error stream.
      *
      * @return 1 in case of successful outcome of the command, 0 otherwise
      **/

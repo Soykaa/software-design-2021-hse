@@ -11,21 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class which represents outer command, extends Command.
- * Contains command with its arguments as a list and path to command as a private fields.
- * Also overrides 'execute' method.
+ * Executes outer command in a separate process.
  **/
 public class OuterCommand extends Command {
     private final List<String> commandWithArguments = new ArrayList<>();
     private final Path path;
 
     /**
-     * Makes commandWithArguments, path, inputStream, outputStream and errorStream same as given values.
-     * Also initialize command with the given command name.
+     * Creates outer command with given arguments.
      *
      * @param commandName  command name
      * @param commandArgs  command arguments
-     * @param path         path to command
+     * @param path         paths to directories where search for given outer command should happen
      * @param inputStream  input stream
      * @param outputStream output stream
      * @param errorStream  error stream
@@ -43,7 +40,6 @@ public class OuterCommand extends Command {
 
     /**
      * Executes the given outer command with the given arguments.
-     * In case of error writes an appropriate message to the error stream.
      *
      * @return 1 in case of successful outcome of the command, 0 otherwise
      **/
