@@ -1,5 +1,6 @@
 package ru.hse.software.design;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,7 +73,7 @@ public class Parser {
         return new CommandTokens(command, commandArgs);
     }
 
-    public static List<CommandTokens> preProcess(List<Token> tokens) throws IOException {
+    public static List<CommandTokens> preProcess(List<Token> tokens) {
         List<CommandTokens> commandTokens = new ArrayList<>();
         List<String> currentCommandArguments = new ArrayList<>();
         String command = tokens.get(0).getToken();
@@ -107,26 +108,5 @@ public class Parser {
         }
         commandTokens.add(new CommandTokens(command, currentCommandArguments));
         return commandTokens;
-    }
-
-    public static void main(String[] args) {
-        Token a = new Token("a=123", Type.FULLY_PROCESSED);
-        Token b = new Token("b", Type.FULLY_PROCESSED);
-        Token r = new Token("r", Type.FULLY_PROCESSED);
-        Token c = new Token("|", Type.FULLY_PROCESSED);
-        Token d = new Token("d", Type.FULLY_PROCESSED);
-        Token e = new Token("|", Type.FULLY_PROCESSED);
-        Token f = new Token("r=jde", Type.FULLY_PROCESSED);
-        Token g = new Token("e", Type.FULLY_PROCESSED);
-
-        List<Token> tokens = Arrays.asList(a, b, r, c, d, e, f, g);
-        try {
-            List<CommandTokens> ct = Parser.preProcess(tokens);
-            for (CommandTokens t : ct) {
-                System.out.println(t.getCommand() + " " + t.getCommandArgs().size());
-            }
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
     }
 }

@@ -46,7 +46,7 @@ public class CommandBuilder {
     /**
      * Creates a Command object corresponding to the passed commandToken.
      *
-     * @param commandToken  command token
+     * @param commandTokens  list of command tokens
      * @param path          paths to directories containing external programs
      * @param cli           CLI object
      * @return Command object

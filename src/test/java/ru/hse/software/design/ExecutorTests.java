@@ -42,4 +42,28 @@ public class ExecutorTests {
         assertEquals("Command non-existent-command not found\n",
             errContent.toString());
     }
+
+    @Test
+    public void testEchoCatExecutedOk() throws IOException, InterruptedException {
+        assertEquals(0, executor.execute("echo 42 | cat"));
+        assertEquals("42\n", outContent.toString());
+    }
+
+    @Test
+    public void testEchoWcExecutedOk() throws IOException, InterruptedException {
+        assertEquals(0, executor.execute("echo 42 | wc"));
+        assertEquals("1  1 2\n", outContent.toString());
+    }
+
+    @Test
+    public void testWcFileEchoOk() throws IOException, InterruptedException {
+        assertEquals(0, executor.execute("cat src/resources/not_empty_file.txt | echo 42"));
+        assertEquals("42\n", outContent.toString());
+    }
+
+    @Test
+    public void testSeveralPipesOK() throws IOException, InterruptedException {
+        assertEquals(0, executor.execute("pwd | echo 123 | wc"));
+        assertEquals("1  1 3\n", outContent.toString());
+    }
 }
