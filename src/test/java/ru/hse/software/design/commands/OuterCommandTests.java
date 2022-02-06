@@ -4,28 +4,30 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.hse.software.design.streams.InputStream;
 import ru.hse.software.design.streams.OutputStream;
-import ru.hse.software.design.Path;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class OuterCommandTests {
     @Test
-    public void testManyArguments() throws IOException {
+    public void testArguments() throws IOException {
         PipedInputStream commandOutput = new PipedInputStream();
         PipedInputStream errorOutput = new PipedInputStream();
         PipedOutputStream commandInput = new PipedOutputStream();
-        Command command = new OuterCommand("echo", Arrays.asList("hello", "world"),
-            new Path(System.getenv("PATH").split(System.getProperty("path.separator"))), new InputStream(commandInput),
+        Command command = new CatCommand(List.of("src/resources/not_empty_file.txt"), new InputStream(commandInput),
             new OutputStream(commandOutput), new OutputStream(errorOutput));
+        String expectedOutput = Files.readString(Path.of("src/resources/not_empty_file.txt"), StandardCharsets.UTF_8) + System.lineSeparator();
         commandInput.close();
         command.execute();
-        Assertions.assertEquals("hello world" + System.lineSeparator(), new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8));
+        Assertions.assertEquals( expectedOutput, new String(commandOutput.readAllBytes(), StandardCharsets.UTF_8));
     }
 
     @Test
