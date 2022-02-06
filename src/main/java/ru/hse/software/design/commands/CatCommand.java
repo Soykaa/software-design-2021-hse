@@ -18,7 +18,7 @@ public class CatCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
     /**
-     * Makes commandArgs, inputStream, outputStream and errorStream same as given values.
+     * Makes commandArgs same as given value.
      * Also initialize command with "cat".
      *
      * @param commandArgs command arguments

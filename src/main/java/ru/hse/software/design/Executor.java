@@ -2,17 +2,13 @@ package ru.hse.software.design;
 
 import ru.hse.software.design.commands.Command;
 
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
  * Class for calling the main components of the application.
  * Contains paths to directories containing external programs and
  * CLI object as a private fields.
- * Also contains main method 'execute', which throws IOException.
+ * Also contains main method 'execute'.
  **/
 public class Executor {
     private final Path path;
@@ -34,10 +30,8 @@ public class Executor {
      *
      * @param commandString user-supplied string
      * @return Return code
-     * @throws IOException          thrown in case of problems with reading bytes from PipedInputStream
-     * @throws InterruptedException thrown in case of thread.join()
      **/
-    public int execute(String commandString) throws IOException, InterruptedException {
+    public int execute(String commandString) {
         List<Token> tokens = Lexer.getTokens(commandString);
         List<Token> preProcessedTokens = PreProcessor.preProcess(tokens);
         List<CommandTokens> commandTokens = Parser.preProcess(preProcessedTokens);
@@ -45,7 +39,7 @@ public class Executor {
 
         String prevCommandOutput = "";
         int returnCode = 0;
-        for (Command command: commands) {
+        for (Command command : commands) {
             returnCode = command.execute(prevCommandOutput);
             if (command.getCommand().equals("exit")) {
                 return returnCode;

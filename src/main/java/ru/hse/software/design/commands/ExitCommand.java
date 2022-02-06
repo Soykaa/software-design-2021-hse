@@ -1,8 +1,6 @@
 package ru.hse.software.design.commands;
 
 import ru.hse.software.design.CLI;
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
 
 /**
  * Class which represents 'exit' command, extends Command.
@@ -13,7 +11,7 @@ public class ExitCommand extends Command {
     private final CLI classToExit;
 
     /**
-     * Makes classToExit, inputStream, outputStream and errorStream same as given values.
+     * Makes classToExit same as given value.
      * Also initialize command with "exit".
      *
      * @param classToExit class where to call 'exit' method

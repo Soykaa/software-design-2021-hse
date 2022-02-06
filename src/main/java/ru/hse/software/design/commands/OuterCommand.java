@@ -19,7 +19,7 @@ public class OuterCommand extends Command {
     private final Path path;
 
     /**
-     * Makes commandWithArguments, path, inputStream, outputStream and errorStream same as given values.
+     * Makes commandName, commandArgs, path same as given values.
      * Also initialize command with the given command name.
      *
      * @param commandName command name

@@ -1,15 +1,13 @@
 package ru.hse.software.design;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Class for separating a list of tokens into commands and arguments.
  * Contains main static method 'preProcess'
- * as well as a helper private method 'getEqualityIndex'.
+ * as well as a couple of helper private methods.
  **/
 public class Parser {
     private static int getEqualityIndex(String str) {
@@ -45,32 +43,6 @@ public class Parser {
             }
         }
         return command;
-    }
-
-    /**
-     * Receives a list of tokens as input, finds commands among them,
-     * and, depending on this, divides into CommandTokens.
-     * If the command name contains the '=' sign, then the name of the command
-     * is 'environment', and the arguments are obtained from the token with the '=' sign.
-     *
-     * @param tokens list of tokens
-     * @return Command tokens
-     **/
-    public static CommandTokens preProcess_single(List<Token> tokens) {
-        String command = tokens.get(0).getToken();
-        List<String> commandArgs = new ArrayList<>();
-        if (command.contains("=")) {
-            int eqIndex = getEqualityIndex(command);
-            if (eqIndex > 0) {
-                commandArgs.add(command.substring(0, eqIndex));
-                commandArgs.add(command.substring(eqIndex + 1));
-                command = "environment";
-            }
-        }
-        for (int i = 1; i < tokens.size(); i++) {
-            commandArgs.add(tokens.get(i).getToken());
-        }
-        return new CommandTokens(command, commandArgs);
     }
 
     public static List<CommandTokens> preProcess(List<Token> tokens) {

@@ -18,7 +18,7 @@ public abstract class Command {
     /**
      * Executes command.
      *
-     * @param input input stream
+     * @param input input as string
      * @return An int, which represents the command outcome
      **/
     public abstract int execute(String input);

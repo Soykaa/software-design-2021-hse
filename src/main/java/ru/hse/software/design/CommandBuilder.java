@@ -8,11 +8,7 @@ import ru.hse.software.design.commands.ExitCommand;
 import ru.hse.software.design.commands.OuterCommand;
 import ru.hse.software.design.commands.PwdCommand;
 import ru.hse.software.design.commands.WCCommand;
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
 
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,14 +42,14 @@ public class CommandBuilder {
     /**
      * Creates a Command object corresponding to the passed commandToken.
      *
-     * @param commandTokens  list of command tokens
+     * @param commandTokens list of command tokens
      * @param path          paths to directories containing external programs
      * @param cli           CLI object
      * @return Command object
      **/
     public static List<Command> build(List<CommandTokens> commandTokens, Path path, CLI cli) {
         List<Command> commands = new ArrayList<>();
-        for (CommandTokens commandToken: commandTokens) {
+        for (CommandTokens commandToken : commandTokens) {
             commands.add(makeCommands(commandToken, path, cli));
         }
         return commands;
