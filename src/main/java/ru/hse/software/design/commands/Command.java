@@ -5,6 +5,7 @@ import ru.hse.software.design.streams.InputStream;
 import ru.hse.software.design.streams.OutputStream;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Optional;
 
 /**
@@ -16,17 +17,15 @@ import java.util.Optional;
  **/
 public abstract class Command {
     protected String command;
-    protected Optional<String> errorMessage = Optional.empty();
-    protected InputStream inputStream;
-    protected OutputStream outputStream;
-    protected OutputStream errorStream;
+    protected PrintStream errorStream = System.err;
+    protected String output = "";
 
     /**
      * Executes command.
-     *
+     * @param input input stream
      * @return An int, which represents the command outcome
      **/
-    public abstract int execute();
+    public abstract int execute(String input);
 
     /**
      * Returns command name.
@@ -37,29 +36,8 @@ public abstract class Command {
         return command;
     }
 
-    /**
-     * Returns an error message.
-     *
-     * @return Error message as Optional
-     **/
-    public Optional<String> getErrorMessage() {
-        return errorMessage;
+    public String getOutput() {
+        return output;
     }
 
-    private void closeStream(IOStream stream) {
-        try {
-            stream.close();
-        } catch (IOException e) {
-            appendErrorMessage(e.getMessage());
-        }
-    }
-
-    protected void closeInputAndOutputStreams() {
-        closeStream(inputStream);
-        closeStream(outputStream);
-    }
-
-    protected void appendErrorMessage(String e) {
-        errorMessage = errorMessage.map(s -> e + ", " + s).or(() -> Optional.of(e));
-    }
 }

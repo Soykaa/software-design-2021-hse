@@ -4,9 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.hse.software.design.commands.*;
-
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -37,21 +34,18 @@ public class CommandBuilderTests {
             new CommandTokens("pwd", arguments),
             new CommandTokens("environment", arguments));
 
-        for (CommandTokens token : commandTokens) {
-            PipedInputStream commandOutput = new PipedInputStream();
-            PipedOutputStream commandInput = new PipedOutputStream();
-            Command command = CommandBuilder.build(token, path, cli, commandInput, commandOutput, new PipedInputStream());
-            Assertions.assertEquals(commandsClasses.get(token.getCommand()), command.getClass());
+        List<Command> commands = CommandBuilder.build(commandTokens, path, cli);
+        Assertions.assertEquals(commands.size(), commandTokens.size());
+        for (int i = 0; i < commands.size(); i++) {
+            Assertions.assertEquals(commandsClasses.get(commandTokens.get(i).getCommand()), commands.get(i).getClass());
         }
     }
 
     @Test
     public void testOuterCommand() {
         List<String> arguments = Arrays.asList("arg1", "arg2");
-        CommandTokens commandTokens = new CommandTokens("new_command", arguments);
-        PipedInputStream commandOutput = new PipedInputStream();
-        PipedOutputStream commandInput = new PipedOutputStream();
-        Command command = CommandBuilder.build(commandTokens, path, cli, commandInput, commandOutput, new PipedInputStream());
-        Assertions.assertEquals(OuterCommand.class, command.getClass());
+        List<CommandTokens> commandTokens = List.of(new CommandTokens("new_command", arguments));
+        List<Command> commands = CommandBuilder.build(commandTokens, path, cli);
+        Assertions.assertEquals(OuterCommand.class, commands.get(0).getClass());
     }
 }
