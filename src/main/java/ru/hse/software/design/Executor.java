@@ -21,7 +21,7 @@ public class Executor {
      * @param cli CLI object
      **/
     public Executor(CLI cli) {
-        this.path = new Path(System.getenv("PATH").split(":"));
+        this.path = new Path(System.getenv("PATH").split(System.getProperty("path.separator")));
         this.cli = cli;
     }
 
