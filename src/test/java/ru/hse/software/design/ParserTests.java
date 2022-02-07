@@ -66,9 +66,7 @@ public class ParserTests {
         Token arg2 = new Token("arg2", Type.FULLY_PROCESSED);
         Token command3 = new Token("command3", Type.FULLY_PROCESSED);
         Token arg3 = new Token("arg3", Type.FULLY_PROCESSED);
-        List<CommandTokens> commandTokens = Parser.preProcess(Arrays.asList(command1, pipe,
-                                                                            command2, arg1, arg2, pipe,
-                                                                            command3, arg3));
+        List<CommandTokens> commandTokens = Parser.preProcess(Arrays.asList(command1, pipe, command2, arg1, arg2, pipe, command3, arg3));
         Assertions.assertEquals(3, commandTokens.size());
         Assertions.assertEquals("command1", commandTokens.get(0).getCommand());
         Assertions.assertEquals(0, commandTokens.get(0).getCommandArgs().size());

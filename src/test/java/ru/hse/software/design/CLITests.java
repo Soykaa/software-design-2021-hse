@@ -16,4 +16,3 @@ public class CLITests {
         Assertions.assertFalse(cli.isRunning());
     }
 }
-

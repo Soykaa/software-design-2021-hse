@@ -49,7 +49,7 @@ public class WCCommandTests {
     public void testMoreArguments() {
         Command command = new WCCommand(List.of("src/resources/not_empty_file.txt", "123"));
         Assertions.assertEquals(1, command.execute(""));
-        String expectedError = "Command wc works with one file or with standard input\n";
+        String expectedError = "Command wc works with one file or with standard input" + System.lineSeparator();
         Assertions.assertEquals(expectedError, errContent.toString());
         String actualOutput = command.output;
         String expectedOutput = "";

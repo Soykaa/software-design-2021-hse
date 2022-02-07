@@ -42,7 +42,7 @@ public class EnvironmentCommandTest {
         Command command = new EnvironmentCommand(List.of("x"));
         Assertions.assertEquals(1, command.execute(""));
         Assertions.assertTrue(Environment.get("x").isEmpty());
-        String expectedError = "Command environment needs 2 arguments\n";
+        String expectedError = "Command environment needs 2 arguments" + System.lineSeparator();
         Assertions.assertEquals(expectedError, errContent.toString());
 
         String actualOutput = command.output;
@@ -56,7 +56,7 @@ public class EnvironmentCommandTest {
         Assertions.assertEquals(1, command.execute(""));
         Assertions.assertTrue(Environment.get("x").isEmpty());
         Assertions.assertTrue(Environment.get("y").isEmpty());
-        String expectedError = "Command environment needs 2 arguments\n";
+        String expectedError = "Command environment needs 2 arguments" + System.lineSeparator();
         Assertions.assertEquals(expectedError, errContent.toString());
 
         String actualOutput = command.output;

@@ -33,44 +33,42 @@ public class ExecutorTests {
     @Test
     public void testCommandExecutedOk() {
         assertEquals(0, executor.execute("echo 42"));
-        assertEquals("42\n", outContent.toString());
+        assertEquals("42" + System.lineSeparator(), outContent.toString());
     }
 
     @Test
     public void testCommandFailed() {
         assertEquals(1, executor.execute("non-existent-command"));
-        assertEquals("Command non-existent-command not found\n",
-            errContent.toString());
+        assertEquals("Command non-existent-command not found" + System.lineSeparator(), errContent.toString());
     }
 
     @Test
     public void testEchoCatExecutedOk() {
         assertEquals(0, executor.execute("echo 42 | cat"));
-        assertEquals("42\n", outContent.toString());
+        assertEquals("42" + System.lineSeparator(), outContent.toString());
     }
 
     @Test
     public void testEchoWcExecutedOk() {
         assertEquals(0, executor.execute("echo 42 | wc"));
-        assertEquals("1  1 2\n", outContent.toString());
+        assertEquals("1  1 2" + System.lineSeparator(), outContent.toString());
     }
 
     @Test
     public void testWcFileEchoOk() {
         assertEquals(0, executor.execute("cat src/resources/not_empty_file.txt | echo 42"));
-        assertEquals("42\n", outContent.toString());
+        assertEquals("42" + System.lineSeparator(), outContent.toString());
     }
 
     @Test
     public void testSeveralPipesOK() {
         assertEquals(0, executor.execute("pwd | echo 123 | wc"));
-        assertEquals("1  1 3\n", outContent.toString());
+        assertEquals("1  1 3" + System.lineSeparator(), outContent.toString());
     }
 
     @Test
     public void testWrongPipesFailed() {
         assertEquals(1, executor.execute("echo 123 | | wc"));
-        assertEquals("'|' must be between commands\n",
-            errContent.toString());
+        assertEquals("'|' must be between commands" + System.lineSeparator(), errContent.toString());
     }
 }

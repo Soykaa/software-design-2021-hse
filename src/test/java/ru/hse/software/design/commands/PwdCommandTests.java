@@ -39,7 +39,7 @@ public class PwdCommandTests {
     public void testWithArguments() {
         Command command = new PwdCommand(Arrays.asList("one", "two", "three"));
         Assertions.assertEquals(1, command.execute(""));
-        String expectedError = "Command Pwd works without arguments\n";
+        String expectedError = "Command Pwd works without arguments" + System.lineSeparator();
         Assertions.assertEquals(expectedError, errContent.toString());
         String actualOutput = command.output;
         String expectedOutput = "";

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.hse.software.design.commands.*;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,12 +28,7 @@ public class CommandBuilderTests {
     @Test
     public void testInnerCommands() {
         List<String> arguments = Arrays.asList("arg1", "arg2");
-        List<CommandTokens> commandTokens = Arrays.asList(new CommandTokens("echo", arguments),
-            new CommandTokens("cat", arguments),
-            new CommandTokens("wc", arguments),
-            new CommandTokens("exit", arguments),
-            new CommandTokens("pwd", arguments),
-            new CommandTokens("environment", arguments));
+        List<CommandTokens> commandTokens = Arrays.asList(new CommandTokens("echo", arguments), new CommandTokens("cat", arguments), new CommandTokens("wc", arguments), new CommandTokens("exit", arguments), new CommandTokens("pwd", arguments), new CommandTokens("environment", arguments));
 
         List<Command> commands = CommandBuilder.build(commandTokens, path, cli);
         Assertions.assertEquals(commands.size(), commandTokens.size());

@@ -32,8 +32,8 @@ public class CatCommandTests {
         Assertions.assertEquals(0, command.execute(""));
         Assertions.assertTrue(errContent.toString().isEmpty());
         try {
-            String actualOutput = command.output;
-            String expectedOutput = Files.readString(Path.of("src/resources/not_empty_file.txt"), StandardCharsets.UTF_8) + "\n";
+            String actualOutput = command.output.replaceAll("\n", System.lineSeparator());
+            String expectedOutput = Files.readString(Path.of("src/resources/not_empty_file.txt"), StandardCharsets.UTF_8).replaceAll("\n", System.lineSeparator()) + System.lineSeparator();
             Assertions.assertEquals(expectedOutput, actualOutput);
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class CatCommandTests {
     public void testNotExistingFile() {
         Command command = new CatCommand(List.of("src/resources/not_existing_file.txt"));
         Assertions.assertEquals(1, command.execute(""));
-        String expectedError = "file src/resources/not_existing_file.txt does not exist\n";
+        String expectedError = "file src/resources/not_existing_file.txt does not exist" + System.lineSeparator();
         Assertions.assertEquals(expectedError, errContent.toString());
         String actualOutput = command.output;
         String expectedOutput = "";
@@ -69,7 +69,7 @@ public class CatCommandTests {
     public void testMoreArguments() {
         Command command = new CatCommand(List.of("src/resources/not_empty_file.txt", "123"));
         Assertions.assertEquals(1, command.execute(""));
-        String expectedError = "Command cat works with one file or with standard input\n";
+        String expectedError = "Command cat works with one file or with standard input" + System.lineSeparator();
         Assertions.assertEquals(expectedError, errContent.toString());
         String actualOutput = command.output;
         String expectedOutput = "";
