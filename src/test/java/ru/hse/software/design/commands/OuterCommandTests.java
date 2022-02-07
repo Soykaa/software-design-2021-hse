@@ -7,14 +7,11 @@ import ru.hse.software.design.Path;
 import ru.hse.software.design.streams.InputStream;
 import ru.hse.software.design.streams.OutputStream;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class OuterCommandTests {

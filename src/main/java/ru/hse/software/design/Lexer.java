@@ -25,7 +25,7 @@ public class Lexer {
         boolean openedSingleQuotes = false;
         boolean openedDoubleQuotes = false;
         QuotesStatus currentQuotesStatus = QuotesStatus.DEFAULT;
-        StringBuilder currentToken = new StringBuilder();
+        var currentToken = new StringBuilder();
         Type currentTokenType = Type.FULLY_PROCESSED;
 
         for (int i = 0; i < command.length(); i++) {

@@ -17,7 +17,7 @@ public class CLI {
      **/
     public static void main(String[] args) {
         System.out.println("-----CLI interpreter-----");
-        CLI instance = new CLI();
+        var instance = new CLI();
         instance.start();
     }
 
