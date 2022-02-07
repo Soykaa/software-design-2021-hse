@@ -33,7 +33,7 @@ public class CatCommandTests {
         Assertions.assertTrue(errContent.toString().isEmpty());
         try {
             String actualOutput = command.output.replaceAll("\n", System.lineSeparator());
-            String expectedOutput = Files.readString(Path.of("src/resources/not_empty_file.txt"), StandardCharsets.UTF_8).replaceAll("\n", System.lineSeparator()) + System.lineSeparator();
+            String expectedOutput = Files.readString(Path.of("src/resources/not_empty_file.txt"), StandardCharsets.UTF_8) + System.lineSeparator();
             Assertions.assertEquals(expectedOutput, actualOutput);
         } catch (IOException e) {
             e.printStackTrace();

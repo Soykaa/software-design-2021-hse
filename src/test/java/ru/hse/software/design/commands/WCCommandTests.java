@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import ru.hse.software.design.Environment;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,12 +28,12 @@ public class WCCommandTests {
     }
 
     @Test
-    public void testNotEmptyFile() {
+    public void testNotEmptyFile() throws IOException {
         Command command = new WCCommand(List.of("src/resources/not_empty_file.txt"));
         Assertions.assertEquals(0, command.execute(""));
         Assertions.assertTrue(errContent.toString().isEmpty());
         String actualOutput = command.output;
-        String expectedOutput = "7  40 217";
+        String expectedOutput = "7  40 " + Files.size(Paths.get("src/resources/not_empty_file.txt"));
         Assertions.assertEquals(expectedOutput, actualOutput);
     }
 
@@ -60,7 +62,7 @@ public class WCCommandTests {
     public void testNotExistingFile() {
         Command command = new WCCommand(List.of("src/resources/not_existing_file.txt"));
         Assertions.assertEquals(1, command.execute(""));
-        String expectedError = "file src/resources/not_existing_file.txt does not exist\n";
+        String expectedError = "file src/resources/not_existing_file.txt does not exist" + System.lineSeparator();
         Assertions.assertEquals(expectedError, errContent.toString());
         String actualOutput = command.output;
         String expectedOutput = "";
