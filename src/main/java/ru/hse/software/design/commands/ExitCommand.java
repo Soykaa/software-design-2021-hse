@@ -3,16 +3,13 @@ package ru.hse.software.design.commands;
 import ru.hse.software.design.CLI;
 
 /**
- * Class which represents 'exit' command, extends Command.
- * Contains CLI class object as the object in which the exit method is called.
- * Also overrides 'execute' method.
+ * Exits command-line interpreter.
  **/
 public class ExitCommand extends Command {
     private final CLI classToExit;
 
     /**
-     * Makes classToExit same as given value.
-     * Also initialize command with "exit".
+     * Created exit command with given arguments.
      *
      * @param classToExit class where to call 'exit' method
      **/
@@ -24,6 +21,7 @@ public class ExitCommand extends Command {
     /**
      * Executes 'exit' command in a given class.
      *
+     * @param input input as string
      * @return 0
      **/
     @Override

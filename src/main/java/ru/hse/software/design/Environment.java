@@ -6,10 +6,7 @@ import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Class responsible for storing environment variables.
- * Contains lock to work with threads and map of environment variables
- * as a private fields.
- * Also contains several static public methods.
+ * Class responsible for managing environment variables.
  **/
 public class Environment {
     private static final ReentrantLock lock = new ReentrantLock();
@@ -52,7 +49,7 @@ public class Environment {
     /**
      * Returns all environment variables with its values.
      *
-     * @return Environment variables and its values as string array
+     * @return Environment variables and its values as string array in "{name}={value}" format, e.g. x=5
      **/
     public static String[] getAll() {
         try {

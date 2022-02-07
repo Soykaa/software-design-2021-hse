@@ -6,16 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class which represents 'environment' command, extends Command.
- * Contains list of command arguments as a private field.
- * Also overrides 'execute' method.
+ * Stores environment variable value with first provided argument being its name and second being its value.
  **/
 public class EnvironmentCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
     /**
-     * Makes commandArgs same as given value.
-     * Also initialize command with "environment".
+     * Created environment command with given arguments.
      *
      * @param commandArgs command arguments
      **/
@@ -26,9 +23,9 @@ public class EnvironmentCommand extends Command {
 
     /**
      * Executes 'environment' command with the given arguments.
-     * In case of error writes an appropriate message to the error stream.
      *
-     * @return 0  in case of successful outcome of the command, 1 otherwise
+     * @param input input as string
+     * @return 0 in case of successful outcome of the command, 1 otherwise
      **/
     @Override
     public int execute(String input) {

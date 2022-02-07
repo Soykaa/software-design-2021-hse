@@ -6,9 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Class for separating a list of tokens into commands and arguments.
- * Contains main static method 'preProcess'
- * as well as a couple of helper private methods.
+ * Parses a list of tokens into a command and its arguments.
  **/
 public class Parser {
     private static String checkEquality(String command, List<String> commandArguments) {
@@ -23,6 +21,14 @@ public class Parser {
         return command;
     }
 
+    /**
+     * Accepts a list of tokens as input. First token is treated as a command name with the rest being its arguments.
+     * If first token contains the '=' sign, then a reserved key-word 'environment' is used as a command name with
+     * arguments being words before and after '=' as well as other tokens.
+     *
+     * @param tokens list of tokens
+     * @return parsed CommandTokens
+     **/
     public static List<CommandTokens> preProcess(List<Token> tokens) {
         List<CommandTokens> commandTokens = new ArrayList<>();
         List<String> currentCommandArguments = new ArrayList<>();
