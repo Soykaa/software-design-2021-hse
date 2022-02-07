@@ -31,7 +31,7 @@ public class CLI {
      **/
     public void start() {
         isRunning = true;
-        Scanner userInput = new Scanner(System.in);
+        var userInput = new Scanner(System.in);
         userInput.useDelimiter(System.lineSeparator());
         Executor executor = createExecutor();
         while (isRunning) {
