@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.OS;
 import ru.hse.software.design.Environment;
 import ru.hse.software.design.Path;
 
@@ -11,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class OuterCommandTests {
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -28,19 +30,17 @@ public class OuterCommandTests {
     }
 
     @Test
-    public void testManyArguments() {
-        Command command = new OuterCommand("echo", Arrays.asList("hello", "world"),
-            new Path(System.getenv("PATH").split(":")));
+    public void testEchoCommand() {
+        Command command;
+        if (OS.WINDOWS.isCurrentOs()) {
+            command = new OuterCommand("cmd.exe", Arrays.asList("/c", "echo", "123"),
+                new Path(System.getenv("PATH").split(System.getProperty("path.separator"))));
+        } else {
+            command = new OuterCommand("echo", List.of("123"),
+                new Path(System.getenv("PATH").split(System.getProperty("path.separator"))));
+        }
         command.execute("");
         Assertions.assertTrue(errContent.toString().isEmpty());
-        Assertions.assertEquals("hello world\n", command.output);
-    }
-
-    @Test
-    public void testReadFromStdin() {
-        Command command = new CatCommand(Collections.emptyList());
-        command.execute("hello world");
-        Assertions.assertTrue(errContent.toString().isEmpty());
-        Assertions.assertEquals("hello world", command.output);
+        Assertions.assertEquals("123" + System.lineSeparator(), command.output);
     }
 }
