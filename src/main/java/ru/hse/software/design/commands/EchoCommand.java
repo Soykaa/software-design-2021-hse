@@ -1,9 +1,5 @@
 package ru.hse.software.design.commands;
 
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,42 +13,21 @@ public class EchoCommand extends Command {
     /**
      * Created echo command with given arguments.
      *
-     * @param commandArgs  command arguments
-     * @param inputStream  input stream
-     * @param outputStream output stream
-     * @param errorStream  error stream
+     * @param commandArgs command arguments
      **/
-    public EchoCommand(List<String> commandArgs,
-                       InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
+    public EchoCommand(List<String> commandArgs) {
         this.commandArgs.addAll(commandArgs);
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
-        this.errorStream = errorStream;
         this.command = "echo";
     }
 
     /**
      * Executes 'echo' command with the given arguments.
      *
-     * @return 1 in case of successful outcome of the command, 0 otherwise
+     * @return 0
      **/
     @Override
-    public int execute() {
-        try {
-            String result = String.join(" ", commandArgs);
-            try {
-                outputStream.writeAsString(result);
-            } catch (IOException e) {
-                appendErrorMessage(e.getMessage());
-                errorStream.writeAsString(e.getMessage());
-                return 1;
-            }
-            return 0;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 1;
-        } finally {
-            closeInputAndOutputStreams();
-        }
+    public int execute(String input) {
+        output = String.join(" ", commandArgs);
+        return 0;
     }
 }

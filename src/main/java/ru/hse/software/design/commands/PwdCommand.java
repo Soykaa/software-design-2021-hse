@@ -1,9 +1,5 @@
 package ru.hse.software.design.commands;
 
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,47 +12,26 @@ public class PwdCommand extends Command {
     /**
      * Creates pwd command with given arguments.
      *
-     * @param commandArgs  command arguments
-     * @param inputStream  input stream
-     * @param outputStream output stream
-     * @param errorStream  error stream
+     * @param commandArgs command arguments
      **/
-    public PwdCommand(List<String> commandArgs,
-                      InputStream inputStream, OutputStream outputStream, OutputStream errorStream) {
+    public PwdCommand(List<String> commandArgs) {
         this.commandArgs.addAll(commandArgs);
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
-        this.errorStream = errorStream;
         this.command = "pwd";
     }
 
     /**
      * Executes 'pwd' command with the given arguments.
      *
-     * @return 1 in case of successful outcome of the command, 0 otherwise
+     * @param input input as string
+     * @return 0 in case of successful outcome of the command, 1 otherwise
      **/
     @Override
-    public int execute() {
-        try {
-            if (!commandArgs.isEmpty()) {
-                appendErrorMessage("Command Pwd works without arguments");
-                errorStream.writeAsString("Command Pwd works without arguments");
-                return 1;
-            }
-            String dir = System.getProperty("user.dir");
-            try {
-                outputStream.writeAsString(dir);
-            } catch (IOException e) {
-                appendErrorMessage(e.getMessage());
-                errorStream.writeAsString(e.getMessage());
-                return 1;
-            }
-            return 0;
-        } catch (IOException e) {
-            e.printStackTrace();
+    public int execute(String input) {
+        if (!commandArgs.isEmpty()) {
+            errorStream.println("Command Pwd works without arguments");
             return 1;
-        } finally {
-            closeInputAndOutputStreams();
         }
+        output = System.getProperty("user.dir");
+        return 0;
     }
 }

@@ -1,11 +1,7 @@
 package ru.hse.software.design.commands;
 
-import ru.hse.software.design.streams.IOStream;
-import ru.hse.software.design.streams.InputStream;
-import ru.hse.software.design.streams.OutputStream;
+import java.io.PrintStream;
 
-import java.io.IOException;
-import java.util.Optional;
 
 /**
  * Abstract class for executing commands.
@@ -13,17 +9,16 @@ import java.util.Optional;
  **/
 public abstract class Command {
     protected String command;
-    protected Optional<String> errorMessage = Optional.empty();
-    protected InputStream inputStream;
-    protected OutputStream outputStream;
-    protected OutputStream errorStream;
+    protected PrintStream errorStream = System.err;
+    protected String output = "";
 
     /**
      * Executes command.
      *
+     * @param input input as string
      * @return 0 in case of successful outcome of the command, 1 otherwise
      **/
-    public abstract int execute();
+    public abstract int execute(String input);
 
     /**
      * Returns command name.
@@ -35,28 +30,11 @@ public abstract class Command {
     }
 
     /**
-     * Returns an error message.
+     * Returns command output.
      *
-     * @return Error message as Optional
+     * @return Command output as string
      **/
-    public Optional<String> getErrorMessage() {
-        return errorMessage;
-    }
-
-    private void closeStream(IOStream stream) {
-        try {
-            stream.close();
-        } catch (IOException e) {
-            appendErrorMessage(e.getMessage());
-        }
-    }
-
-    protected void closeInputAndOutputStreams() {
-        closeStream(inputStream);
-        closeStream(outputStream);
-    }
-
-    protected void appendErrorMessage(String e) {
-        errorMessage = errorMessage.map(s -> e + ", " + s).or(() -> Optional.of(e));
+    public String getOutput() {
+        return output;
     }
 }
