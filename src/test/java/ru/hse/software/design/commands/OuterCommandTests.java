@@ -11,7 +11,6 @@ import ru.hse.software.design.Path;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class OuterCommandTests {
@@ -33,7 +32,7 @@ public class OuterCommandTests {
     public void testEchoCommand() {
         Command command;
         if (OS.WINDOWS.isCurrentOs()) {
-            command = new OuterCommand("cmd", Arrays.asList("/c", "echo", "123"),
+            command = new OuterCommand("cmd", Arrays.asList("echo", "123"),
                 new Path(System.getenv("PATH").split(System.getProperty("path.separator"))));
         } else {
             command = new OuterCommand("echo", List.of("123"),
