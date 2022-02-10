@@ -34,7 +34,7 @@ public class Parser {
         List<String> currentCommandArguments = new ArrayList<>();
         String command = tokens.get(0).getToken();
         String lastToken = tokens.get(tokens.size() - 1).getToken();
-        if (command.equals("|") | lastToken.equals("|")) {
+        if (command.equals("|") || lastToken.equals("|")) {
             throw new IllegalArgumentException("'|' must be between commands");
         }
         command = checkEquality(command, currentCommandArguments);

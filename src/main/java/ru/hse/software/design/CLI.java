@@ -6,7 +6,6 @@ import java.util.Scanner;
  * Contains custom realization of command-line interpreter for bash commands.
  * Details about accepted commands are described in README.md.
  */
-
 public class CLI {
     private boolean isRunning = false;
 

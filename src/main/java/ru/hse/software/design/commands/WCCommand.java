@@ -36,7 +36,7 @@ public class WCCommand extends Command {
     @Override
     public int execute(String input) {
         if (commandArgs.size() > 1) {
-            errorStream.println("Command wc works with one file " + "or with standard input");
+            errorStream.println("Command wc works with one file or with standard input");
             return 1;
         }
         if (commandArgs.isEmpty()) {
