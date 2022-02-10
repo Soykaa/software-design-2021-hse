@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class EnvironmentTests {
     @BeforeEach
@@ -36,9 +37,9 @@ public class EnvironmentTests {
         Environment.set("SPANISH_GREETING", "HOLA");
         Environment.set("SWEDISH_GREETING", "HEJ");
         Environment.set("ENGLISH_GREETING", "HELLO");
-        List<String> allEnvPairs = Arrays.asList(Environment.getAll());
-        Assertions.assertTrue(allEnvPairs.contains("SPANISH_GREETING=HOLA"));
-        Assertions.assertTrue(allEnvPairs.contains("SWEDISH_GREETING=HEJ"));
-        Assertions.assertTrue(allEnvPairs.contains("ENGLISH_GREETING=HELLO"));
+        Map<String, String> allEnvPairs = Environment.getAll();
+        Assertions.assertEquals("HOLA", allEnvPairs.get("SPANISH_GREETING"));
+        Assertions.assertEquals("HEJ", allEnvPairs.get("SWEDISH_GREETING"));
+        Assertions.assertEquals("HELLO", allEnvPairs.get("ENGLISH_GREETING"));
     }
 }
