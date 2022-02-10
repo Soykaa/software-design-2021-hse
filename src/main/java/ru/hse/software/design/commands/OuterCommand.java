@@ -38,8 +38,8 @@ public class OuterCommand extends Command {
      **/
     @Override
     public int execute(String input) {
-        String[] cmdarray = commandWithArguments.toArray(new String[0]);
-        String[] envp = Environment.getAll();
+        String[] commandArray = commandWithArguments.toArray(new String[0]);
+        String[] environmentVariablesAndValues = Environment.getAll();
         String commandDirectory = null;
         for (var directory : path.getPaths()) {
             if (new File(directory, command).exists()) {
@@ -51,7 +51,7 @@ public class OuterCommand extends Command {
             return 1;
         }
         try {
-            Process process = Runtime.getRuntime().exec(cmdarray, envp, new File(commandDirectory));
+            Process process = Runtime.getRuntime().exec(commandArray, environmentVariablesAndValues, new File(commandDirectory));
             process.getOutputStream().write(input.getBytes(StandardCharsets.UTF_8));
             int returnCode = process.waitFor();
             output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);

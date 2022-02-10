@@ -20,7 +20,7 @@ public class Parser {
                 insideDoubleQuotes = !insideDoubleQuotes;
                 continue;
             }
-            if (insideDoubleQuotes | insideSingleQuotes) {
+            if (insideDoubleQuotes || insideSingleQuotes) {
                 continue;
             }
             if (curChar == '=') {
