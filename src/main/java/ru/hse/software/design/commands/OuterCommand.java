@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Executes outer command in a separate process.
@@ -28,8 +29,13 @@ public class OuterCommand extends Command {
     public OuterCommand(String commandName, List<String> commandArgs, Path path) {
         if (SystemUtils.IS_OS_WINDOWS) {
             commandName = commandName + ".exe";
+            this.commandWithArguments.add(commandName);
+            if (Objects.equals(commandName, "cmd.exe")) {
+                this.commandWithArguments.add("/C");
+            }
+        } else {
+            this.commandWithArguments.add(commandName);
         }
-        this.commandWithArguments.add(commandName);
         this.commandWithArguments.addAll(commandArgs);
         this.path = path;
         this.command = commandName;
