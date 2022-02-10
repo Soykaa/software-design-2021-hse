@@ -46,6 +46,9 @@ public class Environment {
         }
     }
 
+    /**
+     * Returns all the environment variables.
+     */
     public static Map<String, String> getAll() {
         try {
             lock.lock();
