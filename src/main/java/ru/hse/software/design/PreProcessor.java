@@ -11,6 +11,12 @@ import java.util.Optional;
  * and a couple of helper private methods.
  **/
 public class PreProcessor {
+    private enum QuotesStatus {
+        DEFAULT,
+        INSIDE_SINGLE,
+        INSIDE_DOUBLE
+    }
+
     private static String getFromEnvironment(String variableName) {
         Optional<String> value = Environment.get(variableName);
         if (value.isEmpty()) {
@@ -19,13 +25,55 @@ public class PreProcessor {
         return value.get();
     }
 
+    private static Token removeQuotes(Token token) {
+        QuotesStatus currentStatus = QuotesStatus.DEFAULT;
+        StringBuilder newToken = new StringBuilder();
+        String tokenString = token.getToken();
+        for (int i = 0; i < tokenString.length(); i++) {
+            char currentSymb = tokenString.charAt(i);
+            switch (currentSymb) {
+                case '\'':
+                    if (currentStatus == QuotesStatus.INSIDE_DOUBLE) {
+                        newToken.append('\'');
+                        break;
+                    }
+                    if (currentStatus == QuotesStatus.INSIDE_SINGLE) {
+                        currentStatus = QuotesStatus.DEFAULT;
+                        break;
+                    }
+                    currentStatus = QuotesStatus.INSIDE_SINGLE;
+                    break;
+                case '"':
+                    if (currentStatus == QuotesStatus.INSIDE_SINGLE) {
+                        newToken.append('\"');
+                        break;
+                    }
+                    if (currentStatus == QuotesStatus.INSIDE_DOUBLE) {
+                        currentStatus = QuotesStatus.DEFAULT;
+                        break;
+                    }
+                    currentStatus = QuotesStatus.INSIDE_DOUBLE;
+                    break;
+                default:
+                    newToken.append(currentSymb);
+            }
+        }
+        token.setToken(newToken.toString());
+        return token;
+    }
+
     private static Token preProcessToken(Token token) {
         StringBuilder preProcessedToken = new StringBuilder();
         StringBuilder variableName = new StringBuilder();
+        QuotesStatus currentStatus = QuotesStatus.DEFAULT;
         boolean variableNameStarted = false;
         for (int i = 0; i < token.getToken().length(); i++) {
             char currentSymbol = token.getToken().charAt(i);
             if (currentSymbol == '$') {
+                if (currentStatus == QuotesStatus.INSIDE_SINGLE) {
+                    preProcessedToken.append(currentSymbol);
+                    continue;
+                }
                 if (variableNameStarted) {
                     String value = getFromEnvironment(variableName.toString());
                     preProcessedToken.append(value);
@@ -41,9 +89,25 @@ public class PreProcessor {
                     variableNameStarted = false;
                     variableName.setLength(0);
                 }
-                if (currentSymbol != '"' && currentSymbol != '\'') {
-                    preProcessedToken.append(currentSymbol);
+
+                if (currentSymbol == '\'') {
+                    if (currentStatus == QuotesStatus.INSIDE_SINGLE) {
+                        currentStatus = QuotesStatus.DEFAULT;
+                    }
+                    else if (currentStatus == QuotesStatus.DEFAULT) {
+                        currentStatus = QuotesStatus.INSIDE_SINGLE;
+                    }
                 }
+
+                if (currentSymbol == '"') {
+                    if (currentStatus == QuotesStatus.INSIDE_DOUBLE) {
+                        currentStatus = QuotesStatus.DEFAULT;
+                    }
+                    else if (currentStatus == QuotesStatus.DEFAULT) {
+                        currentStatus = QuotesStatus.INSIDE_DOUBLE;
+                    }
+                }
+                preProcessedToken.append(currentSymbol);
                 continue;
             }
             if (variableNameStarted) {
@@ -73,9 +137,9 @@ public class PreProcessor {
         List<Token> result = new ArrayList<>();
         for (Token token : tokens) {
             if (token.getType() == Type.FULLY_PROCESSED) {
-                result.add(token);
+                result.add(removeQuotes(token));
             } else {
-                result.add(preProcessToken(token));
+                result.add(removeQuotes(preProcessToken(token)));
             }
         }
         return result;
