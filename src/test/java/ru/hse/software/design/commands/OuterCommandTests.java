@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.OS;
 import ru.hse.software.design.Environment;
-import ru.hse.software.design.Path;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -32,11 +31,9 @@ public class OuterCommandTests {
     public void testEchoCommand() {
         Command command;
         if (OS.WINDOWS.isCurrentOs()) {
-            command = new OuterCommand("cmd", Arrays.asList("echo", "123"),
-                new Path(System.getenv("PATH").split(System.getProperty("path.separator"))));
+            command = new OuterCommand("cmd", Arrays.asList("/C", "echo", "123"));
         } else {
-            command = new OuterCommand("echo", List.of("123"),
-                new Path(System.getenv("PATH").split(System.getProperty("path.separator"))));
+            command = new OuterCommand("echo", List.of("123"));
         }
         command.execute("");
         Assertions.assertTrue(errContent.toString().isEmpty());

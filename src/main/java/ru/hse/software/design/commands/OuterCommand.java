@@ -1,45 +1,38 @@
 package ru.hse.software.design.commands;
 
-import org.apache.commons.lang3.SystemUtils;
 import ru.hse.software.design.Environment;
-import ru.hse.software.design.Path;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Executes outer command in a separate process.
  **/
 public class OuterCommand extends Command {
     private final List<String> commandWithArguments = new ArrayList<>();
-    private final Path path;
+
+    private String getOperatingSystem() {
+        return System.getProperty("os.name");
+    }
 
     /**
      * Creates outer command with given arguments.
      *
      * @param commandName command name
      * @param commandArgs command arguments
-     * @param path        path to command
      **/
-    public OuterCommand(String commandName, List<String> commandArgs, Path path) {
-        if (SystemUtils.IS_OS_WINDOWS) {
+    public OuterCommand(String commandName, List<String> commandArgs) {
+        if (getOperatingSystem().contains("Windows")) {
             commandName = commandName + ".exe";
-            this.commandWithArguments.add(commandName);
-            if (Objects.equals(commandName, "cmd.exe")) {
-                this.commandWithArguments.add("/C");
-            }
-        } else {
-            this.commandWithArguments.add(commandName);
         }
+        this.commandWithArguments.add(commandName);
         this.commandWithArguments.addAll(commandArgs);
-        this.path = path;
         this.command = commandName;
     }
+
 
     /**
      * Executes the given outer command with the given arguments.
@@ -50,20 +43,6 @@ public class OuterCommand extends Command {
     @Override
     public int execute(String input) {
         String[] commandArray = commandWithArguments.toArray(new String[0]);
-        String commandDirectory = null;
-        for (var directory : path.getPaths()) {
-            if (new File(directory, command).exists()) {
-                commandDirectory = directory;
-            }
-        }
-        if (commandDirectory == null) {
-            if (SystemUtils.IS_OS_WINDOWS) {
-                errorStream.println("Command " + command.substring(0, command.length() - 4) + " not found");
-                return 1;
-            }
-            errorStream.println("Command " + command + " not found");
-            return 1;
-        }
         try {
             var processBuilder = new ProcessBuilder(commandArray);
             Map<String, String> environment = processBuilder.environment();
@@ -80,6 +59,6 @@ public class OuterCommand extends Command {
         } catch (IOException | InterruptedException e) {
             errorStream.println(e.getMessage());
         }
-        return 0;
+        return 1;
     }
 }

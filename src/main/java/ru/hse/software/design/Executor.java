@@ -8,7 +8,6 @@ import java.util.List;
  * Class for executing user commands.
  **/
 public class Executor {
-    private final Path path;
     private final CLI cli;
 
     /**
@@ -17,7 +16,6 @@ public class Executor {
      * @param cli CLI object
      **/
     public Executor(CLI cli) {
-        this.path = new Path(System.getenv("PATH").split(System.getProperty("path.separator")));
         this.cli = cli;
     }
 
@@ -32,7 +30,7 @@ public class Executor {
             List<Token> tokens = Lexer.getTokens(commandString);
             List<Token> preProcessedTokens = PreProcessor.preProcess(tokens);
             List<CommandTokens> commandTokens = Parser.preProcess(preProcessedTokens);
-            List<Command> commands = CommandBuilder.build(commandTokens, path, cli);
+            List<Command> commands = CommandBuilder.build(commandTokens, cli);
             String prevCommandOutput = "";
             int returnCode = 0;
             for (Command command : commands) {

@@ -17,7 +17,7 @@ import java.util.List;
  * Contains a static method that converts command names to their corresponding class objects.
  **/
 public class CommandBuilder {
-    private static Command makeCommands(CommandTokens commandToken, Path path, CLI cli) {
+    private static Command makeCommands(CommandTokens commandToken, CLI cli) {
         if (commandToken.getCommand().equals("cat")) {
             return new CatCommand(commandToken.getCommandArgs());
         }
@@ -36,21 +36,20 @@ public class CommandBuilder {
         if (commandToken.getCommand().equals("environment")) {
             return new EnvironmentCommand(commandToken.getCommandArgs());
         }
-        return new OuterCommand(commandToken.getCommand(), commandToken.getCommandArgs(), path);
+        return new OuterCommand(commandToken.getCommand(), commandToken.getCommandArgs());
     }
 
     /**
      * Creates a Command object corresponding to the passed commandToken.
      *
      * @param commandTokens list of command tokens
-     * @param path          paths to directories containing external programs
      * @param cli           CLI object
      * @return Command object
      **/
-    public static List<Command> build(List<CommandTokens> commandTokens, Path path, CLI cli) {
+    public static List<Command> build(List<CommandTokens> commandTokens, CLI cli) {
         List<Command> commands = new ArrayList<>();
         for (CommandTokens commandToken : commandTokens) {
-            commands.add(makeCommands(commandToken, path, cli));
+            commands.add(makeCommands(commandToken, cli));
         }
         return commands;
     }
