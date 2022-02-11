@@ -40,6 +40,6 @@ public class ExecutorTests {
     @Test
     public void testCommandFailed() throws IOException, InterruptedException {
         assertEquals(1, executor.execute("non-existent-command"));
-        assertTrue(errContent.toString().contains("Cannot run program \"non-existent-command\""));
+        assertTrue(errContent.toString().contains("Cannot run program \"non-existent-command"));
     }
 }
