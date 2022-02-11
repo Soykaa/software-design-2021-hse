@@ -22,8 +22,9 @@ test {
 
 jar {
     manifest {
-        attributes(
-            'Main-Class': 'ru.hse.software.design.CLI'
-        )
+        attributes 'Main-Class': 'ru.hse.software.design.CLI'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
