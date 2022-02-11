@@ -29,7 +29,7 @@ public class OuterCommand extends Command {
      * @param commandArgs command arguments
      **/
     public OuterCommand(String commandName, List<String> commandArgs, Path path) {
-        if (Objects.equals(getOperatingSystem(), "Windows")) {
+        if (getOperatingSystem().contains("Windows")) {
             commandName = commandName + ".exe";
         }
         this.commandWithArguments.add(commandName);
@@ -55,7 +55,7 @@ public class OuterCommand extends Command {
             }
         }
         if (commandDirectory == null) {
-            if (Objects.equals(getOperatingSystem(), "Windows")) {
+            if (getOperatingSystem().contains("Windows")) {
                 errorStream.println("Command " + command.substring(0, command.length() - 4) + " not found");
                 return 1;
             }
