@@ -7,8 +7,6 @@ import java.util.Optional;
 
 /**
  * Class for handling the necessary substitutions in tokens.
- * Contains main static method 'preProcess'
- * and a couple of helper private methods.
  **/
 public class PreProcessor {
     private enum QuotesStatus {

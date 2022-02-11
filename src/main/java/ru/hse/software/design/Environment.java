@@ -6,14 +6,11 @@ import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Class responsible for storing environment variables.
- * Contains lock to work with threads and map of environment variables
- * as a private fields.
- * Also contains several static public methods.
+ * Class responsible for managing environment variables.
  **/
 public class Environment {
     private static final ReentrantLock lock = new ReentrantLock();
-    private static final Map<String, String> envVariables = new HashMap<>();
+    private static final Map<String, String> environmentVariables = new HashMap<>();
 
     /**
      * Saves the name of a variable and its value.
@@ -25,7 +22,7 @@ public class Environment {
     public static void set(String variable, String value) {
         try {
             lock.lock();
-            envVariables.put(variable, value);
+            environmentVariables.put(variable, value);
         } finally {
             lock.unlock();
         }
@@ -40,30 +37,25 @@ public class Environment {
     public static Optional<String> get(String variable) {
         try {
             lock.lock();
-            if (!envVariables.containsKey(variable)) {
+            if (!environmentVariables.containsKey(variable)) {
                 return Optional.empty();
             }
-            return Optional.of(envVariables.get(variable));
+            return Optional.of(environmentVariables.get(variable));
         } finally {
             lock.unlock();
         }
     }
 
+
     /**
-     * Returns all environment variables with its values.
+     * Returns all the environment variables.
      *
-     * @return Environment variables and its values as string array
-     **/
-    public static String[] getAll() {
+     * @return Environment variables and its values as map
+     */
+    public static Map<String, String> getAll() {
         try {
             lock.lock();
-            String[] envp = new String[envVariables.size()];
-            int currentIndex = 0;
-            for (var entry : envVariables.entrySet()) {
-                envp[currentIndex] = entry.getKey() + "=" + entry.getValue();
-                currentIndex++;
-            }
-            return envp;
+            return environmentVariables;
         } finally {
             lock.unlock();
         }
@@ -75,7 +67,7 @@ public class Environment {
     public static void clear() {
         try {
             lock.lock();
-            envVariables.clear();
+            environmentVariables.clear();
         } finally {
             lock.unlock();
         }

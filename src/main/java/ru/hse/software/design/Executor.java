@@ -5,23 +5,19 @@ import ru.hse.software.design.commands.Command;
 import java.util.List;
 
 /**
- * Class for calling the main components of the application.
- * Contains paths to directories containing external programs and
- * CLI object as a private fields.
- * Also contains main method 'execute'.
+ * Class for executing user commands.
  **/
 public class Executor {
     private final Path path;
     private final CLI cli;
 
     /**
-     * Makes cli same as given value, initializes path
-     * with the directories listed in the PATH environment variable.
+     * Creates new Executor instance with given CLI object.
      *
      * @param cli CLI object
      **/
     public Executor(CLI cli) {
-        this.path = new Path(System.getenv("PATH").split(":"));
+        this.path = new Path(System.getenv("PATH").split(System.getProperty("path.separator")));
         this.cli = cli;
     }
 

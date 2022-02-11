@@ -11,16 +11,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Class which represents 'wc' command, extends Command.
- * Contains list of command arguments as a private field.
- * Also overrides 'execute' method.
+ * Displays the number of lines, words, and bytes contained in each input file, or standard input
+ * (if no file is specified) to the standard output.
  **/
 public class WCCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
     /**
-     * Makes commandArgs same as given value.
-     * Also initialize command with "wc".
+     * Creates pwd command with given arguments.
      *
      * @param commandArgs command arguments
      **/
@@ -31,14 +29,14 @@ public class WCCommand extends Command {
 
     /**
      * Executes 'wc' command with the given arguments.
-     * In case of error writes an appropriate message to the error stream.
      *
+     * @param input input as string
      * @return 0 in case of successful outcome of the command, 1 otherwise
      **/
     @Override
     public int execute(String input) {
         if (commandArgs.size() > 1) {
-            errorStream.println("Command wc works with one file " + "or with standard input");
+            errorStream.println("Command wc works with one file or with standard input");
             return 1;
         }
         if (commandArgs.isEmpty()) {

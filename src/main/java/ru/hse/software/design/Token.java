@@ -2,14 +2,13 @@ package ru.hse.software.design;
 
 /**
  * Class which represents lexer tokens.
- * Contains token and its type as private fields.
  **/
 public class Token {
     private String token;
     private Type type;
 
     /**
-     * Makes token and type same as given values.
+     * Accepts token and type its type.
      *
      * @param token lexer token
      * @param type  token type
@@ -20,16 +19,16 @@ public class Token {
     }
 
     /**
-     * Returns lexer token itself.
+     * Returns token contents.
      *
-     * @return Token as string
+     * @return token contents as string
      **/
     public String getToken() {
         return token;
     }
 
     /**
-     * Returns lexer token type.
+     * Returns token type.
      *
      * @return Token type
      **/

@@ -5,8 +5,6 @@ import java.util.List;
 
 /**
  * Class for splitting the input string into tokens.
- * Contains private enum 'QuotesStatus', which reflects the presence of quotes in a string.
- * Also contains 'getTokens' static method as the main.
  **/
 public class Lexer {
     private enum QuotesStatus {
@@ -25,7 +23,7 @@ public class Lexer {
     public static List<Token> getTokens(String command) {
         List<Token> result = new ArrayList<>();
         QuotesStatus currentStatus = QuotesStatus.DEFAULT;
-        StringBuilder currentToken = new StringBuilder();
+        var currentToken = new StringBuilder();
         Type currentTokenType = Type.FULLY_PROCESSED;
 
         for (int i = 0; i < command.length(); i++) {

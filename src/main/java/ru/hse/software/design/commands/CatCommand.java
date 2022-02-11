@@ -10,16 +10,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Class which represents 'cat' command, extends Command.
- * Contains list of command arguments as a private field.
- * Also overrides 'execute' method.
+ * Reads files providing as arguments sequentially, writing them to the standard
+ * output. The file operands are processed in command-line order. If arguments are absent,
+ * cat reads from the standard input.
  **/
 public class CatCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
 
     /**
-     * Makes commandArgs same as given value.
-     * Also initialize command with "cat".
+     * Creates cat command with given arguments.
      *
      * @param commandArgs command arguments
      **/
@@ -30,15 +29,14 @@ public class CatCommand extends Command {
 
     /**
      * Executes 'cat' command with the given arguments.
-     * In case of error writes an appropriate message to the error stream.
      *
-     * @return 1 in case of successful outcome of the command, 0 otherwise
+     * @param input input as string
+     * @return 0 in case of successful outcome of the command, 1 otherwise
      **/
     @Override
     public int execute(String input) {
         if (commandArgs.size() > 1) {
-            errorStream.println("Command cat works with one file " +
-                "or with standard input");
+            errorStream.println("Command cat works with one file or with standard input");
             return 1;
         }
         if (commandArgs.isEmpty()) {
