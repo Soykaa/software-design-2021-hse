@@ -50,7 +50,7 @@ public class ExecutorTests {
     @Test
     public void testEchoWcExecutedOk() {
         assertEquals(0, executor.execute("echo 42 | wc"));
-        assertEquals("1  1 2" + System.lineSeparator(), outContent.toString());
+        assertEquals("1\t1 2" + System.lineSeparator(), outContent.toString());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class ExecutorTests {
     @Test
     public void testSeveralPipesOK() {
         assertEquals(0, executor.execute("pwd | echo 123 | wc"));
-        assertEquals("1  1 3" + System.lineSeparator(), outContent.toString());
+        assertEquals("1\t1 3" + System.lineSeparator(), outContent.toString());
     }
 
     @Test
