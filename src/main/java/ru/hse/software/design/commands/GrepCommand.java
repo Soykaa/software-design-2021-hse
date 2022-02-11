@@ -20,6 +20,13 @@ import java.util.stream.Stream;
 
 public class GrepCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
+    private static final Options options = new Options();
+
+    static {
+        options.addOption(new Option("w", "w", false, "The expression is searched for as a word"));
+        options.addOption(new Option("A", "A", true, "Print num lines of trailing context after each match."));
+        options.addOption(new Option("i", "i", false, "Perform case insensitive matching. By default, grep is case sensitive."));
+    }
 
     public GrepCommand(List<String> commandArgs) {
         this.commandArgs.addAll(commandArgs);
@@ -42,46 +49,46 @@ public class GrepCommand extends Command {
             errorStream.println("Regular expression should be passed");
             return 1;
         }
-        String regexp = arguments.get(0);
-        List<String> lines;
+        String regularExpression = arguments.get(0);
+        List<String> inputLines;
         if (arguments.size() == 1) {
-            lines = List.of(input.split(System.lineSeparator()));
+            inputLines = List.of(input.split(System.lineSeparator()));
         } else {
             String file = arguments.get(1);
             Path path = Paths.get(file);
             if (!Files.exists(path)) {
-                errorStream.println("file " + file + " does not exist");
+                errorStream.println("File " + file + " does not exist");
                 return 1;
             }
             try (Stream<String> stream = Files.lines(path)) {
-                lines = stream.collect(Collectors.toList());
+                inputLines = stream.collect(Collectors.toList());
             } catch (IOException e) {
-                errorStream.println("problem with reading from file " + e.getMessage());
+                errorStream.println("Problem with reading from file " + e.getMessage());
                 return 1;
             }
         }
         if (command.hasOption('w')) {
-            regexp = "\\b" + regexp + "\\b";
+            regularExpression = "\\b" + regularExpression + "\\b";
         }
         if (command.hasOption('i')) {
-            regexp = regexp.toLowerCase();
+            regularExpression = regularExpression.toLowerCase();
         }
         if (command.hasOption('A')) {
             long numberLines = Long.parseLong(command.getOptionValue('A'));
             if (numberLines < 0) {
-                errorStream.println("Option A argument should be non-negative value");
+                errorStream.println("Option 'A' argument should be non-negative value");
                 return 1;
             }
         }
-        Pattern pattern = Pattern.compile(regexp);
+        Pattern pattern = Pattern.compile(regularExpression);
         long numberLinesToPrint = 0;
         var stringBuilder = new StringBuilder();
-        for (String line : lines) {
+        for (String line : inputLines) {
             Matcher matcher;
             if (command.hasOption('i')) {
-                String lower = line;
-                lower = lower.toLowerCase();
-                matcher = pattern.matcher(lower);
+                String lineInLowercase = line;
+                lineInLowercase = lineInLowercase.toLowerCase();
+                matcher = pattern.matcher(lineInLowercase);
             } else {
                 matcher = pattern.matcher(line);
             }
@@ -90,7 +97,7 @@ public class GrepCommand extends Command {
                     stringBuilder.append(System.lineSeparator());
                 }
                 stringBuilder.append(line);
-                numberLinesToPrint = Long.parseLong(command.getOptionValue('A',"0"));
+                numberLinesToPrint = Long.parseLong(command.getOptionValue('A', "0"));
                 continue;
             }
             if (numberLinesToPrint > 0) {
@@ -101,14 +108,5 @@ public class GrepCommand extends Command {
         }
         output = stringBuilder.toString();
         return 0;
-    }
-
-    private static final Options options = new Options();
-
-    static {
-        options.addOption(new Option("w", "w", false, "The expression is searched for as a word"));
-        options.addOption(new Option("A", "A", true, "Print num lines of trailing context after each match."));
-        options.addOption(new Option("i", "i", false, "Perform case insensitive matching.  By default," +
-            " grep is case sensitive."));
     }
 }
