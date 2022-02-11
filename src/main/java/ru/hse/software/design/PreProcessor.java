@@ -24,7 +24,7 @@ public class PreProcessor {
     }
 
     private static Token removeQuotes(Token token) {
-        var currentStatus = QuotesStatus.DEFAULT;
+        QuotesStatus currentStatus = QuotesStatus.DEFAULT;
         var newToken = new StringBuilder();
         String tokenString = token.getToken();
         for (int i = 0; i < tokenString.length(); i++) {
@@ -63,7 +63,7 @@ public class PreProcessor {
     private static Token preProcessToken(Token token) {
         var preProcessedToken = new StringBuilder();
         var variableName = new StringBuilder();
-        var currentStatus = QuotesStatus.DEFAULT;
+        QuotesStatus currentStatus = QuotesStatus.DEFAULT;
         boolean variableNameStarted = false;
         for (int i = 0; i < token.getToken().length(); i++) {
             char currentSymbol = token.getToken().charAt(i);

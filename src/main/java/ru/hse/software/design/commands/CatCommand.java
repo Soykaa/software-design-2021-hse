@@ -51,7 +51,7 @@ public class CatCommand extends Command {
         List<String> lines;
         try (Stream<String> stream = Files.lines(path)) {
             lines = stream.collect(Collectors.toList());
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             for (String line : lines) {
                 stringBuilder.append(line);
                 stringBuilder.append('\n');
