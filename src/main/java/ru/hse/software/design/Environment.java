@@ -46,8 +46,11 @@ public class Environment {
         }
     }
 
+
     /**
      * Returns all the environment variables.
+     *
+     * @return Environment variables and its values as map
      */
     public static Map<String, String> getAll() {
         try {

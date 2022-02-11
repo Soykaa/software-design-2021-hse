@@ -2,7 +2,6 @@ package ru.hse.software.design;
 
 import ru.hse.software.design.commands.Command;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -24,16 +23,31 @@ public class Executor {
      * Takes a user-supplied string as input and calls the required components in the correct order.
      *
      * @param commandString user-supplied string
-     * @return 0 if execution was successful or error code otherwise
-     * @throws IOException          thrown in case of problems with reading bytes from PipedInputStream
-     * @throws InterruptedException thrown in case of thread.join()
+     * @return Return code
      **/
-    public int execute(String commandString) throws IOException, InterruptedException {
-        List<Token> tokens = Lexer.getTokens(commandString);
-        CommandTokens commandTokens = Parser.preProcess(tokens);
-        Command command = CommandBuilder.build(commandTokens, cli);
-        int returnCode = command.execute("");
-        System.out.println(command.getOutput());
-        return returnCode;
+    public int execute(String commandString) {
+        try {
+            List<Token> tokens = Lexer.getTokens(commandString);
+            List<Token> preProcessedTokens = PreProcessor.preProcess(tokens);
+            List<CommandTokens> commandTokens = Parser.preProcess(preProcessedTokens);
+            List<Command> commands = CommandBuilder.build(commandTokens, cli);
+            String prevCommandOutput = "";
+            int returnCode = 0;
+            for (Command command : commands) {
+                returnCode = command.execute(prevCommandOutput);
+                if (command.getCommand().equals("exit")) {
+                    return returnCode;
+                }
+                if (returnCode != 0) {
+                    return returnCode;
+                }
+                prevCommandOutput = command.getOutput();
+            }
+            System.out.println(prevCommandOutput);
+            return returnCode;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return 1;
+        }
     }
 }

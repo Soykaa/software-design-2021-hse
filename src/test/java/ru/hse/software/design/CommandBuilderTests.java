@@ -27,24 +27,20 @@ public class CommandBuilderTests {
     @Test
     public void testInnerCommands() {
         List<String> arguments = Arrays.asList("arg1", "arg2");
-        List<CommandTokens> commandTokens = Arrays.asList(new CommandTokens("echo", arguments),
-            new CommandTokens("cat", arguments),
-            new CommandTokens("wc", arguments),
-            new CommandTokens("exit", arguments),
-            new CommandTokens("pwd", arguments),
-            new CommandTokens("environment", arguments));
+        List<CommandTokens> commandTokens = Arrays.asList(new CommandTokens("echo", arguments), new CommandTokens("cat", arguments), new CommandTokens("wc", arguments), new CommandTokens("exit", arguments), new CommandTokens("pwd", arguments), new CommandTokens("environment", arguments));
 
-        for (CommandTokens token : commandTokens) {
-            Command command = CommandBuilder.build(token, cli);
-            Assertions.assertEquals(commandsClasses.get(token.getCommand()), command.getClass());
+        List<Command> commands = CommandBuilder.build(commandTokens, cli);
+        Assertions.assertEquals(commands.size(), commandTokens.size());
+        for (int i = 0; i < commands.size(); i++) {
+            Assertions.assertEquals(commandsClasses.get(commandTokens.get(i).getCommand()), commands.get(i).getClass());
         }
     }
 
     @Test
     public void testOuterCommand() {
         List<String> arguments = Arrays.asList("arg1", "arg2");
-        var commandTokens = new CommandTokens("new_command", arguments);
-        Command command = CommandBuilder.build(commandTokens, cli);
-        Assertions.assertEquals(OuterCommand.class, command.getClass());
+        List<CommandTokens> commandTokens = List.of(new CommandTokens("new_command", arguments));
+        List<Command> commands = CommandBuilder.build(commandTokens, cli);
+        Assertions.assertEquals(OuterCommand.class, commands.get(0).getClass());
     }
 }

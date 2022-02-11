@@ -34,10 +34,12 @@ public class Lexer {
                         break;
                     }
                     if (currentStatus == QuotesStatus.INSIDE_SINGLE) {
+                        currentToken.append('\'');
                         currentStatus = QuotesStatus.DEFAULT;
                         break;
                     }
                     currentStatus = QuotesStatus.INSIDE_SINGLE;
+                    currentToken.append('\'');
                     break;
                 case '"':
                     if (currentStatus == QuotesStatus.INSIDE_SINGLE) {
@@ -45,10 +47,12 @@ public class Lexer {
                         break;
                     }
                     if (currentStatus == QuotesStatus.INSIDE_DOUBLE) {
+                        currentToken.append('\"');
                         currentStatus = QuotesStatus.DEFAULT;
                         break;
                     }
                     currentStatus = QuotesStatus.INSIDE_DOUBLE;
+                    currentToken.append('\"');
                     break;
                 case '$':
                     if (currentStatus != QuotesStatus.INSIDE_SINGLE) {

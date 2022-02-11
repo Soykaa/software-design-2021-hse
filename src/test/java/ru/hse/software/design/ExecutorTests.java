@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,13 +31,13 @@ public class ExecutorTests {
     }
 
     @Test
-    public void testCommandExecutedOk() throws IOException, InterruptedException {
+    public void testCommandExecutedOk() {
         assertEquals(0, executor.execute("echo 42"));
         assertEquals("42" + System.lineSeparator(), outContent.toString());
     }
 
     @Test
-    public void testCommandFailed() throws IOException, InterruptedException {
+    public void testCommandFailed() {
         assertEquals(1, executor.execute("non-existent-command"));
         assertTrue(errContent.toString().contains("Cannot run program \"non-existent-command"));
     }

@@ -4,8 +4,8 @@ package ru.hse.software.design;
  * Class which represents lexer tokens.
  **/
 public class Token {
-    private final String token;
-    private final Type type;
+    private String token;
+    private Type type;
 
     /**
      * Accepts token and type its type.
@@ -35,5 +35,22 @@ public class Token {
     public Type getType() {
         return type;
     }
-}
 
+    /**
+     * Set token type same as the given value.
+     *
+     * @param type token type
+     **/
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    /**
+     * Set token same as the given value.
+     *
+     * @param token token itself
+     **/
+    public void setToken(String token) {
+        this.token = token;
+    }
+}

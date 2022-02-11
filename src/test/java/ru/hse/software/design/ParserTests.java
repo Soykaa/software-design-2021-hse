@@ -1,95 +1,139 @@
 package ru.hse.software.design;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
 public class ParserTests {
-    @Test
-    public void testWithoutArguments() {
-        var command = new Token("command", Type.FULLY_PROCESSED);
-        CommandTokens commandTokens = Parser.preProcess(List.of(command));
-        Assertions.assertEquals("command", commandTokens.getCommand());
-        Assertions.assertEquals(0, commandTokens.getCommandArgs().size());
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private final PrintStream originalErr = System.err;
+
+    @BeforeEach
+    public void setUp() {
+        System.setErr(new PrintStream(errContent));
+        Environment.clear();
+    }
+
+    @AfterEach
+    public void restoreStreams() {
+        System.setErr(originalErr);
     }
 
     @Test
-    public void testOneArgument() {
+    public void testOneCommandWithoutArguments() {
         var command = new Token("command", Type.FULLY_PROCESSED);
-        var arg = new Token("arg", Type.FULLY_PROCESSED);
-        CommandTokens commandTokens = Parser.preProcess(Arrays.asList(command, arg));
-        Assertions.assertEquals("command", commandTokens.getCommand());
-        Assertions.assertEquals(1, commandTokens.getCommandArgs().size());
-        Assertions.assertEquals("arg", commandTokens.getCommandArgs().get(0));
+        List<CommandTokens> commandTokens = Parser.preProcess(List.of(command));
+        Assertions.assertEquals("command", commandTokens.get(0).getCommand());
+        Assertions.assertEquals(0, commandTokens.get(0).getCommandArgs().size());
     }
 
     @Test
-    public void testMoreArguments() {
+    public void testOneCommandWithArguments() {
         var command = new Token("command", Type.FULLY_PROCESSED);
         var arg1 = new Token("arg1", Type.FULLY_PROCESSED);
         var arg2 = new Token("arg2", Type.FULLY_PROCESSED);
         var arg3 = new Token("arg3", Type.FULLY_PROCESSED);
-        CommandTokens commandTokens = Parser.preProcess(Arrays.asList(command, arg1, arg2, arg3));
-        Assertions.assertEquals("command", commandTokens.getCommand());
-        Assertions.assertEquals(3, commandTokens.getCommandArgs().size());
-        Assertions.assertEquals("arg1", commandTokens.getCommandArgs().get(0));
-        Assertions.assertEquals("arg2", commandTokens.getCommandArgs().get(1));
-        Assertions.assertEquals("arg3", commandTokens.getCommandArgs().get(2));
+        List<CommandTokens> commandTokens = Parser.preProcess(Arrays.asList(command, arg1, arg2, arg3));
+        Assertions.assertEquals("command", commandTokens.get(0).getCommand());
+        Assertions.assertEquals(3, commandTokens.get(0).getCommandArgs().size());
+        Assertions.assertEquals("arg1", commandTokens.get(0).getCommandArgs().get(0));
+        Assertions.assertEquals("arg2", commandTokens.get(0).getCommandArgs().get(1));
+        Assertions.assertEquals("arg3", commandTokens.get(0).getCommandArgs().get(2));
     }
 
     @Test
-    public void testEqualitySimple() {
+    public void testEqualityOneCommand() {
         var command = new Token("x=123", Type.FULLY_PROCESSED);
-        CommandTokens commandTokens = Parser.preProcess(List.of(command));
-        Assertions.assertEquals("environment", commandTokens.getCommand());
-        Assertions.assertEquals(2, commandTokens.getCommandArgs().size());
-        Assertions.assertEquals("x", commandTokens.getCommandArgs().get(0));
-        Assertions.assertEquals("123", commandTokens.getCommandArgs().get(1));
+        List<CommandTokens> commandTokens = Parser.preProcess(List.of(command));
+        Assertions.assertEquals("environment", commandTokens.get(0).getCommand());
+        Assertions.assertEquals(2, commandTokens.get(0).getCommandArgs().size());
+        Assertions.assertEquals("x", commandTokens.get(0).getCommandArgs().get(0));
+        Assertions.assertEquals("123", commandTokens.get(0).getCommandArgs().get(1));
     }
 
     @Test
-    public void testEqualityWithoutVariable() {
-        var command = new Token("=123", Type.FULLY_PROCESSED);
-        CommandTokens commandTokens = Parser.preProcess(List.of(command));
-        Assertions.assertEquals("=123", commandTokens.getCommand());
-        Assertions.assertEquals(0, commandTokens.getCommandArgs().size());
+    public void testThreeCommands() {
+        var command1 = new Token("command1", Type.FULLY_PROCESSED);
+        var pipe = new Token("|", Type.FULLY_PROCESSED);
+        var command2 = new Token("command2", Type.FULLY_PROCESSED);
+        var arg1 = new Token("arg1", Type.FULLY_PROCESSED);
+        var arg2 = new Token("arg2", Type.FULLY_PROCESSED);
+        var command3 = new Token("command3", Type.FULLY_PROCESSED);
+        var arg3 = new Token("arg3", Type.FULLY_PROCESSED);
+        List<CommandTokens> commandTokens = Parser.preProcess(Arrays.asList(command1, pipe, command2, arg1, arg2, pipe, command3, arg3));
+        Assertions.assertEquals(3, commandTokens.size());
+        Assertions.assertEquals("command1", commandTokens.get(0).getCommand());
+        Assertions.assertEquals(0, commandTokens.get(0).getCommandArgs().size());
+        Assertions.assertEquals("command2", commandTokens.get(1).getCommand());
+        Assertions.assertEquals(2, commandTokens.get(1).getCommandArgs().size());
+        Assertions.assertEquals("arg1", commandTokens.get(1).getCommandArgs().get(0));
+        Assertions.assertEquals("arg2", commandTokens.get(1).getCommandArgs().get(1));
+        Assertions.assertEquals("command3", commandTokens.get(2).getCommand());
+        Assertions.assertEquals("arg3", commandTokens.get(2).getCommandArgs().get(0));
     }
 
     @Test
-    public void testEqualityInQuotes1() {
-        var command = new Token("x'=123'", Type.FULLY_PROCESSED);
-        CommandTokens commandTokens = Parser.preProcess(List.of(command));
-        Assertions.assertEquals("x'=123'", commandTokens.getCommand());
-        Assertions.assertEquals(0, commandTokens.getCommandArgs().size());
+    public void testTwoPipesTogether() {
+        var command1 = new Token("command1", Type.FULLY_PROCESSED);
+        var pipe = new Token("|", Type.FULLY_PROCESSED);
+        var command2 = new Token("command2", Type.FULLY_PROCESSED);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Parser.preProcess(Arrays.asList(command1, pipe, pipe, command2)));
     }
 
     @Test
-    public void testEqualityInQuotes2() {
-        var command = new Token("x'yz\"=123\"'", Type.FULLY_PROCESSED);
-        CommandTokens commandTokens = Parser.preProcess(List.of(command));
-        Assertions.assertEquals("x'yz\"=123\"'", commandTokens.getCommand());
-        Assertions.assertEquals(0, commandTokens.getCommandArgs().size());
+    public void testPipeInTheBegin() {
+        var command1 = new Token("command1", Type.FULLY_PROCESSED);
+        var pipe = new Token("|", Type.FULLY_PROCESSED);
+        var command2 = new Token("command2", Type.FULLY_PROCESSED);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Parser.preProcess(Arrays.asList(pipe, command1, pipe, command2)));
     }
 
     @Test
-    public void testDoubleEquality1() {
-        var command = new Token("\"x=123\"=test", Type.FULLY_PROCESSED);
-        CommandTokens commandTokens = Parser.preProcess(List.of(command));
-        Assertions.assertEquals("environment", commandTokens.getCommand());
-        Assertions.assertEquals(2, commandTokens.getCommandArgs().size());
-        Assertions.assertEquals("\"x=123\"", commandTokens.getCommandArgs().get(0));
-        Assertions.assertEquals("test", commandTokens.getCommandArgs().get(1));
+    public void testPipeInTheEnd() {
+        var command1 = new Token("command1", Type.FULLY_PROCESSED);
+        var pipe = new Token("|", Type.FULLY_PROCESSED);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Parser.preProcess(Arrays.asList(command1, pipe)));
     }
 
     @Test
-    public void testDoubleEquality2() {
-        var command = new Token("x=\"a=2\"", Type.FULLY_PROCESSED);
-        CommandTokens commandTokens = Parser.preProcess(List.of(command));
-        Assertions.assertEquals("environment", commandTokens.getCommand());
-        Assertions.assertEquals(2, commandTokens.getCommandArgs().size());
-        Assertions.assertEquals("x", commandTokens.getCommandArgs().get(0));
-        Assertions.assertEquals("\"a=2\"", commandTokens.getCommandArgs().get(1));
+    public void testEqualityAfterPipe() {
+        var command1 = new Token("command1", Type.FULLY_PROCESSED);
+        var pipe = new Token("|", Type.FULLY_PROCESSED);
+        var equality = new Token("x=123", Type.FULLY_PROCESSED);
+        List<CommandTokens> commandTokens = Parser.preProcess(Arrays.asList(command1, pipe, equality));
+        Assertions.assertEquals("environment", commandTokens.get(1).getCommand());
+        Assertions.assertEquals(2, commandTokens.get(1).getCommandArgs().size());
+        Assertions.assertEquals("x", commandTokens.get(1).getCommandArgs().get(0));
+        Assertions.assertEquals("123", commandTokens.get(1).getCommandArgs().get(1));
+    }
+
+    @Test
+    public void testEqualityWithArgumentsAfterPipe() {
+        var command1 = new Token("command1", Type.FULLY_PROCESSED);
+        var pipe = new Token("|", Type.FULLY_PROCESSED);
+        var equality = new Token("x=123", Type.FULLY_PROCESSED);
+        var arg = new Token("arg", Type.FULLY_PROCESSED);
+        List<CommandTokens> commandTokens = Parser.preProcess(Arrays.asList(command1, pipe, equality, arg));
+        Assertions.assertEquals("environment", commandTokens.get(1).getCommand());
+        Assertions.assertEquals(3, commandTokens.get(1).getCommandArgs().size());
+        Assertions.assertEquals("x", commandTokens.get(1).getCommandArgs().get(0));
+        Assertions.assertEquals("123", commandTokens.get(1).getCommandArgs().get(1));
+        Assertions.assertEquals("arg", commandTokens.get(1).getCommandArgs().get(2));
+    }
+
+    @Test
+    public void testEqualityWithoutVariableAfterPipe() {
+        var command1 = new Token("command1", Type.FULLY_PROCESSED);
+        var pipe = new Token("|", Type.FULLY_PROCESSED);
+        var equality = new Token("=123", Type.FULLY_PROCESSED);
+        List<CommandTokens> commandTokens = Parser.preProcess(Arrays.asList(command1, pipe, equality));
+        Assertions.assertEquals("=123", commandTokens.get(1).getCommand());
+        Assertions.assertEquals(0, commandTokens.get(1).getCommandArgs().size());
     }
 }
