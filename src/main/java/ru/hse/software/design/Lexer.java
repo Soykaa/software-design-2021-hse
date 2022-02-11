@@ -85,7 +85,9 @@ public class Lexer {
                     break;
             }
         }
-        result.add(new Token(currentToken.toString(), currentTokenType));
+        if (!currentToken.toString().isEmpty()) {
+            result.add(new Token(currentToken.toString(), currentTokenType));
+        }
         if (currentStatus != QuotesStatus.DEFAULT) {
             throw new IllegalArgumentException("Incorrect quotes");
         }
