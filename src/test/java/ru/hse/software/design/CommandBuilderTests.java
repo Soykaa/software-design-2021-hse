@@ -5,8 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.hse.software.design.commands.*;
 
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +44,7 @@ public class CommandBuilderTests {
     @Test
     public void testOuterCommand() {
         List<String> arguments = Arrays.asList("arg1", "arg2");
-        CommandTokens commandTokens = new CommandTokens("new_command", arguments);
+        var commandTokens = new CommandTokens("new_command", arguments);
         Command command = CommandBuilder.build(commandTokens, path, cli);
         Assertions.assertEquals(OuterCommand.class, command.getClass());
     }

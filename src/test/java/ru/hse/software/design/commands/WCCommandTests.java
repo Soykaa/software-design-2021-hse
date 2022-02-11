@@ -33,7 +33,7 @@ public class WCCommandTests {
         Assertions.assertEquals(0, command.execute(""));
         Assertions.assertTrue(errContent.toString().isEmpty());
         String actualOutput = command.output;
-        String expectedOutput = "7  40 " + Files.size(Paths.get("src/resources/not_empty_file.txt"));
+        String expectedOutput = "7\t40 " + Files.size(Paths.get("src/resources/not_empty_file.txt"));
         Assertions.assertEquals(expectedOutput, actualOutput);
     }
 
@@ -43,7 +43,7 @@ public class WCCommandTests {
         Assertions.assertEquals(0, command.execute(""));
         Assertions.assertTrue(errContent.toString().isEmpty());
         String actualOutput = command.output;
-        String expectedOutput = "0  0 0";
+        String expectedOutput = "0\t0 0";
         Assertions.assertEquals(expectedOutput, actualOutput);
     }
 
@@ -75,7 +75,7 @@ public class WCCommandTests {
         Assertions.assertEquals(0, command.execute("This is test string input"));
         Assertions.assertTrue(errContent.toString().isEmpty());
         String actualOutput = command.output;
-        String expectedOutput = "1  5 25";
+        String expectedOutput = "1\t5 25";
         Assertions.assertEquals(expectedOutput, actualOutput);
     }
 
@@ -85,7 +85,7 @@ public class WCCommandTests {
         Assertions.assertEquals(0, command.execute(""));
         Assertions.assertTrue(errContent.toString().isEmpty());
         String actualOutput = command.output;
-        String expectedOutput = "1  0 0";
+        String expectedOutput = "1\t0 0";
         Assertions.assertEquals(expectedOutput, actualOutput);
     }
 }

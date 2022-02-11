@@ -5,7 +5,7 @@ package ru.hse.software.design;
  **/
 public class Token {
     private final String token;
-    private Type type;
+    private final Type type;
 
     /**
      * Accepts token and type its type.
@@ -34,15 +34,6 @@ public class Token {
      **/
     public Type getType() {
         return type;
-    }
-
-    /**
-     * Set token type same as the given value.
-     *
-     * @param type token type
-     **/
-    public void setType(Type type) {
-        this.type = type;
     }
 }
 

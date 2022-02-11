@@ -41,7 +41,7 @@ public class WCCommand extends Command {
         }
         if (commandArgs.isEmpty()) {
             if (input.equals("")) {
-                output = "1  0 0";
+                output = "1\t0 0";
                 return 0;
             }
             String[] lines = input.split(System.lineSeparator());
@@ -51,7 +51,7 @@ public class WCCommand extends Command {
             long numWords = words.length;
             byte[] bytes = input.getBytes(StandardCharsets.UTF_8);
             long numBytes = bytes.length;
-            output = numLines + " " + " " + numWords + " " + numBytes;
+            output = numLines + "\t" + numWords + " " + numBytes;
             return 0;
         }
         Path path = Paths.get(commandArgs.get(0));
@@ -68,7 +68,7 @@ public class WCCommand extends Command {
                 String[] words = line.split(" ");
                 numWords += words.length;
             }
-            output = numLines + " " + " " + numWords + " " + numBytes;
+            output = numLines + "\t" + numWords + " " + numBytes;
         } catch (IOException e) {
             errorStream.println("problem with reading from file " + e.getMessage());
             return 1;

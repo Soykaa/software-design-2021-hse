@@ -9,60 +9,72 @@ import java.util.List;
 public class Lexer {
     private enum QuotesStatus {
         DEFAULT,
-        SINGLE_FIRST,
-        DOUBLE_FIRST
+        INSIDE_SINGLE,
+        INSIDE_DOUBLE
     }
 
     /**
      * Takes the entire string entered by the user as input,
-     * and then divides it into tokens depending on the location of spaces, quotes and '$'.
+     * and then divides it into tokens depending on the location of spaces, quotes, '$' and '|'.
      *
      * @param command input string
      * @return List of Token objects
      **/
     public static List<Token> getTokens(String command) {
         List<Token> result = new ArrayList<>();
-        boolean openedSingleQuotes = false;
-        boolean openedDoubleQuotes = false;
-        QuotesStatus currentQuotesStatus = QuotesStatus.DEFAULT;
+        QuotesStatus currentStatus = QuotesStatus.DEFAULT;
         var currentToken = new StringBuilder();
         Type currentTokenType = Type.FULLY_PROCESSED;
 
         for (int i = 0; i < command.length(); i++) {
             switch (command.charAt(i)) {
                 case '\'':
-                    openedSingleQuotes = !openedSingleQuotes;
-                    if (openedSingleQuotes && !openedDoubleQuotes) {
-                        currentQuotesStatus = QuotesStatus.SINGLE_FIRST;
+                    if (currentStatus == QuotesStatus.INSIDE_DOUBLE) {
+                        currentToken.append('\'');
+                        break;
                     }
-                    if (!openedSingleQuotes && openedDoubleQuotes) {
-                        currentQuotesStatus = QuotesStatus.DOUBLE_FIRST;
+                    if (currentStatus == QuotesStatus.INSIDE_SINGLE) {
+                        currentToken.append('\'');
+                        currentStatus = QuotesStatus.DEFAULT;
+                        break;
                     }
-                    if (!openedSingleQuotes && !openedDoubleQuotes) {
-                        currentQuotesStatus = QuotesStatus.DEFAULT;
-                    }
+                    currentStatus = QuotesStatus.INSIDE_SINGLE;
+                    currentToken.append('\'');
                     break;
-                case '\"':
-                    openedDoubleQuotes = !openedDoubleQuotes;
-                    if (openedSingleQuotes && !openedDoubleQuotes) {
-                        currentQuotesStatus = QuotesStatus.SINGLE_FIRST;
+                case '"':
+                    if (currentStatus == QuotesStatus.INSIDE_SINGLE) {
+                        currentToken.append('\"');
+                        break;
                     }
-                    if (!openedSingleQuotes && openedDoubleQuotes) {
-                        currentQuotesStatus = QuotesStatus.DOUBLE_FIRST;
+                    if (currentStatus == QuotesStatus.INSIDE_DOUBLE) {
+                        currentToken.append('\"');
+                        currentStatus = QuotesStatus.DEFAULT;
+                        break;
                     }
-                    if (!openedSingleQuotes && !openedDoubleQuotes) {
-                        currentQuotesStatus = QuotesStatus.DEFAULT;
-                    }
+                    currentStatus = QuotesStatus.INSIDE_DOUBLE;
+                    currentToken.append('\"');
                     break;
                 case '$':
-                    if (currentQuotesStatus == QuotesStatus.DOUBLE_FIRST || !openedSingleQuotes) {
+                    if (currentStatus != QuotesStatus.INSIDE_SINGLE) {
                         currentTokenType = Type.WEAKLY_PROCESSED;
                     }
                     currentToken.append('$');
                     break;
+                case '|':
+                    if (currentStatus == QuotesStatus.DEFAULT) {
+                        if (currentToken.length() != 0) {
+                            result.add(new Token(currentToken.toString(), currentTokenType));
+                        }
+                        result.add(new Token("|", Type.FULLY_PROCESSED));
+                        currentToken.setLength(0);
+                        currentTokenType = Type.FULLY_PROCESSED;
+                    } else {
+                        currentToken.append(command.charAt(i));
+                    }
+                    break;
                 default:
                     if (Character.isWhitespace(command.charAt(i))) {
-                        if (!openedDoubleQuotes && !openedSingleQuotes) {
+                        if (currentStatus == QuotesStatus.DEFAULT) {
                             if (currentToken.length() != 0) {
                                 result.add(new Token(currentToken.toString(), currentTokenType));
                                 currentToken.setLength(0);
@@ -78,7 +90,7 @@ public class Lexer {
             }
         }
         result.add(new Token(currentToken.toString(), currentTokenType));
-        if (openedDoubleQuotes || openedSingleQuotes) {
+        if (currentStatus != QuotesStatus.DEFAULT) {
             throw new IllegalArgumentException("Incorrect quotes");
         }
         return result;

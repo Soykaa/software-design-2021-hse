@@ -9,7 +9,7 @@ import java.util.List;
 public class ParserTests {
     @Test
     public void testWithoutArguments() {
-        Token command = new Token("command", Type.FULLY_PROCESSED);
+        var command = new Token("command", Type.FULLY_PROCESSED);
         CommandTokens commandTokens = Parser.preProcess(List.of(command));
         Assertions.assertEquals("command", commandTokens.getCommand());
         Assertions.assertEquals(0, commandTokens.getCommandArgs().size());
@@ -17,8 +17,8 @@ public class ParserTests {
 
     @Test
     public void testOneArgument() {
-        Token command = new Token("command", Type.FULLY_PROCESSED);
-        Token arg = new Token("arg", Type.FULLY_PROCESSED);
+        var command = new Token("command", Type.FULLY_PROCESSED);
+        var arg = new Token("arg", Type.FULLY_PROCESSED);
         CommandTokens commandTokens = Parser.preProcess(Arrays.asList(command, arg));
         Assertions.assertEquals("command", commandTokens.getCommand());
         Assertions.assertEquals(1, commandTokens.getCommandArgs().size());
@@ -27,10 +27,10 @@ public class ParserTests {
 
     @Test
     public void testMoreArguments() {
-        Token command = new Token("command", Type.FULLY_PROCESSED);
-        Token arg1 = new Token("arg1", Type.FULLY_PROCESSED);
-        Token arg2 = new Token("arg2", Type.FULLY_PROCESSED);
-        Token arg3 = new Token("arg3", Type.FULLY_PROCESSED);
+        var command = new Token("command", Type.FULLY_PROCESSED);
+        var arg1 = new Token("arg1", Type.FULLY_PROCESSED);
+        var arg2 = new Token("arg2", Type.FULLY_PROCESSED);
+        var arg3 = new Token("arg3", Type.FULLY_PROCESSED);
         CommandTokens commandTokens = Parser.preProcess(Arrays.asList(command, arg1, arg2, arg3));
         Assertions.assertEquals("command", commandTokens.getCommand());
         Assertions.assertEquals(3, commandTokens.getCommandArgs().size());
@@ -41,7 +41,7 @@ public class ParserTests {
 
     @Test
     public void testEqualitySimple() {
-        Token command = new Token("x=123", Type.FULLY_PROCESSED);
+        var command = new Token("x=123", Type.FULLY_PROCESSED);
         CommandTokens commandTokens = Parser.preProcess(List.of(command));
         Assertions.assertEquals("environment", commandTokens.getCommand());
         Assertions.assertEquals(2, commandTokens.getCommandArgs().size());
@@ -51,7 +51,7 @@ public class ParserTests {
 
     @Test
     public void testEqualityWithoutVariable() {
-        Token command = new Token("=123", Type.FULLY_PROCESSED);
+        var command = new Token("=123", Type.FULLY_PROCESSED);
         CommandTokens commandTokens = Parser.preProcess(List.of(command));
         Assertions.assertEquals("=123", commandTokens.getCommand());
         Assertions.assertEquals(0, commandTokens.getCommandArgs().size());
@@ -59,7 +59,7 @@ public class ParserTests {
 
     @Test
     public void testEqualityInQuotes1() {
-        Token command = new Token("x'=123'", Type.FULLY_PROCESSED);
+        var command = new Token("x'=123'", Type.FULLY_PROCESSED);
         CommandTokens commandTokens = Parser.preProcess(List.of(command));
         Assertions.assertEquals("x'=123'", commandTokens.getCommand());
         Assertions.assertEquals(0, commandTokens.getCommandArgs().size());
@@ -67,7 +67,7 @@ public class ParserTests {
 
     @Test
     public void testEqualityInQuotes2() {
-        Token command = new Token("x'yz\"=123\"'", Type.FULLY_PROCESSED);
+        var command = new Token("x'yz\"=123\"'", Type.FULLY_PROCESSED);
         CommandTokens commandTokens = Parser.preProcess(List.of(command));
         Assertions.assertEquals("x'yz\"=123\"'", commandTokens.getCommand());
         Assertions.assertEquals(0, commandTokens.getCommandArgs().size());
@@ -75,7 +75,7 @@ public class ParserTests {
 
     @Test
     public void testDoubleEquality1() {
-        Token command = new Token("\"x=123\"=test", Type.FULLY_PROCESSED);
+        var command = new Token("\"x=123\"=test", Type.FULLY_PROCESSED);
         CommandTokens commandTokens = Parser.preProcess(List.of(command));
         Assertions.assertEquals("environment", commandTokens.getCommand());
         Assertions.assertEquals(2, commandTokens.getCommandArgs().size());
@@ -85,7 +85,7 @@ public class ParserTests {
 
     @Test
     public void testDoubleEquality2() {
-        Token command = new Token("x=\"a=2\"", Type.FULLY_PROCESSED);
+        var command = new Token("x=\"a=2\"", Type.FULLY_PROCESSED);
         CommandTokens commandTokens = Parser.preProcess(List.of(command));
         Assertions.assertEquals("environment", commandTokens.getCommand());
         Assertions.assertEquals(2, commandTokens.getCommandArgs().size());
