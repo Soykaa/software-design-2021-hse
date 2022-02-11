@@ -24,12 +24,12 @@ public class PreProcessor {
     }
 
     private static Token removeQuotes(Token token) {
-        QuotesStatus currentStatus = QuotesStatus.DEFAULT;
-        StringBuilder newToken = new StringBuilder();
+        var currentStatus = QuotesStatus.DEFAULT;
+        var newToken = new StringBuilder();
         String tokenString = token.getToken();
         for (int i = 0; i < tokenString.length(); i++) {
-            char currentSymb = tokenString.charAt(i);
-            switch (currentSymb) {
+            char currentSymbol = tokenString.charAt(i);
+            switch (currentSymbol) {
                 case '\'':
                     if (currentStatus == QuotesStatus.INSIDE_DOUBLE) {
                         newToken.append('\'');
@@ -53,7 +53,7 @@ public class PreProcessor {
                     currentStatus = QuotesStatus.INSIDE_DOUBLE;
                     break;
                 default:
-                    newToken.append(currentSymb);
+                    newToken.append(currentSymbol);
             }
         }
         token.setToken(newToken.toString());
@@ -61,9 +61,9 @@ public class PreProcessor {
     }
 
     private static Token preProcessToken(Token token) {
-        StringBuilder preProcessedToken = new StringBuilder();
-        StringBuilder variableName = new StringBuilder();
-        QuotesStatus currentStatus = QuotesStatus.DEFAULT;
+        var preProcessedToken = new StringBuilder();
+        var variableName = new StringBuilder();
+        var currentStatus = QuotesStatus.DEFAULT;
         boolean variableNameStarted = false;
         for (int i = 0; i < token.getToken().length(); i++) {
             char currentSymbol = token.getToken().charAt(i);
@@ -91,8 +91,7 @@ public class PreProcessor {
                 if (currentSymbol == '\'') {
                     if (currentStatus == QuotesStatus.INSIDE_SINGLE) {
                         currentStatus = QuotesStatus.DEFAULT;
-                    }
-                    else if (currentStatus == QuotesStatus.DEFAULT) {
+                    } else if (currentStatus == QuotesStatus.DEFAULT) {
                         currentStatus = QuotesStatus.INSIDE_SINGLE;
                     }
                 }
@@ -100,8 +99,7 @@ public class PreProcessor {
                 if (currentSymbol == '"') {
                     if (currentStatus == QuotesStatus.INSIDE_DOUBLE) {
                         currentStatus = QuotesStatus.DEFAULT;
-                    }
-                    else if (currentStatus == QuotesStatus.DEFAULT) {
+                    } else if (currentStatus == QuotesStatus.DEFAULT) {
                         currentStatus = QuotesStatus.INSIDE_DOUBLE;
                     }
                 }

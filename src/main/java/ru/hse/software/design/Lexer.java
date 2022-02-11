@@ -22,9 +22,9 @@ public class Lexer {
      **/
     public static List<Token> getTokens(String command) {
         List<Token> result = new ArrayList<>();
-        QuotesStatus currentStatus = QuotesStatus.DEFAULT;
+        var currentStatus = QuotesStatus.DEFAULT;
         var currentToken = new StringBuilder();
-        Type currentTokenType = Type.FULLY_PROCESSED;
+        var currentTokenType = Type.FULLY_PROCESSED;
 
         for (int i = 0; i < command.length(); i++) {
             switch (command.charAt(i)) {
