@@ -46,21 +46,16 @@ public class Environment {
         }
     }
 
+
     /**
-     * Returns all environment variables with its values.
+     * Returns all the environment variables.
      *
-     * @return Environment variables and its values as string array in "{name}={value}" format, e.g. x=5
-     **/
-    public static String[] getAll() {
+     * @return Environment variables and its values as map
+     */
+    public static Map<String, String> getAll() {
         try {
             lock.lock();
-            String[] environmentVariablesAndValues = new String[environmentVariables.size()];
-            int currentIndex = 0;
-            for (var entry : environmentVariables.entrySet()) {
-                environmentVariablesAndValues[currentIndex] = entry.getKey() + "=" + entry.getValue();
-                currentIndex++;
-            }
-            return environmentVariablesAndValues;
+            return environmentVariables;
         } finally {
             lock.unlock();
         }
