@@ -17,12 +17,11 @@ public class CommandBuilder {
     /**
      * Creates a Command object corresponding to the passed commandToken.
      *
-     * @param commandToken  command token
-     * @param path          paths to directories containing external programs
-     * @param cli           CLI object
+     * @param commandToken command token
+     * @param cli          CLI object
      * @return Command object
      **/
-    public static Command build(CommandTokens commandToken, Path path, CLI cli) {
+    public static Command build(CommandTokens commandToken, CLI cli) {
         if (commandToken.getCommand().equals("cat")) {
             return new CatCommand(commandToken.getCommandArgs());
         }
@@ -41,6 +40,6 @@ public class CommandBuilder {
         if (commandToken.getCommand().equals("environment")) {
             return new EnvironmentCommand(commandToken.getCommandArgs());
         }
-        return new OuterCommand(commandToken.getCommand(), commandToken.getCommandArgs(), path);
+        return new OuterCommand(commandToken.getCommand(), commandToken.getCommandArgs());
     }
 }

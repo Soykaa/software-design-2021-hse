@@ -9,7 +9,6 @@ import java.util.List;
  * Class for executing user commands.
  **/
 public class Executor {
-    private final Path path;
     private final CLI cli;
 
     /**
@@ -18,7 +17,6 @@ public class Executor {
      * @param cli CLI object
      **/
     public Executor(CLI cli) {
-        this.path = new Path(System.getenv("PATH").split(System.getProperty("path.separator")));
         this.cli = cli;
     }
 
@@ -33,7 +31,7 @@ public class Executor {
     public int execute(String commandString) throws IOException, InterruptedException {
         List<Token> tokens = Lexer.getTokens(commandString);
         CommandTokens commandTokens = Parser.preProcess(tokens);
-        Command command = CommandBuilder.build(commandTokens, path, cli);
+        Command command = CommandBuilder.build(commandTokens, cli);
         int returnCode = command.execute("");
         System.out.println(command.getOutput());
         return returnCode;

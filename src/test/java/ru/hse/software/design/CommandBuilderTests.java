@@ -13,7 +13,6 @@ import java.util.Map;
 public class CommandBuilderTests {
     private static final Map<String, Class<?>> commandsClasses = new HashMap<>();
     private final CLI cli = new CLI();
-    private final Path path = new Path(new String[1]);
 
     @BeforeAll
     public static void setup() {
@@ -36,7 +35,7 @@ public class CommandBuilderTests {
             new CommandTokens("environment", arguments));
 
         for (CommandTokens token : commandTokens) {
-            Command command = CommandBuilder.build(token, path, cli);
+            Command command = CommandBuilder.build(token, cli);
             Assertions.assertEquals(commandsClasses.get(token.getCommand()), command.getClass());
         }
     }
@@ -45,7 +44,7 @@ public class CommandBuilderTests {
     public void testOuterCommand() {
         List<String> arguments = Arrays.asList("arg1", "arg2");
         var commandTokens = new CommandTokens("new_command", arguments);
-        Command command = CommandBuilder.build(commandTokens, path, cli);
+        Command command = CommandBuilder.build(commandTokens, cli);
         Assertions.assertEquals(OuterCommand.class, command.getClass());
     }
 }

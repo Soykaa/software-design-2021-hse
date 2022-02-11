@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ExecutorTests {
@@ -39,6 +40,6 @@ public class ExecutorTests {
     @Test
     public void testCommandFailed() throws IOException, InterruptedException {
         assertEquals(1, executor.execute("non-existent-command"));
-        assertEquals("Command non-existent-command not found" + System.lineSeparator(), errContent.toString());
+        assertTrue(errContent.toString().contains("Cannot run program \"non-existent-command\""));
     }
 }
