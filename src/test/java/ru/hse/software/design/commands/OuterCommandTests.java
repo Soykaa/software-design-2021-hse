@@ -32,7 +32,7 @@ public class OuterCommandTests {
     public void testEchoCommand() {
         Command command;
         if (OS.WINDOWS.isCurrentOs()) {
-            command = new OuterCommand("cmd", Arrays.asList("echo", "123"),
+            command = new OuterCommand("cmd", Arrays.asList("/C", "echo", "123"),
                 new Path(System.getenv("PATH").split(System.getProperty("path.separator"))));
         } else {
             command = new OuterCommand("echo", List.of("123"),

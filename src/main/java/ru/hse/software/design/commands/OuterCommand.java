@@ -1,6 +1,5 @@
 package ru.hse.software.design.commands;
 
-import org.apache.commons.lang3.SystemUtils;
 import ru.hse.software.design.Environment;
 import ru.hse.software.design.Path;
 
@@ -19,27 +18,26 @@ public class OuterCommand extends Command {
     private final List<String> commandWithArguments = new ArrayList<>();
     private final Path path;
 
+    private String getOperatingSystem() {
+        return System.getProperty("os.name");
+    }
+
     /**
      * Creates outer command with given arguments.
      *
      * @param commandName command name
      * @param commandArgs command arguments
-     * @param path        path to command
      **/
     public OuterCommand(String commandName, List<String> commandArgs, Path path) {
-        if (SystemUtils.IS_OS_WINDOWS) {
+        if (Objects.equals(getOperatingSystem(), "Windows")) {
             commandName = commandName + ".exe";
-            this.commandWithArguments.add(commandName);
-            if (Objects.equals(commandName, "cmd.exe")) {
-                this.commandWithArguments.add("/C");
-            }
-        } else {
-            this.commandWithArguments.add(commandName);
         }
+        this.commandWithArguments.add(commandName);
         this.commandWithArguments.addAll(commandArgs);
         this.path = path;
         this.command = commandName;
     }
+
 
     /**
      * Executes the given outer command with the given arguments.
@@ -57,7 +55,7 @@ public class OuterCommand extends Command {
             }
         }
         if (commandDirectory == null) {
-            if (SystemUtils.IS_OS_WINDOWS) {
+            if (Objects.equals(getOperatingSystem(), "Windows")) {
                 errorStream.println("Command " + command.substring(0, command.length() - 4) + " not found");
                 return 1;
             }
@@ -68,7 +66,7 @@ public class OuterCommand extends Command {
             var processBuilder = new ProcessBuilder(commandArray);
             Map<String, String> environment = processBuilder.environment();
             environment.putAll(Environment.getAll());
-            var process = processBuilder.start();
+            Process process = processBuilder.start();
             process.getOutputStream().write(input.getBytes(StandardCharsets.UTF_8));
             int returnCode = process.waitFor();
             output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
