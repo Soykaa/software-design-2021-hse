@@ -3,7 +3,6 @@ package ru.hse.software.design.commands;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -29,7 +28,6 @@ public class GrepCommand extends Command {
 
     @Override
     public int execute(String input) {
-        final HelpFormatter cliHelp = new HelpFormatter();
         final CommandLineParser cliParser = new DefaultParser();
         final CommandLine command;
         try {
@@ -75,7 +73,7 @@ public class GrepCommand extends Command {
                     matcher = pattern.matcher(line);
                 }
                 if (matcher.find()) {
-                    if (!stringBuilder.isEmpty()) {
+                    if (stringBuilder.length() != 0) {
                         stringBuilder.append(System.lineSeparator());
                     }
                     stringBuilder.append(line);
