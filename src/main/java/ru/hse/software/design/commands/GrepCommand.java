@@ -38,8 +38,28 @@ public class GrepCommand extends Command {
             return 1;
         }
         List<String> arguments = command.getArgList();
+        if (arguments.isEmpty()) {
+            errorStream.println("Regular expression should be passed");
+            return 1;
+        }
         String regexp = arguments.get(0);
-        String file = arguments.get(1);
+        List<String> lines;
+        if (arguments.size() == 1) {
+            lines = List.of(input.split(System.lineSeparator()));
+        } else {
+            String file = arguments.get(1);
+            Path path = Paths.get(file);
+            if (!Files.exists(path)) {
+                errorStream.println("file " + file + " does not exist");
+                return 1;
+            }
+            try (Stream<String> stream = Files.lines(path)) {
+                lines = stream.collect(Collectors.toList());
+            } catch (IOException e) {
+                errorStream.println("problem with reading from file " + e.getMessage());
+                return 1;
+            }
+        }
         if (command.hasOption('w')) {
             regexp = "\\b" + regexp + "\\b";
         }
@@ -53,44 +73,33 @@ public class GrepCommand extends Command {
                 return 1;
             }
         }
-        Path path = Paths.get(file);
-        if (!Files.exists(path)) {
-            errorStream.println("file " + file + " does not exist");
-            return 1;
-        }
         Pattern pattern = Pattern.compile(regexp);
         long numberLinesToPrint = 0;
-        try (Stream<String> stream = Files.lines(path)) {
-            List<String> lines = stream.collect(Collectors.toList());
-            var stringBuilder = new StringBuilder();
-            for (String line : lines) {
-                Matcher matcher;
-                if (command.hasOption('i')) {
-                    String lower = line;
-                    lower = lower.toLowerCase();
-                    matcher = pattern.matcher(lower);
-                } else {
-                    matcher = pattern.matcher(line);
-                }
-                if (matcher.find()) {
-                    if (stringBuilder.length() != 0) {
-                        stringBuilder.append(System.lineSeparator());
-                    }
-                    stringBuilder.append(line);
-                    numberLinesToPrint = Long.parseLong(command.getOptionValue('A'));
-                    continue;
-                }
-                if (numberLinesToPrint > 0) {
-                    stringBuilder.append(System.lineSeparator());
-                    stringBuilder.append(line);
-                    numberLinesToPrint--;
-                }
+        var stringBuilder = new StringBuilder();
+        for (String line : lines) {
+            Matcher matcher;
+            if (command.hasOption('i')) {
+                String lower = line;
+                lower = lower.toLowerCase();
+                matcher = pattern.matcher(lower);
+            } else {
+                matcher = pattern.matcher(line);
             }
-            output = stringBuilder.toString();
-        } catch (IOException e) {
-            errorStream.println("problem with reading from file " + e.getMessage());
-            return 1;
+            if (matcher.find()) {
+                if (stringBuilder.length() != 0) {
+                    stringBuilder.append(System.lineSeparator());
+                }
+                stringBuilder.append(line);
+                numberLinesToPrint = Long.parseLong(command.getOptionValue('A',"0"));
+                continue;
+            }
+            if (numberLinesToPrint > 0) {
+                stringBuilder.append(System.lineSeparator());
+                stringBuilder.append(line);
+                numberLinesToPrint--;
+            }
         }
+        output = stringBuilder.toString();
         return 0;
     }
 
