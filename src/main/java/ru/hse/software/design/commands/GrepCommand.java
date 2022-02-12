@@ -23,9 +23,12 @@ public class GrepCommand extends Command {
     private static final Options options = new Options();
 
     static {
-        options.addOption(new Option("w", "w", false, "The expression is searched for as a word"));
-        options.addOption(new Option("A", "A", true, "Print num lines of trailing context after each match."));
-        options.addOption(new Option("i", "i", false, "Perform case insensitive matching. By default, grep is case sensitive."));
+        options.addOption(new Option("w", "w", false,
+            "The expression is searched for as a word"));
+        options.addOption(new Option("A", "A", true,
+            "Print num lines of trailing context after each match."));
+        options.addOption(new Option("i", "i", false,
+            "Perform case insensitive matching. By default, grep is case sensitive."));
     }
 
     public GrepCommand(List<String> commandArgs) {

@@ -41,4 +41,22 @@ public class ExecutorTests {
         assertEquals(1, executor.execute("non-existent-command"));
         assertTrue(errContent.toString().contains("Cannot run program \"non-existent-command"));
     }
+
+    @Test
+    public void testSimpleGrepWithPipes() {
+        assertEquals(0, executor.execute("echo 123 | grep 123"));
+        assertEquals("123" + System.lineSeparator(), outContent.toString());
+    }
+
+    @Test
+    public void testSimpleGrepWithPipesAndSingleQuotes() {
+        assertEquals(0, executor.execute("echo 123 | grep '123'"));
+        assertEquals("123" + System.lineSeparator(), outContent.toString());
+    }
+
+    @Test
+    public void testDoubleGrepWithPipesAndSingleQuotes() {
+        assertEquals(0, executor.execute("echo 123 | grep \"123\""));
+        assertEquals("123" + System.lineSeparator(), outContent.toString());
+    }
 }
