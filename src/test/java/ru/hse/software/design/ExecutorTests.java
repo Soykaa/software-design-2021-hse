@@ -2,6 +2,7 @@ package ru.hse.software.design;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -58,5 +59,15 @@ public class ExecutorTests {
     public void testDoubleGrepWithPipesAndSingleQuotes() {
         assertEquals(0, executor.execute("echo 123 | grep \"123\""));
         assertEquals("123" + System.lineSeparator(), outContent.toString());
+    }
+
+    @Test
+    @Disabled
+    public void testSimpleGrepWithDollar() {
+        assertEquals(0, executor.execute("grep bc$ src/resources/random.txt"));
+        String actualOutput = outContent.toString();
+        String expectedOutput = "aaabbbc" + System.lineSeparator() + "abc" +
+            System.lineSeparator() + "dbc" + System.lineSeparator();
+        assertEquals(expectedOutput, actualOutput);
     }
 }
