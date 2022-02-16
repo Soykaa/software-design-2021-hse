@@ -69,13 +69,4 @@ public class ExecutorTests {
             System.lineSeparator() + "dbc" + System.lineSeparator();
         assertEquals(expectedOutput, actualOutput);
     }
-
-    @Test
-    public void testSimpleGrep() {
-        assertEquals(0, executor.execute("echo 123 | grep \"12$\""));
-        String actualOutput = outContent.toString();
-        String expectedOutput = "aaabbbc" + System.lineSeparator() + "abc" +
-            System.lineSeparator() + "dbc" + System.lineSeparator();
-        assertEquals(expectedOutput, actualOutput);
-    }
 }
