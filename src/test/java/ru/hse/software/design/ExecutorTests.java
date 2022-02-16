@@ -62,9 +62,17 @@ public class ExecutorTests {
     }
 
     @Test
-    @Disabled
     public void testSimpleGrepWithDollar() {
         assertEquals(0, executor.execute("grep bc$ src/resources/random.txt"));
+        String actualOutput = outContent.toString();
+        String expectedOutput = "aaabbbc" + System.lineSeparator() + "abc" +
+            System.lineSeparator() + "dbc" + System.lineSeparator();
+        assertEquals(expectedOutput, actualOutput);
+    }
+
+    @Test
+    public void testSimpleGrep() {
+        assertEquals(0, executor.execute("echo 123 | grep \"12$\""));
         String actualOutput = outContent.toString();
         String expectedOutput = "aaabbbc" + System.lineSeparator() + "abc" +
             System.lineSeparator() + "dbc" + System.lineSeparator();
