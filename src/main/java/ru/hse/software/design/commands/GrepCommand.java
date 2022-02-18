@@ -18,6 +18,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
+/**
+ * Searches for a pattern in the passed file or standard input.
+ **/
 public class GrepCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
     private static final Options options = new Options();
@@ -31,11 +35,22 @@ public class GrepCommand extends Command {
             "Perform case insensitive matching. By default, grep is case sensitive."));
     }
 
+    /**
+     * Creates grep command with given arguments.
+     *
+     * @param commandArgs command arguments
+     **/
     public GrepCommand(List<String> commandArgs) {
         this.commandArgs.addAll(commandArgs);
         this.command = "grep";
     }
 
+    /**
+     * Executes 'grep' command with the given arguments.
+     *
+     * @param input input as string
+     * @return 0 in case of successful outcome of the command, 1 otherwise
+     **/
     @Override
     public int execute(String input) {
         final CommandLineParser cliParser = new DefaultParser();
