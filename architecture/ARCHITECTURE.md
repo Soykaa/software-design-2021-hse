@@ -228,5 +228,3 @@ _Lexer, PreProccesor, Parser, CommandBuilder_. Связывает между с�
 ## UML диаграмма:
 
 <img src="images/archCLI3.png"/>
-
-
