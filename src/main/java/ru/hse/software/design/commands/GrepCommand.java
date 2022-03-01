@@ -70,7 +70,7 @@ public class GrepCommand extends Command {
         String regularExpression = arguments.get(0);
         List<String> inputLines;
         if (arguments.size() == 1) {
-            inputLines = List.of(input.split(System.lineSeparator()));
+            inputLines = List.of(input.split("\n"));
         } else {
             String file = arguments.get(1);
             Path path = Paths.get(file);
