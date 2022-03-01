@@ -69,4 +69,10 @@ public class ExecutorTests {
             System.lineSeparator() + "dbc" + System.lineSeparator();
         assertEquals(expectedOutput, actualOutput);
     }
+
+    @Test
+    public void testGrepWithCat() {
+        assertEquals(0, executor.execute("cat build.gradle | grep plugin"));
+        assertEquals("plugins {" + System.lineSeparator(), outContent.toString());
+    }
 }
