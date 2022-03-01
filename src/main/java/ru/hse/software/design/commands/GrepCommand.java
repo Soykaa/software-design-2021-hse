@@ -92,7 +92,13 @@ public class GrepCommand extends Command {
             regularExpression = regularExpression.toLowerCase();
         }
         if (command.hasOption('A')) {
-            long numberLines = Long.parseLong(command.getOptionValue('A'));
+            long numberLines;
+            try {
+                numberLines = Long.parseLong(command.getOptionValue('A'));
+            } catch (Exception e) {
+                errorStream.println("Option 'A' requires number after it");
+                return 1;
+            }
             if (numberLines < 0) {
                 errorStream.println("Option 'A' argument should be non-negative value");
                 return 1;
