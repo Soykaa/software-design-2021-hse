@@ -73,6 +73,9 @@ public class ExecutorTests {
     @Test
     public void testGrepWithCat() {
         assertEquals(0, executor.execute("cat build.gradle | grep plugin"));
-        assertEquals("plugins {" + System.lineSeparator(), outContent.toString());
+        String s = outContent.toString();
+        System.setOut(originalOut);
+        System.out.println(s);
+        assertEquals("plugins {" + System.lineSeparator(), s);
     }
 }
