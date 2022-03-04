@@ -1,5 +1,7 @@
 package ru.hse.software.design;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -11,6 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Environment {
     private static final ReentrantLock lock = new ReentrantLock();
     private static final Map<String, String> environmentVariables = new HashMap<>();
+    private static Path currentFolderPath = Paths.get(System.getProperty("user.dir"));
 
     /**
      * Saves the name of a variable and its value.
@@ -70,6 +73,26 @@ public class Environment {
             environmentVariables.clear();
         } finally {
             lock.unlock();
+        }
+    }
+
+    public static Path getCurrentFolderPath() {
+        return currentFolderPath;
+    }
+
+    public static void setCurrentFolderPath(String path) {
+        currentFolderPath = getRelativePath(path);
+    }
+
+    public static void setCurrentFolderPath() {
+        currentFolderPath = Paths.get(System.getProperty("user.home"));
+    }
+
+    public static Path getRelativePath(String path) {
+        if (Paths.get(path).isAbsolute()) {
+            return Paths.get(path);
+        } else {
+            return Paths.get(currentFolderPath.toAbsolutePath().toString(), path);
         }
     }
 }

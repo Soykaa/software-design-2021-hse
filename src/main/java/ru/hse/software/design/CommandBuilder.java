@@ -1,14 +1,6 @@
 package ru.hse.software.design;
 
-import ru.hse.software.design.commands.CatCommand;
-import ru.hse.software.design.commands.Command;
-import ru.hse.software.design.commands.EchoCommand;
-import ru.hse.software.design.commands.EnvironmentCommand;
-import ru.hse.software.design.commands.ExitCommand;
-import ru.hse.software.design.commands.GrepCommand;
-import ru.hse.software.design.commands.OuterCommand;
-import ru.hse.software.design.commands.PwdCommand;
-import ru.hse.software.design.commands.WCCommand;
+import ru.hse.software.design.commands.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +31,9 @@ public class CommandBuilder {
         }
         if (commandToken.getCommand().equals("grep")) {
             return new GrepCommand(commandToken.getCommandArgs());
+        }
+        if (commandToken.getCommand().equals("cd")) {
+            return new CdCommand(commandToken.getCommandArgs());
         }
         return new OuterCommand(commandToken.getCommand(), commandToken.getCommandArgs());
     }
