@@ -1,5 +1,8 @@
 package ru.hse.software.design.commands;
 
+import ru.hse.software.design.Environment;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +34,13 @@ public class PwdCommand extends Command {
             errorStream.println("Command Pwd works without arguments");
             return 1;
         }
-        output = System.getProperty("user.dir");
+
+        try {
+            output = Environment.getCurrentFolderPath().toFile().getCanonicalPath();
+        } catch (IOException e) {
+            errorStream.println(e.getMessage());
+            return 1;
+        }
         return 0;
     }
 }

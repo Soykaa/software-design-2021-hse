@@ -1,5 +1,7 @@
 package ru.hse.software.design.commands;
 
+import ru.hse.software.design.Environment;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +18,6 @@ import java.util.stream.Stream;
  **/
 public class CatCommand extends Command {
     private final List<String> commandArgs = new ArrayList<>();
-
     /**
      * Creates cat command with given arguments.
      *
@@ -43,7 +44,7 @@ public class CatCommand extends Command {
             output = input;
             return 0;
         }
-        Path path = Paths.get(commandArgs.get(0));
+        Path path = Environment.getRelativePath(commandArgs.get(0));
         if (!Files.exists(path)) {
             errorStream.println("file " + commandArgs.get(0) + " does not exist");
             return 1;

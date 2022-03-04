@@ -1,5 +1,7 @@
 package ru.hse.software.design.commands;
 
+import ru.hse.software.design.Environment;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -54,7 +56,7 @@ public class WCCommand extends Command {
             output = numLines + "\t" + numWords + " " + numBytes;
             return 0;
         }
-        Path path = Paths.get(commandArgs.get(0));
+        Path path = Environment.getRelativePath(commandArgs.get(0));
         if (!Files.exists(path)) {
             errorStream.println("file " + commandArgs.get(0) + " does not exist");
             return 1;

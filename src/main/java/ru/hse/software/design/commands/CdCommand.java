@@ -2,6 +2,7 @@ package ru.hse.software.design.commands;
 
 import ru.hse.software.design.Environment;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class CdCommand extends Command {
             errorStream.println("Command environment needs 0 or 1 argument");
             return 1;
         } else if (commandArgs.size() == 1) {
+            if (!Environment.getRelativePath(commandArgs.get(0)).toFile().isDirectory()) {
+                errorStream.println("Can't find such directory");
+            }
             Environment.setCurrentFolderPath(commandArgs.get(0));
         } else {
             Environment.setCurrentFolderPath();

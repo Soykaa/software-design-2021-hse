@@ -6,6 +6,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import ru.hse.software.design.Environment;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -73,7 +74,7 @@ public class GrepCommand extends Command {
             inputLines = List.of(input.split("\n"));
         } else {
             String file = arguments.get(1);
-            Path path = Paths.get(file);
+            Path path = Environment.getRelativePath(file);
             if (!Files.exists(path)) {
                 errorStream.println("File " + file + " does not exist");
                 return 1;
