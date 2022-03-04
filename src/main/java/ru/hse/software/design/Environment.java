@@ -76,18 +76,31 @@ public class Environment {
         }
     }
 
+    /**
+     * @return path of current working directory
+     */
     public static Path getCurrentFolderPath() {
         return currentFolderPath;
     }
 
+    /**
+     * @param path where we go from this directory
+     */
     public static void setCurrentFolderPath(String path) {
         currentFolderPath = getRelativePath(path);
     }
 
+    /**
+     * set current directory to user home folder
+     */
     public static void setCurrentFolderPath() {
         currentFolderPath = Paths.get(System.getProperty("user.home"));
     }
 
+    /**
+     * @param path path relatively to current working directory
+     * @return result path
+     */
     public static Path getRelativePath(String path) {
         if (Paths.get(path).isAbsolute()) {
             return Paths.get(path);
