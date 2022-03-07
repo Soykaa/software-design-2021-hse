@@ -65,8 +65,9 @@ public class PreProcessor {
         var variableName = new StringBuilder();
         QuotesStatus currentStatus = QuotesStatus.DEFAULT;
         boolean variableNameStarted = false;
+        char currentSymbol = '-';
         for (int i = 0; i < token.getToken().length(); i++) {
-            char currentSymbol = token.getToken().charAt(i);
+            currentSymbol = token.getToken().charAt(i);
             if (currentSymbol == '$') {
                 if (currentStatus == QuotesStatus.INSIDE_SINGLE) {
                     preProcessedToken.append(currentSymbol);
@@ -82,8 +83,12 @@ public class PreProcessor {
             }
             if (currentSymbol == '|' || currentSymbol == '"' || currentSymbol == ' ' || currentSymbol == '\'') {
                 if (variableNameStarted) {
-                    String value = getFromEnvironment(variableName.toString());
-                    preProcessedToken.append(value);
+                    if (variableName.toString().equals("")) {
+                        preProcessedToken.append("$");
+                    } else {
+                        String value = getFromEnvironment(variableName.toString());
+                        preProcessedToken.append(value);
+                    }
                     variableNameStarted = false;
                     variableName.setLength(0);
                 }
@@ -113,7 +118,11 @@ public class PreProcessor {
             }
         }
         if (variableNameStarted) {
-            preProcessedToken.append(getFromEnvironment(variableName.toString()));
+            if (currentSymbol == '$') {
+                preProcessedToken.append("$");
+            } else {
+                preProcessedToken.append(getFromEnvironment(variableName.toString()));
+            }
         }
         token.setToken(preProcessedToken.toString());
         token.setType(Type.FULLY_PROCESSED);

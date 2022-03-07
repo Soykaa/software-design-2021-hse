@@ -13,16 +13,21 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
 }
 
 test {
     useJUnitPlatform()
+    testLogging {
+        events "PASSED", "SKIPPED", "FAILED"
+    }
 }
 
 jar {
     manifest {
-        attributes(
-            'Main-Class': 'ru.hse.software.design.CLI'
-        )
+        attributes 'Main-Class': 'ru.hse.software.design.CLI'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }

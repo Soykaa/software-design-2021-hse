@@ -43,7 +43,9 @@ public class Executor {
                 }
                 prevCommandOutput = command.getOutput();
             }
-            System.out.println(prevCommandOutput);
+            if (!prevCommandOutput.isEmpty()) {
+                System.out.println(prevCommandOutput);
+            }
             return returnCode;
         } catch (Exception e) {
             System.err.println(e.getMessage());

@@ -2,6 +2,7 @@ package ru.hse.software.design;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -40,5 +41,38 @@ public class ExecutorTests {
     public void testCommandFailed() {
         assertEquals(1, executor.execute("non-existent-command"));
         assertTrue(errContent.toString().contains("Cannot run program \"non-existent-command"));
+    }
+
+    @Test
+    public void testSimpleGrepWithPipes() {
+        assertEquals(0, executor.execute("echo 123 | grep 123"));
+        assertEquals("123" + System.lineSeparator(), outContent.toString());
+    }
+
+    @Test
+    public void testSimpleGrepWithPipesAndSingleQuotes() {
+        assertEquals(0, executor.execute("echo 123 | grep '123'"));
+        assertEquals("123" + System.lineSeparator(), outContent.toString());
+    }
+
+    @Test
+    public void testDoubleGrepWithPipesAndSingleQuotes() {
+        assertEquals(0, executor.execute("echo 123 | grep \"123\""));
+        assertEquals("123" + System.lineSeparator(), outContent.toString());
+    }
+
+    @Test
+    public void testSimpleGrepWithDollar() {
+        assertEquals(0, executor.execute("grep bc$ src/resources/random.txt"));
+        String actualOutput = outContent.toString();
+        String expectedOutput = "aaabbbc" + System.lineSeparator() + "abc" +
+            System.lineSeparator() + "dbc" + System.lineSeparator();
+        assertEquals(expectedOutput, actualOutput);
+    }
+
+    @Test
+    public void testGrepWithCat() {
+        assertEquals(0, executor.execute("cat build.gradle | grep plugin"));
+        assertEquals("plugins {" + System.lineSeparator(), outContent.toString());
     }
 }
