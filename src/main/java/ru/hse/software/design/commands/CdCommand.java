@@ -29,12 +29,13 @@ public class CdCommand extends Command {
      */
     @Override
     public int execute(String input) {
-        if (commandArgs.size() < 1) {
+        if (commandArgs.size() > 1) {
             errorStream.println("Command environment needs 0 or 1 argument");
             return 1;
         } else if (commandArgs.size() == 1) {
             if (!Environment.getRelativePath(commandArgs.get(0)).toFile().isDirectory()) {
                 errorStream.println("Can't find such directory");
+                return 1;
             }
             Environment.setCurrentFolderPath(commandArgs.get(0));
         } else {

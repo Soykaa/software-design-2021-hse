@@ -77,7 +77,7 @@ public class Environment {
     }
 
     /**
-     * @return path of current working directory
+     * Return path of current working directory
      */
     public static Path getCurrentFolderPath() {
         return currentFolderPath;

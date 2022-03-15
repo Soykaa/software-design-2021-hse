@@ -36,15 +36,19 @@ public class LsCommand extends Command {
         } else {
             path = Environment.getRelativePath(commandArgs.get(0));
         }
-        File fileName = new File(String.valueOf(path));
+        var fileName = new File(String.valueOf(path));
         File[] fileList = fileName.listFiles();
 
-        StringBuilder sb = new StringBuilder();
-        assert fileList != null;
-        for (File file : fileList) {
-            sb.append(file.getName()).append("\n");
+        var sb = new StringBuilder();
+        if (fileList == null) {
+            errorStream.println("Can't find such directory");
+            return 1;
+        } else {
+            for (File file : fileList) {
+                sb.append(file.getName()).append("\n");
+            }
+            output = sb.toString();
+            return 0;
         }
-        output = sb.toString();
-        return 0;
     }
 }

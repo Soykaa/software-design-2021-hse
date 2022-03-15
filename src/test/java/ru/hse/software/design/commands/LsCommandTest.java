@@ -16,8 +16,6 @@ public class LsCommandTest {
     void testNoArgs() {
         Command command = new LsCommand(List.of());
 
-
-        String expectedOutput;
         Path path = Environment.getCurrentFolderPath();
 
         File fileName = new File(String.valueOf(path));
@@ -29,7 +27,7 @@ public class LsCommandTest {
             sb.append(file.getName()).append("\n");
         }
 
-        expectedOutput = sb.toString();
+        String expectedOutput = sb.toString();
         Assertions.assertEquals(0, command.execute(""));
         String actualOutput = command.output;
         Assertions.assertTrue(errContent.toString().isEmpty());
