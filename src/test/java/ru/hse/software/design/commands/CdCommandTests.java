@@ -3,16 +3,14 @@ package ru.hse.software.design.commands;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.List;
 
 public class CdCommandTests {
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
     @Test
-    void testGoBack() {
+    public void testGoBack() {
         Command pwd1 = new PwdCommand(List.of());
         pwd1.execute("");
 
@@ -29,7 +27,7 @@ public class CdCommandTests {
     }
 
     @Test
-    void testWithoutParams() {
+    public void testWithoutParams() {
         Command cd = new CdCommand(List.of());
         cd.execute("");
 
@@ -40,7 +38,7 @@ public class CdCommandTests {
     }
 
     @Test
-    void testWithTooManyParams() {
+    public void testWithTooManyParams() {
         Command cd = new CdCommand(List.of("..", ".."));
         Assertions.assertEquals(1, cd.execute(""));
     }

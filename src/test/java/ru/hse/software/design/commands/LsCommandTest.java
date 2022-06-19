@@ -13,7 +13,7 @@ public class LsCommandTest {
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
     @Test
-    void testNoArgs() {
+    public void testNoArgs() {
         Command command = new LsCommand(List.of());
 
         Path path = Environment.getCurrentFolderPath();
@@ -35,7 +35,7 @@ public class LsCommandTest {
     }
 
     @Test
-    void testWithArg() {
+    public void testWithArg() {
         Command command = new LsCommand(List.of("lol"));
 
 
