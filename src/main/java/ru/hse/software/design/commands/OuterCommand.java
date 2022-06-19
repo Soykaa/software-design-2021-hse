@@ -46,6 +46,7 @@ public class OuterCommand extends Command {
         try {
             var processBuilder = new ProcessBuilder(commandArray);
             Map<String, String> environment = processBuilder.environment();
+            processBuilder.directory(Environment.getCurrentFolderPath().toFile());
             environment.putAll(Environment.getAll());
             Process process = processBuilder.start();
             process.getOutputStream().write(input.getBytes(StandardCharsets.UTF_8));
