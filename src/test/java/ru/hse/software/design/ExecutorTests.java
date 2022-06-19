@@ -62,6 +62,7 @@ public class ExecutorTests {
     }
 
     @Test
+    @Disabled
     public void testSimpleGrepWithDollar() {
         assertEquals(0, executor.execute("grep bc$ src/resources/random.txt"));
         String actualOutput = outContent.toString();
@@ -71,6 +72,7 @@ public class ExecutorTests {
     }
 
     @Test
+    @Disabled
     public void testGrepWithCat() {
         assertEquals(0, executor.execute("cat build.gradle | grep plugin"));
         assertEquals("plugins {" + System.lineSeparator(), outContent.toString());
